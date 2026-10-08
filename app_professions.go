@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"sort"
+
+	"inklab/backend/database"
 )
 
 // The professions browser: skill lines from SkillLine.dbc (spell_skills) whose
@@ -43,6 +45,7 @@ func (a *App) GetProfessions() []Profession {
 		if rows.Scan(&p.ID, &p.Name, &p.Count) != nil {
 			continue
 		}
+		p.Name = database.LocalizeSkillName(p.ID, p.Name)
 		if p.Count > 0 {
 			out = append(out, p)
 		}
@@ -100,7 +103,7 @@ func (a *App) GetProfessionRecipes(skillID int) []ProfessionRecipe {
 	craftSet := map[int]*rawRecipe{} // spellID -> row
 
 	rows, err := db.Query(`
-		SELECT sp.entry, sp.name, COALESCE(si.icon_name, ''),
+		SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(si.icon_name, ''),
 		       ss.req_skill_value, ss.min_value, ss.max_value,
 		       CASE WHEN sp.effect1 = 24 THEN sp.effectItemType1
 		            WHEN sp.effect2 = 24 THEN sp.effectItemType2
@@ -225,7 +228,7 @@ func (a *App) GetProfessionRecipes(skillID int) []ProfessionRecipe {
 
 	// Recipe items that teach a craft spell (item on-use = learn spell).
 	if iRows, err := db.Query(`
-		SELECT i.entry, i.name, i.quality, COALESCE(d.icon, ''), i.required_skill_rank,
+		SELECT i.entry, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(d.icon, ''), i.required_skill_rank,
 		       i.spellid_1, i.spellid_2, i.spellid_3, i.spellid_4, i.spellid_5
 		FROM item_template i
 		LEFT JOIN item_display_info d ON i.display_id = d.ID
@@ -317,7 +320,7 @@ func (a *App) recipeItemsByID(ids map[int]bool) map[int]RecipeItem {
 		args = append(args, id)
 	}
 	rows, err := a.db.DB().Query(`
-		SELECT t.entry, t.name, t.quality, COALESCE(d.icon, '')
+		SELECT t.entry, COALESCE(NULLIF(t.name_loc4,''), t.name), t.quality, COALESCE(d.icon, '')
 		FROM item_template t
 		LEFT JOIN item_display_info d ON t.display_id = d.ID
 		WHERE t.entry IN (`+ph+`)`, args...)

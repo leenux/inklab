@@ -251,6 +251,7 @@ func iconBase(p string) string {
 
 // ItemSet.dbc (45 fields): id(0), name[8](1-8), itemID[17](10-26),
 // setSpellID[8](27-34), setThreshold[8](35-42), reqSkill(43), reqSkillRank(44).
+// Locale slots: 1=enUS … 5=zhCN (field index 5) on CN clients.
 func genItemSets(cf ClientFiles) (interface{}, error) {
 	d, err := openDBCFrom(cf, "ItemSet.dbc")
 	if err != nil {
@@ -258,9 +259,17 @@ func genItemSets(cf ClientFiles) (interface{}, error) {
 	}
 	out := make([]map[string]interface{}, 0, d.RecordCount)
 	for r := 0; r < d.RecordCount; r++ {
+		en := d.Str(r, 1)
+		zh := d.Str(r, 5) // zhCN
+		if zh == "" {
+			zh = en
+		}
 		m := map[string]interface{}{
-			"itemsetID": d.U32(r, 0), "name_loc0": d.Str(r, 1),
-			"skillID": d.U32(r, 43), "skilllevel": d.U32(r, 44),
+			"itemsetID":  d.U32(r, 0),
+			"name_loc0":  en,
+			"name_loc4":  zh,
+			"skillID":    d.U32(r, 43),
+			"skilllevel": d.U32(r, 44),
 		}
 		for i := 0; i < 10; i++ {
 			m[fmt.Sprintf("item%d", i+1)] = d.U32(r, 10+i)
@@ -834,11 +843,18 @@ func genZones(cf ClientFiles) (interface{}, error) {
 		instByMap[maps.U32(r, 0)] = maps.U32(r, 2)
 	}
 
-	// AreaTable.dbc: id(0), AreaName_enUS(11). Build areatableID -> official name.
+	// AreaTable.dbc: id(0), AreaName locales — enUS at 11, zhCN at 15 on CN clients.
 	areaName := map[uint32]string{}
 	if at, err := openDBCFrom(cf, "AreaTable.dbc"); err == nil {
 		for r := 0; r < at.RecordCount; r++ {
-			areaName[at.U32(r, 0)] = at.Str(r, 11)
+			id := at.U32(r, 0)
+			zh := at.Str(r, 15)
+			en := at.Str(r, 11)
+			if zh != "" {
+				areaName[id] = zh
+			} else {
+				areaName[id] = en
+			}
 		}
 	} else {
 		fmt.Printf("[dbc] AreaTable.dbc unavailable, zone display names fall back to folder names: %v\n", err)

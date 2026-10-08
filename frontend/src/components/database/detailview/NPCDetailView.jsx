@@ -273,7 +273,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                             className="rounded border border-purple-800 bg-purple-700 px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-purple-600"
                             title="在 Turtle WoW 数据库中查看"
                         >
-                            🔗 OctoHead
+                            🔗 Octo 数据库
                         </a>
                         <a
                             href={`https://www.wowhead.com/classic/npc=${detail.entry}`}
@@ -507,22 +507,34 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         </tr>
                                         <tr>
                                             <th>态度：</th>
-                                            <td>
+                                            <td className="font-mono text-sm font-bold">
                                                 <span
-                                                    className={
-                                                        detail.faction === 35
-                                                            ? 'text-wow-quality-2'
-                                                            : 'text-wow-quality-7'
-                                                    }
+                                                    style={{
+                                                        color:
+                                                            detail.reactionA === '友好' ||
+                                                            detail.reactionA === 'friendly'
+                                                                ? '#40bf40'
+                                                                : detail.reactionA === '敌对' ||
+                                                                    detail.reactionA === 'hostile'
+                                                                  ? '#e0294a'
+                                                                  : '#9d9d9d',
+                                                    }}
+                                                    title={`联盟：${detail.reactionA || '中立'}`}
                                                 >
                                                     联
                                                 </span>{' '}
                                                 <span
-                                                    className={
-                                                        detail.faction === 35
-                                                            ? 'text-wow-quality-2'
-                                                            : 'text-wow-quality-7'
-                                                    }
+                                                    style={{
+                                                        color:
+                                                            detail.reactionH === '友好' ||
+                                                            detail.reactionH === 'friendly'
+                                                                ? '#40bf40'
+                                                                : detail.reactionH === '敌对' ||
+                                                                    detail.reactionH === 'hostile'
+                                                                  ? '#e0294a'
+                                                                  : '#9d9d9d',
+                                                    }}
+                                                    title={`部落：${detail.reactionH || '中立'}`}
                                                 >
                                                     部
                                                 </span>

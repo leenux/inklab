@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 
+	"inklab/backend/database/helpers"
 	"inklab/backend/database/models"
 )
 
@@ -76,6 +77,7 @@ func (r *RaceRepository) classes(raceID int) []models.RaceClass {
 	for rows.Next() {
 		var c models.RaceClass
 		if rows.Scan(&c.ID, &c.Name, &c.Color) == nil {
+			c.Name = helpers.LocalizeClassName(c.ID, c.Name)
 			out = append(out, c)
 		}
 	}

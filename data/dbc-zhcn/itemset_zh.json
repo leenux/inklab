@@ -1,0 +1,1438 @@
+{
+  "1": {
+    "en": "The Gladiator",
+    "zh": "角斗士"
+  },
+  "41": {
+    "en": "Dal'Rend's Arms",
+    "zh": "雷德双刀"
+  },
+  "65": {
+    "en": "Spider's Kiss",
+    "zh": "蜘蛛之吻"
+  },
+  "81": {
+    "en": "The Postmaster",
+    "zh": "邮差"
+  },
+  "121": {
+    "en": "Cadaverous Garb",
+    "zh": "苍白"
+  },
+  "122": {
+    "en": "Necropile Raiment",
+    "zh": "骨堆"
+  },
+  "123": {
+    "en": "Bloodmail Regalia",
+    "zh": "血链"
+  },
+  "124": {
+    "en": "Deathbone Guardian",
+    "zh": "亡者之骨"
+  },
+  "141": {
+    "en": "Volcanic Armor",
+    "zh": "火山"
+  },
+  "142": {
+    "en": "Stormshroud Armor",
+    "zh": "雷暴"
+  },
+  "143": {
+    "en": "Devilsaur Armor",
+    "zh": "魔暴龙护甲"
+  },
+  "144": {
+    "en": "Ironfeather Armor",
+    "zh": "铁羽护甲"
+  },
+  "161": {
+    "en": "Defias Leather",
+    "zh": "迪菲亚皮甲"
+  },
+  "162": {
+    "en": "Embrace of the Viper",
+    "zh": "毒蛇的拥抱"
+  },
+  "163": {
+    "en": "Chain of the Scarlet Crusade",
+    "zh": "血色十字军链甲"
+  },
+  "181": {
+    "en": "Magister's Regalia",
+    "zh": "博学者的徽记"
+  },
+  "182": {
+    "en": "Vestments of the Devout",
+    "zh": "虔诚"
+  },
+  "183": {
+    "en": "Dreadmist Raiment",
+    "zh": "鬼雾"
+  },
+  "184": {
+    "en": "Shadowcraft Armor",
+    "zh": "迅影"
+  },
+  "185": {
+    "en": "Wildheart Raiment",
+    "zh": "野性之心"
+  },
+  "186": {
+    "en": "Beaststalker Armor",
+    "zh": "野兽追猎者"
+  },
+  "187": {
+    "en": "The Elements",
+    "zh": "元素"
+  },
+  "188": {
+    "en": "Lightforge Armor",
+    "zh": "光铸护甲"
+  },
+  "189": {
+    "en": "Battlegear of Valor",
+    "zh": "勇气"
+  },
+  "201": {
+    "en": "Arcanist's Regalia",
+    "zh": "奥术师"
+  },
+  "202": {
+    "en": "Vestments of Prophecy",
+    "zh": "预言"
+  },
+  "203": {
+    "en": "Felheart Raiment",
+    "zh": "恶魔之心"
+  },
+  "204": {
+    "en": "Nightslayer Armor",
+    "zh": "夜幕杀手"
+  },
+  "205": {
+    "en": "Cenarion Raiment",
+    "zh": "塞纳里奥"
+  },
+  "206": {
+    "en": "Giantstalker Armor",
+    "zh": "巨人追猎者"
+  },
+  "207": {
+    "en": "The Earthfury",
+    "zh": "大地之怒"
+  },
+  "208": {
+    "en": "Lawbringer Armor",
+    "zh": "秩序之源"
+  },
+  "209": {
+    "en": "Battlegear of Might",
+    "zh": "力量"
+  },
+  "210": {
+    "en": "Netherwind Regalia",
+    "zh": "灵风"
+  },
+  "211": {
+    "en": "Vestments of Transcendence",
+    "zh": "卓越"
+  },
+  "212": {
+    "en": "Nemesis Raiment",
+    "zh": "复仇"
+  },
+  "213": {
+    "en": "Bloodfang Armor",
+    "zh": "血牙"
+  },
+  "214": {
+    "en": "Stormrage Raiment",
+    "zh": "怒风"
+  },
+  "215": {
+    "en": "Dragonstalker Armor",
+    "zh": "巨龙追猎者"
+  },
+  "216": {
+    "en": "Garb of the Ten Storms",
+    "zh": "无尽风暴"
+  },
+  "217": {
+    "en": "Judgement Armor",
+    "zh": "审判"
+  },
+  "218": {
+    "en": "Battlegear of Wrath",
+    "zh": "愤怒"
+  },
+  "221": {
+    "en": "Garb of Thero-shan",
+    "zh": "塞奥沙套装"
+  },
+  "241": {
+    "en": "Shard of the Gods",
+    "zh": "天神碎片"
+  },
+  "261": {
+    "en": "Spirit of Eskhandar",
+    "zh": "艾斯卡达尔之魂"
+  },
+  "281": {
+    "en": "Champion's Battlegear",
+    "zh": "勇士的战甲"
+  },
+  "282": {
+    "en": "Lieutenant Commander's Battlegear",
+    "zh": "少校的战甲"
+  },
+  "301": {
+    "en": "Champion's Earthshaker",
+    "zh": "勇士的震撼"
+  },
+  "321": {
+    "en": "Imperial Plate",
+    "zh": "君王板甲"
+  },
+  "341": {
+    "en": "Champion's Regalia",
+    "zh": "勇士的法衣"
+  },
+  "342": {
+    "en": "Champion's Raiment",
+    "zh": "勇士的神服"
+  },
+  "343": {
+    "en": "Lieutenant Commander's Regalia",
+    "zh": "少校的法衣"
+  },
+  "344": {
+    "en": "Lieutenant Commander's Raiment",
+    "zh": "少校的神服"
+  },
+  "345": {
+    "en": "Champion's Threads",
+    "zh": "勇士的魔装"
+  },
+  "346": {
+    "en": "Lieutenant Commander's Threads",
+    "zh": "少校的魔装"
+  },
+  "347": {
+    "en": "Champion's Vestments",
+    "zh": "勇士的制服"
+  },
+  "348": {
+    "en": "Lieutenant Commander's Vestments",
+    "zh": "少校的制服"
+  },
+  "361": {
+    "en": "Champion's Pursuit",
+    "zh": "勇士的猎装"
+  },
+  "362": {
+    "en": "Lieutenant Commander's Pursuit",
+    "zh": "少校的猎装"
+  },
+  "381": {
+    "en": "Lieutenant Commander's Sanctuary",
+    "zh": "少校的圣装"
+  },
+  "382": {
+    "en": "Champion's Sanctuary",
+    "zh": "勇士的圣装"
+  },
+  "383": {
+    "en": "Warlord's Battlegear",
+    "zh": "督军的战甲"
+  },
+  "384": {
+    "en": "Field Marshal's Battlegear",
+    "zh": "元帅的战甲"
+  },
+  "386": {
+    "en": "Warlord's Earthshaker",
+    "zh": "督军的震撼"
+  },
+  "387": {
+    "en": "Warlord's Regalia",
+    "zh": "督军的法衣"
+  },
+  "388": {
+    "en": "Field Marshal's Regalia",
+    "zh": "元帅的法衣"
+  },
+  "389": {
+    "en": "Field Marshal's Raiment",
+    "zh": "元帅的神服"
+  },
+  "390": {
+    "en": "Warlord's Raiment",
+    "zh": "督军的神服"
+  },
+  "391": {
+    "en": "Warlord's Threads",
+    "zh": "督军的魔装"
+  },
+  "392": {
+    "en": "Field Marshal's Threads",
+    "zh": "元帅的魔装"
+  },
+  "393": {
+    "en": "Warlord's Vestments",
+    "zh": "督军的制服"
+  },
+  "394": {
+    "en": "Field Marshal's Vestments",
+    "zh": "元帅的制服"
+  },
+  "395": {
+    "en": "Field Marshal's Pursuit",
+    "zh": "元帅的猎装"
+  },
+  "396": {
+    "en": "Warlord's Pursuit",
+    "zh": "督军的猎装"
+  },
+  "397": {
+    "en": "Field Marshal's Sanctuary",
+    "zh": "元帅的圣装"
+  },
+  "398": {
+    "en": "Warlord's Sanctuary",
+    "zh": "督军的圣装"
+  },
+  "401": {
+    "en": "Lieutenant Commander's Aegis",
+    "zh": "少校的庇护"
+  },
+  "402": {
+    "en": "Field Marshal's Aegis",
+    "zh": "元帅的庇护"
+  },
+  "421": {
+    "en": "Bloodvine Garb",
+    "zh": "血藤"
+  },
+  "441": {
+    "en": "Primal Batskin",
+    "zh": "原始蝙蝠皮套装"
+  },
+  "442": {
+    "en": "Blood Tiger Harness",
+    "zh": "血虎"
+  },
+  "443": {
+    "en": "Bloodsoul Embrace",
+    "zh": "血魂的拥抱"
+  },
+  "444": {
+    "en": "The Darksoul",
+    "zh": "黑暗之魂"
+  },
+  "461": {
+    "en": "The Twin Blades of Hakkari",
+    "zh": "哈卡莱双刃"
+  },
+  "462": {
+    "en": "Zanzil's Concentration",
+    "zh": "赞吉尔的专注"
+  },
+  "463": {
+    "en": "Primal Blessing",
+    "zh": "原始祝福"
+  },
+  "464": {
+    "en": "Overlord's Resolution",
+    "zh": "督军的决心"
+  },
+  "465": {
+    "en": "Prayer of the Primal",
+    "zh": "远古祷言"
+  },
+  "466": {
+    "en": "Major Mojo Infusion",
+    "zh": "极效魔精套装"
+  },
+  "467": {
+    "en": "The Highlander's Resolution",
+    "zh": "高地人的决心"
+  },
+  "468": {
+    "en": "The Highlander's Resolve",
+    "zh": "高地人的执著"
+  },
+  "469": {
+    "en": "The Highlander's Determination",
+    "zh": "高地人的果断"
+  },
+  "470": {
+    "en": "The Highlander's Fortitude",
+    "zh": "高地人的坚韧"
+  },
+  "471": {
+    "en": "The Highlander's Purpose",
+    "zh": "高地人的毅力"
+  },
+  "472": {
+    "en": "The Highlander's Will",
+    "zh": "高地人的意志"
+  },
+  "473": {
+    "en": "The Highlander's Intent",
+    "zh": "高地人的专注"
+  },
+  "474": {
+    "en": "Vindicator's Battlegear",
+    "zh": "辩护者重甲"
+  },
+  "475": {
+    "en": "Freethinker's Armor",
+    "zh": "思考者护甲"
+  },
+  "476": {
+    "en": "Augur's Regalia",
+    "zh": "预言者套装"
+  },
+  "477": {
+    "en": "Predator's Armor",
+    "zh": "捕猎者套装"
+  },
+  "478": {
+    "en": "Madcap's Outfit",
+    "zh": "狂妄者套装"
+  },
+  "479": {
+    "en": "Haruspex's Garb",
+    "zh": "占卜师套装"
+  },
+  "480": {
+    "en": "Confessor's Raiment",
+    "zh": "忏悔者衣饰"
+  },
+  "481": {
+    "en": "Demoniac's Threads",
+    "zh": "恶魔师护甲"
+  },
+  "482": {
+    "en": "Illusionist's Attire",
+    "zh": "幻术师套装"
+  },
+  "483": {
+    "en": "The Defiler's Determination",
+    "zh": "污染者的果断"
+  },
+  "484": {
+    "en": "The Defiler's Fortitude",
+    "zh": "污染者的坚韧"
+  },
+  "485": {
+    "en": "The Defiler's Intent",
+    "zh": "污染者的专注"
+  },
+  "486": {
+    "en": "The Defiler's Purpose",
+    "zh": "污染者的毅力"
+  },
+  "487": {
+    "en": "The Defiler's Resolution",
+    "zh": "污染者的决心"
+  },
+  "488": {
+    "en": "The Defiler's Will",
+    "zh": "污染者的意志"
+  },
+  "489": {
+    "en": "Black Dragon Mail",
+    "zh": "黑龙锁甲"
+  },
+  "490": {
+    "en": "Green Dragon Mail",
+    "zh": "绿龙锁甲"
+  },
+  "491": {
+    "en": "Blue Dragon Mail",
+    "zh": "蓝龙锁甲"
+  },
+  "492": {
+    "en": "Twilight Trappings",
+    "zh": "暮光套装"
+  },
+  "493": {
+    "en": "Genesis Regalia",
+    "zh": "起源套装"
+  },
+  "494": {
+    "en": "Symbols of Unending Life",
+    "zh": "不灭的生命"
+  },
+  "495": {
+    "en": "Battlegear of Unyielding Strength",
+    "zh": "坚定的力量"
+  },
+  "496": {
+    "en": "Conqueror's Battlegear",
+    "zh": "征服者"
+  },
+  "497": {
+    "en": "Deathdealer's Embrace",
+    "zh": "死亡执行者的拥抱"
+  },
+  "498": {
+    "en": "Emblems of Veiled Shadows",
+    "zh": "笼罩之阴影"
+  },
+  "499": {
+    "en": "Doomcaller's Raiment",
+    "zh": "厄运召唤者"
+  },
+  "500": {
+    "en": "Implements of Unspoken Names",
+    "zh": "禁断的邪语"
+  },
+  "501": {
+    "en": "Stormcaller's Garb",
+    "zh": "风暴召唤者"
+  },
+  "502": {
+    "en": "Gift of the Gathering Storm",
+    "zh": "聚集的风暴"
+  },
+  "503": {
+    "en": "Enigma Regalia",
+    "zh": "神秘套装"
+  },
+  "504": {
+    "en": "Trappings of Vaulted Secrets",
+    "zh": "魔法的秘密"
+  },
+  "505": {
+    "en": "Avenger's Battlegear",
+    "zh": "复仇者"
+  },
+  "506": {
+    "en": "Battlegear of Eternal Justice",
+    "zh": "永恒的公正"
+  },
+  "507": {
+    "en": "Regalia of the Oracle",
+    "zh": "神谕者"
+  },
+  "508": {
+    "en": "Finery of Infinite Wisdom",
+    "zh": "无尽的智慧"
+  },
+  "509": {
+    "en": "Striker's Garb",
+    "zh": "攻击者"
+  },
+  "510": {
+    "en": "Trappings of the Unseen Path",
+    "zh": "隐秘的通途"
+  },
+  "511": {
+    "en": "Battlegear of Heroism",
+    "zh": "英勇"
+  },
+  "512": {
+    "en": "Darkmantle Armor",
+    "zh": "暗幕"
+  },
+  "513": {
+    "en": "Moonheart Raiment",
+    "zh": "狂野之心"
+  },
+  "514": {
+    "en": "Vestments of the Virtuous",
+    "zh": "坚贞"
+  },
+  "515": {
+    "en": "Beastmaster Armor",
+    "zh": "兽王"
+  },
+  "516": {
+    "en": "Soulforge Armor",
+    "zh": "魂铸"
+  },
+  "517": {
+    "en": "Sorcerer's Regalia",
+    "zh": "巫师"
+  },
+  "518": {
+    "en": "Deathmist Raiment",
+    "zh": "死雾"
+  },
+  "519": {
+    "en": "The Five Thunders",
+    "zh": "五雷"
+  },
+  "520": {
+    "en": "Ironweave Battlesuit",
+    "zh": "铁纹作战套装"
+  },
+  "521": {
+    "en": "Dreamwalker Raiment",
+    "zh": "梦游者"
+  },
+  "522": {
+    "en": "Champion's Guard",
+    "zh": "勇士的套装"
+  },
+  "523": {
+    "en": "Dreadnaught's Battlegear",
+    "zh": "无畏"
+  },
+  "524": {
+    "en": "Bonescythe Armor",
+    "zh": "骨镰"
+  },
+  "525": {
+    "en": "Vestments of Faith",
+    "zh": "信仰"
+  },
+  "526": {
+    "en": "Frostfire Regalia",
+    "zh": "霜火"
+  },
+  "527": {
+    "en": "The Earthshatterer",
+    "zh": "碎地者"
+  },
+  "528": {
+    "en": "Redemption Armor",
+    "zh": "救赎"
+  },
+  "529": {
+    "en": "Plagueheart Raiment",
+    "zh": "瘟疫之心"
+  },
+  "530": {
+    "en": "Cryptstalker Armor",
+    "zh": "地穴追猎者"
+  },
+  "533": {
+    "en": "Battlegear of Undead Slaying",
+    "zh": "亡灵毁灭者"
+  },
+  "534": {
+    "en": "Undead Slayer's Armor",
+    "zh": "亡灵屠戮者的护甲"
+  },
+  "535": {
+    "en": "Garb of the Undead Slayer",
+    "zh": "亡灵屠戮者的装备"
+  },
+  "536": {
+    "en": "Regalia of Undead Cleansing",
+    "zh": "亡灵净化者"
+  },
+  "537": {
+    "en": "Champion's Battlearmor",
+    "zh": "勇士的战铠"
+  },
+  "538": {
+    "en": "Champion's Stormcaller",
+    "zh": "勇士的风暴"
+  },
+  "539": {
+    "en": "Champion's Refuge",
+    "zh": "勇士的庇护"
+  },
+  "540": {
+    "en": "Champion's Investiture",
+    "zh": "勇士的授权"
+  },
+  "541": {
+    "en": "Champion's Dreadgear",
+    "zh": "勇士的鬼纹"
+  },
+  "542": {
+    "en": "Champion's Arcanum",
+    "zh": "勇士的秘密"
+  },
+  "543": {
+    "en": "Champion's Pursuance",
+    "zh": "勇士的职责"
+  },
+  "544": {
+    "en": "Lieutenant Commander's Redoubt",
+    "zh": "少校的壁垒"
+  },
+  "545": {
+    "en": "Lieutenant Commander's Battlearmor",
+    "zh": "少校的战铠"
+  },
+  "546": {
+    "en": "Lieutenant Commander's Arcanum",
+    "zh": "少校的秘密"
+  },
+  "547": {
+    "en": "Lieutenant Commander's Dreadgear",
+    "zh": "少校的鬼纹"
+  },
+  "548": {
+    "en": "Lieutenant Commander's Guard",
+    "zh": "少校的护卫"
+  },
+  "549": {
+    "en": "Lieutenant Commander's Investiture",
+    "zh": "少校的授权"
+  },
+  "550": {
+    "en": "Lieutenant Commander's Pursuance",
+    "zh": "少校的职责"
+  },
+  "551": {
+    "en": "Lieutenant Commander's Refuge",
+    "zh": "少校的庇护"
+  },
+  "600": {
+    "en": "Primalist's Trappings",
+    "zh": "首领护具"
+  },
+  "601": {
+    "en": "Rune-Etched Armor",
+    "zh": "刻有符文的护甲"
+  },
+  "602": {
+    "en": "Grifter's Armor",
+    "zh": "骗子套装"
+  },
+  "603": {
+    "en": "Steel Plate Armor",
+    "zh": "钢铁板甲套装"
+  },
+  "604": {
+    "en": "Diviner's Garments",
+    "zh": "占卜师的服装"
+  },
+  "605": {
+    "en": "Augerer's Attire",
+    "zh": "预言家的服装"
+  },
+  "606": {
+    "en": "Pillager's Garb",
+    "zh": "掠夺者的服装"
+  },
+  "607": {
+    "en": "Red Dragon Mail",
+    "zh": "红龙锁甲"
+  },
+  "608": {
+    "en": "Bloody Gladiator's Regalia",
+    "zh": "血色角斗士的法衣"
+  },
+  "609": {
+    "en": "Bloody Gladiator's Vestments",
+    "zh": "血色角斗士的套装"
+  },
+  "610": {
+    "en": "Bloody Gladiator's Pursuit",
+    "zh": "血色角斗士的猎装"
+  },
+  "611": {
+    "en": "Bloody Gladiator's Battlegear",
+    "zh": "血色角斗士的战甲"
+  },
+  "612": {
+    "en": "Incendosaur Skin Armor",
+    "zh": "熏火龙皮护甲"
+  },
+  "613": {
+    "en": "Redemption of the Prophecy",
+    "zh": "预言的救赎"
+  },
+  "614": {
+    "en": "Fall of the Prophet",
+    "zh": "先知的堕落"
+  },
+  "615": {
+    "en": "Hateforge Armor",
+    "zh": "仇恨熔炉护甲"
+  },
+  "616": {
+    "en": "Living Armor",
+    "zh": "生存护甲"
+  },
+  "617": {
+    "en": "Warbear Armor",
+    "zh": "战熊护甲"
+  },
+  "618": {
+    "en": "Dragon Mail",
+    "zh": "巨龙锁甲"
+  },
+  "619": {
+    "en": "Bronze Dragon Mail",
+    "zh": "青铜龙锁甲"
+  },
+  "620": {
+    "en": "Convergence of the Elements",
+    "zh": "元素的融合"
+  },
+  "621": {
+    "en": "Cloudweave Raiment",
+    "zh": "云织套装"
+  },
+  "622": {
+    "en": "Greymane Armor",
+    "zh": "格雷迈恩护甲"
+  },
+  "623": {
+    "en": "Dreamsteel Armor",
+    "zh": "梦境钢铁护甲"
+  },
+  "626": {
+    "en": "Dreamhide Battlegarb",
+    "zh": "梦境皮革战甲"
+  },
+  "627": {
+    "en": "Dreamthread Regalia",
+    "zh": "梦境丝线服饰"
+  },
+  "628": {
+    "en": "Mooncloth Regalia",
+    "zh": "月布服饰"
+  },
+  "629": {
+    "en": "Flarecore Regalia",
+    "zh": "光芒服饰"
+  },
+  "630": {
+    "en": "Towerforge Battlegear",
+    "zh": "塔铸战甲"
+  },
+  "631": {
+    "en": "Spellweaver's Accessories",
+    "zh": "织法者配饰"
+  },
+  "632": {
+    "en": "Ornate Mithril Jewelry",
+    "zh": "精致秘银珠宝"
+  },
+  "633": {
+    "en": "Midnight Regalia",
+    "zh": "午夜礼服"
+  },
+  "634": {
+    "en": "Stormcloud Jewelry",
+    "zh": "雷云珠宝"
+  },
+  "635": {
+    "en": "Goldmaster's Jewelry",
+    "zh": "黄金大师珠宝"
+  },
+  "636": {
+    "en": "Aquamarine Jewelry",
+    "zh": "青绿石珠宝"
+  },
+  "637": {
+    "en": "Mastercrafted Diamond Jewelry",
+    "zh": "精制钻石珠宝"
+  },
+  "638": {
+    "en": "Possessions of the Lost",
+    "zh": "失落之物"
+  },
+  "639": {
+    "en": "Medivh's Clarity",
+    "zh": "麦迪文的明晰"
+  },
+  "640": {
+    "en": "Dreadslayer's Rampage",
+    "zh": "恐惧杀手的暴怒"
+  },
+  "641": {
+    "en": "Lawbringer Battleplate",
+    "zh": "秩序之源战甲"
+  },
+  "642": {
+    "en": "Lawbringer Battlegear",
+    "zh": "秩序之源战装"
+  },
+  "643": {
+    "en": "Judgement Battleplate",
+    "zh": "审判战甲"
+  },
+  "644": {
+    "en": "Judgement Battlegear",
+    "zh": "审判战装"
+  },
+  "645": {
+    "en": "Avenger's Battleplate",
+    "zh": "复仇者战甲"
+  },
+  "646": {
+    "en": "Avenger's Armor",
+    "zh": "复仇者装甲"
+  },
+  "647": {
+    "en": "Redemption Battleplate",
+    "zh": "救赎战甲"
+  },
+  "648": {
+    "en": "Redemption Battlegear",
+    "zh": "救赎战装"
+  },
+  "649": {
+    "en": "Cenarion Regalia",
+    "zh": "塞纳里奥服饰"
+  },
+  "650": {
+    "en": "Cenarion Harness",
+    "zh": "塞纳里奥套甲"
+  },
+  "651": {
+    "en": "Stormrage Regalia",
+    "zh": "怒风服饰"
+  },
+  "652": {
+    "en": "Stormrage Harness",
+    "zh": "怒风套甲"
+  },
+  "653": {
+    "en": "Genesis Raiment",
+    "zh": "起源服饰"
+  },
+  "654": {
+    "en": "Genesis Harness",
+    "zh": "起源套甲"
+  },
+  "655": {
+    "en": "Dreamwalker Regalia",
+    "zh": "梦游者礼服"
+  },
+  "656": {
+    "en": "Dreamwalker Harness",
+    "zh": "梦游者套甲"
+  },
+  "657": {
+    "en": "Arcanist's Vestments",
+    "zh": "奥术师服饰"
+  },
+  "658": {
+    "en": "Netherwind Vestments",
+    "zh": "灵风服饰"
+  },
+  "659": {
+    "en": "Enigma Vestments",
+    "zh": "神秘服饰"
+  },
+  "660": {
+    "en": "Frostfire Vestments",
+    "zh": "霜火服饰"
+  },
+  "661": {
+    "en": "Regalia of Prophecy",
+    "zh": "预言布服"
+  },
+  "662": {
+    "en": "Regalia of Transcendence",
+    "zh": "卓越布服"
+  },
+  "663": {
+    "en": "Attire of the Oracle",
+    "zh": "神谕者布服"
+  },
+  "664": {
+    "en": "Regalia of Faith",
+    "zh": "信仰礼服"
+  },
+  "665": {
+    "en": "Earthfury Battlegear",
+    "zh": "大地之怒战甲"
+  },
+  "666": {
+    "en": "Earthfury Garb",
+    "zh": "大地之怒服装"
+  },
+  "667": {
+    "en": "Battlegear of the Ten Storms",
+    "zh": "无尽风暴战装"
+  },
+  "668": {
+    "en": "The Ten Storms",
+    "zh": "无尽风暴"
+  },
+  "669": {
+    "en": "Stormcaller's Battlegear",
+    "zh": "风暴召唤者战甲"
+  },
+  "670": {
+    "en": "The Stormcaller",
+    "zh": "风暴召唤者"
+  },
+  "671": {
+    "en": "Earthshatterer's Battlegear",
+    "zh": "碎地者战甲"
+  },
+  "672": {
+    "en": "Earthshatterer's Garb",
+    "zh": "碎地者服装"
+  },
+  "673": {
+    "en": "Armor of Might",
+    "zh": "力量装甲"
+  },
+  "674": {
+    "en": "Armor of Wrath",
+    "zh": "愤怒装甲"
+  },
+  "676": {
+    "en": "Armor of the Dreadnought",
+    "zh": "无畏装甲"
+  },
+  "677": {
+    "en": "Felheart Attire",
+    "zh": "恶魔之心服装"
+  },
+  "678": {
+    "en": "Nemesis Attire",
+    "zh": "复仇服装"
+  },
+  "679": {
+    "en": "Doomcaller's Attire",
+    "zh": "厄运召唤者服装"
+  },
+  "680": {
+    "en": "Plagueheart Attire",
+    "zh": "瘟疫之心服装"
+  },
+  "681": {
+    "en": "Raiment of the Talon",
+    "zh": "猛禽服饰"
+  },
+  "682": {
+    "en": "Regalia of the Talon",
+    "zh": "猛禽礼服"
+  },
+  "683": {
+    "en": "Harness of the Talon",
+    "zh": "猛禽套甲"
+  },
+  "684": {
+    "en": "Regalia of the Guardian",
+    "zh": "守护者礼服"
+  },
+  "685": {
+    "en": "Vestments of the Guardian",
+    "zh": "守护者服饰"
+  },
+  "686": {
+    "en": "Vestments of Pestilence",
+    "zh": "疫医服饰"
+  },
+  "687": {
+    "en": "Regalia of Pestilence",
+    "zh": "疫医礼服"
+  },
+  "688": {
+    "en": "Stormhowl Battlegear",
+    "zh": "风暴之嚎战装"
+  },
+  "689": {
+    "en": "Stormhowl Garb",
+    "zh": "风暴之嚎服饰"
+  },
+  "690": {
+    "en": "The Stormhowl",
+    "zh": "风暴之嚎"
+  },
+  "691": {
+    "en": "Battlegear of the Brotherhood",
+    "zh": "兄弟会战装"
+  },
+  "692": {
+    "en": "Lionheart Armor",
+    "zh": "雄狮之心装甲"
+  },
+  "693": {
+    "en": "Lionheart Battleplate",
+    "zh": "雄狮之心战甲"
+  },
+  "694": {
+    "en": "Lionheart Battlegear",
+    "zh": "雄狮之心战装"
+  },
+  "695": {
+    "en": "Nathrezim Attire",
+    "zh": "纳斯雷兹姆服装"
+  },
+  "696": {
+    "en": "Nathrezim Raiment",
+    "zh": "纳斯雷兹姆礼服"
+  },
+  "697": {
+    "en": "Ravenstalker Armor",
+    "zh": "渡鸦追猎者装甲"
+  },
+  "698": {
+    "en": "Trickster Armor",
+    "zh": "欺诈者装甲"
+  },
+  "699": {
+    "en": "Dragonmaw Battlegarb",
+    "zh": "龙喉战装"
+  },
+  "700": {
+    "en": "Stormreaver Attire",
+    "zh": "暴掠套装"
+  },
+  "701": {
+    "en": "Arms of Thaurissan",
+    "zh": "索瑞森之臂"
+  },
+  "702": {
+    "en": "Sacred Windhorn Attire",
+    "zh": "神圣风角服饰"
+  },
+  "703": {
+    "en": "Attire of Prophecy",
+    "zh": "预言服饰"
+  },
+  "704": {
+    "en": "Attire of Transcendence",
+    "zh": "卓越服饰"
+  },
+  "705": {
+    "en": "Attire of Faith",
+    "zh": "信仰服饰"
+  },
+  "706": {
+    "en": "Attire of Pestilence",
+    "zh": "疫医套装"
+  },
+  "707": {
+    "en": "Regalia of the Oracle",
+    "zh": "神谕者圣袍"
+  },
+  "708": {
+    "en": "Majesty of the Stag",
+    "zh": "雄鹿之威"
+  },
+  "709": {
+    "en": "Rage of the Ursa",
+    "zh": "巨熊之怒"
+  },
+  "710": {
+    "en": "Might of the Hippogryph",
+    "zh": "角鹰兽之力"
+  },
+  "711": {
+    "en": "Coil of the Hydra",
+    "zh": "水蛇之环"
+  },
+  "712": {
+    "en": "Pride of the Moose",
+    "zh": "驼鹿之傲"
+  },
+  "713": {
+    "en": "Combatant's Battlegear",
+    "zh": "战斗员的战甲"
+  },
+  "714": {
+    "en": "Partisan's Battlegear",
+    "zh": "游击队员的战甲"
+  },
+  "715": {
+    "en": "Veteran's Battlegear",
+    "zh": "精兵的战甲"
+  },
+  "716": {
+    "en": "Tactician's Arcanum",
+    "zh": "战术家的秘密"
+  },
+  "717": {
+    "en": "Strategist's Arcanum",
+    "zh": "战略家的秘密"
+  },
+  "718": {
+    "en": "Executor's Arcanum",
+    "zh": "执行官的秘密"
+  },
+  "719": {
+    "en": "Combatant's Pursuit",
+    "zh": "战斗员的猎装"
+  },
+  "720": {
+    "en": "Partisan's Pursuit",
+    "zh": "游击队员的猎装"
+  },
+  "721": {
+    "en": "Veteran's Pursuit",
+    "zh": "精兵的猎装"
+  },
+  "722": {
+    "en": "Tactician's Threads",
+    "zh": "战术家的魔装"
+  },
+  "723": {
+    "en": "Strategist's Threads",
+    "zh": "战略家的魔装"
+  },
+  "724": {
+    "en": "Executor's Threads",
+    "zh": "执行官的魔装"
+  },
+  "725": {
+    "en": "Combatant's Earthshaker",
+    "zh": "战斗员的震颤"
+  },
+  "726": {
+    "en": "Partisan's Earthshaker",
+    "zh": "游击队员的震颤"
+  },
+  "727": {
+    "en": "Veteran''s Earthshaker",
+    "zh": "精兵的震颤"
+  },
+  "728": {
+    "en": "Tactician's Earthshaker",
+    "zh": "战术家的震颤"
+  },
+  "729": {
+    "en": "Strategist's Earthshaker",
+    "zh": "战略家的震颤"
+  },
+  "730": {
+    "en": "Executor's Earthshaker",
+    "zh": "执行官的震颤"
+  },
+  "731": {
+    "en": "Corpsman's Earthshaker",
+    "zh": "医护兵的震颤"
+  },
+  "732": {
+    "en": "Physician's Earthshaker",
+    "zh": "医师的震颤"
+  },
+  "733": {
+    "en": "Field Medic's Earthshaker",
+    "zh": "战地医师的震颤"
+  },
+  "734": {
+    "en": "Combatant's Sanctuary",
+    "zh": "战斗员的圣装"
+  },
+  "735": {
+    "en": "Partisan's Sanctuary",
+    "zh": "游击队员的圣装"
+  },
+  "736": {
+    "en": "Veteran's Sanctuary",
+    "zh": "精兵的圣装"
+  },
+  "737": {
+    "en": "Tactician's Sanctuary",
+    "zh": "战术家的圣装"
+  },
+  "738": {
+    "en": "Strategist's Sanctuary",
+    "zh": "战略家的圣装"
+  },
+  "739": {
+    "en": "Executor's Sanctuary",
+    "zh": "执行官的圣装"
+  },
+  "740": {
+    "en": "Corpsman's Sanctuary",
+    "zh": "医护兵的圣装"
+  },
+  "741": {
+    "en": "Physician's Sanctuary",
+    "zh": "医师的圣装"
+  },
+  "742": {
+    "en": "Field Medic's Sanctuary",
+    "zh": "战地医师的圣装"
+  },
+  "743": {
+    "en": "Combatant's Aegis",
+    "zh": "战斗员的庇护"
+  },
+  "744": {
+    "en": "Partisan's Aegis",
+    "zh": "游击队员的庇护"
+  },
+  "745": {
+    "en": "Veteran's Aegis",
+    "zh": "精兵的庇护"
+  },
+  "746": {
+    "en": "Corpsman's Aegis",
+    "zh": "医护兵的庇护"
+  },
+  "747": {
+    "en": "Physician's Aegis",
+    "zh": "医师的庇护"
+  },
+  "748": {
+    "en": "Field Medic's Aegis",
+    "zh": "战地医师的庇护"
+  },
+  "749": {
+    "en": "Tactician's Investiture",
+    "zh": "战术家的天职"
+  },
+  "750": {
+    "en": "Strategist's Investiture",
+    "zh": "战略家的天职"
+  },
+  "751": {
+    "en": "Executor's Investiture",
+    "zh": "执行官的天职"
+  },
+  "752": {
+    "en": "Corpsman's Investiture",
+    "zh": "医护兵的天职"
+  },
+  "753": {
+    "en": "Physician's Investiture",
+    "zh": "医师的天职"
+  },
+  "754": {
+    "en": "Field Medic's Investiture",
+    "zh": "战地医师的天职"
+  },
+  "755": {
+    "en": "Combatant's Cover",
+    "zh": "战斗员的遮蔽"
+  },
+  "756": {
+    "en": "Partisan's Cover",
+    "zh": "游击队员的遮蔽"
+  },
+  "757": {
+    "en": "Veteran's Cover",
+    "zh": "精兵的遮蔽"
+  },
+  "758": {
+    "en": "Surrender to Madness",
+    "zh": "屈服疯狂"
+  },
+  "759": {
+    "en": "Wisdom of the Deer",
+    "zh": "鹿之智慧"
+  },
+  "760": {
+    "en": "Combatant's Battlegear",
+    "zh": "战斗员的战甲"
+  },
+  "761": {
+    "en": "Partisan's Battlegear",
+    "zh": "游击队员的战甲"
+  },
+  "762": {
+    "en": "Veteran's Battlegear",
+    "zh": "精兵的战甲"
+  },
+  "763": {
+    "en": "Tactician's Arcanum",
+    "zh": "战术家的秘密"
+  },
+  "764": {
+    "en": "Strategist's Arcanum",
+    "zh": "战略家的秘密"
+  },
+  "765": {
+    "en": "Executor's Arcanum",
+    "zh": "执行官的秘密"
+  },
+  "766": {
+    "en": "Combatant's Pursuit",
+    "zh": "战斗员的猎装"
+  },
+  "767": {
+    "en": "Partisan's Pursuit",
+    "zh": "游击队员的猎装"
+  },
+  "768": {
+    "en": "Veteran's Pursuit",
+    "zh": "精兵的猎装"
+  },
+  "769": {
+    "en": "Tactician's Threads",
+    "zh": "战术家的魔装"
+  },
+  "770": {
+    "en": "Strategist's Threads",
+    "zh": "战略家的魔装"
+  },
+  "771": {
+    "en": "Executor's Threads",
+    "zh": "执行官的魔装"
+  },
+  "772": {
+    "en": "Combatant's Sanctuary",
+    "zh": "战斗员的圣装"
+  },
+  "773": {
+    "en": "Partisan's Sanctuary",
+    "zh": "游击队员的圣装"
+  },
+  "774": {
+    "en": "Veteran's Sanctuary",
+    "zh": "精兵的圣装"
+  },
+  "775": {
+    "en": "Tactician's Sanctuary",
+    "zh": "战术家的圣装"
+  },
+  "776": {
+    "en": "Strategist's Sanctuary",
+    "zh": "战略家的圣装"
+  },
+  "777": {
+    "en": "Executor's Sanctuary",
+    "zh": "执行官的圣装"
+  },
+  "778": {
+    "en": "Corpsman's Sanctuary",
+    "zh": "医护兵的圣装"
+  },
+  "779": {
+    "en": "Physician's Sanctuary",
+    "zh": "医师的圣装"
+  },
+  "780": {
+    "en": "Field Medic's Sanctuary",
+    "zh": "战地医师的圣装"
+  },
+  "781": {
+    "en": "Tactician's Investiture",
+    "zh": "战术家的天职"
+  },
+  "782": {
+    "en": "Strategist's Investiture",
+    "zh": "战略家的天职"
+  },
+  "783": {
+    "en": "Executor's Investiture",
+    "zh": "执行官的天职"
+  },
+  "784": {
+    "en": "Corpsman's Investiture",
+    "zh": "医护兵的天职"
+  },
+  "785": {
+    "en": "Physician's Investiture",
+    "zh": "医师的天职"
+  },
+  "786": {
+    "en": "Field Medic's Investiture",
+    "zh": "战地医师的天职"
+  },
+  "787": {
+    "en": "Combatant's Cover",
+    "zh": "战斗员的遮蔽"
+  },
+  "788": {
+    "en": "Partisan's Cover",
+    "zh": "游击队员的遮蔽"
+  },
+  "789": {
+    "en": "Veteran's Cover",
+    "zh": "精兵的遮蔽"
+  }
+}

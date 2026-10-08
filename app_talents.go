@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"math/bits"
 	"strings"
+
+	"inklab/backend/database"
 )
 
 // Talent data is read from the talent_tab / talent tables, which are populated
@@ -92,7 +94,11 @@ func (a *App) GetTalentClasses() []TalentClassInfo {
 			if mask > 0 {
 				id = bits.TrailingZeros32(uint32(mask)) + 1
 			}
-			out = append(out, TalentClassInfo{Class: class, ClassID: id, Name: nameByID[id], Color: colorByID[id]})
+			name := nameByID[id]
+			if zh := database.LocalizeClassName(id, name); zh != "" {
+				name = zh
+			}
+			out = append(out, TalentClassInfo{Class: class, ClassID: id, Name: name, Color: colorByID[id]})
 		}
 	}
 	return out
@@ -201,7 +207,10 @@ func (a *App) GetTalentTrees(class string) *TalentClassData {
 	}
 
 	for _, tab := range tabs {
-		tree := TalentTree{ID: tab.id, Name: tab.name, Order: tab.order, Background: strings.ToLower(tab.bg)}
+		tree := TalentTree{
+			ID: tab.id, Name: database.LocalizeTalentTabName(tab.name),
+			Order: tab.order, Background: strings.ToLower(tab.bg),
+		}
 		for _, t := range talentsByTab[tab.id] {
 			tal := Talent{
 				ID:        t.id,

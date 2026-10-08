@@ -161,7 +161,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
             : '—'
 
     const tabs = [
-        { id: 'npcs', label: `NPC (${npcs.length})` },
+        { id: 'npcs', label: `生物 (${npcs.length})` },
         { id: 'quests', label: `任务 (${quests.length})` },
         { id: 'objects', label: `物体 (${objects.length})` },
         { id: 'loot', label: `掉落${loot ? ` (${loot.length})` : ''}` },
@@ -372,7 +372,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                     <td>{levelLabel}</td>
                                 </tr>
                                 <tr>
-                                    <th>NPC：</th>
+                                    <th>生物：</th>
                                     <td>{allNpcs.length}</td>
                                 </tr>
                                 <tr>
@@ -442,7 +442,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                 </div>
                             ) : (
                                 <div className="italic text-gray-500">
-                                    该区域暂无 NPC 记录。
+                                    该区域暂无生物记录。
                                 </div>
                             )}
                         </>

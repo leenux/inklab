@@ -136,6 +136,8 @@ type NpcFullDetails struct {
 	ModelImageURL string            `json:"modelImageUrl"`
 	FactionName   string            `json:"factionName"` // resolved from the faction template
 	FactionID     int               `json:"factionId"`   // resolved Faction.dbc id
+	ReactionA     string            `json:"reactionA"`   // 友好/敌对/中立 toward Alliance
+	ReactionH     string            `json:"reactionH"`   // 友好/敌对/中立 toward Horde
 	ZoneName      string            `json:"zoneName"`    // New
 	X             float64           `json:"x"`           // New
 	Y             float64           `json:"y"`           // New
@@ -209,15 +211,24 @@ func (s *NpcService) loadFromSQLite(entry int) (*NpcFullDetails, error) {
 		Abilities: []NpcAbility{},
 	}
 
-	// Resolve the faction name from the creature's faction template
-	// (creature.faction is a FactionTemplate id -> Faction.dbc id -> name).
+	// Resolve the faction name + Alliance/Horde reactions from FactionTemplate.
 	if creature.Faction > 0 {
 		s.sqlite.QueryRow(`
-			SELECT f.id, f.name
+			SELECT f.id, COALESCE(NULLIF(f.name_loc4,''), f.name)
 			FROM faction_template ft
 			JOIN factions f ON ft.faction_id = f.id
 			WHERE ft.template_id = ?
 		`, creature.Faction).Scan(&details.FactionID, &details.FactionName)
+
+		var ourMask, friendMask, enemyMask int
+		s.sqlite.QueryRow(`
+			SELECT COALESCE(our_mask, 0), COALESCE(friend_mask, 0), COALESCE(enemy_mask, 0)
+			FROM faction_template WHERE template_id = ?
+		`, creature.Faction).Scan(&ourMask, &friendMask, &enemyMask)
+		if ourMask != 0 || friendMask != 0 || enemyMask != 0 {
+			details.ReactionA = database.GetFactionReaction(ourMask, friendMask, enemyMask, database.FactionMaskAlliance)
+			details.ReactionH = database.GetFactionReaction(ourMask, friendMask, enemyMask, database.FactionMaskHorde)
+		}
 	}
 
 	// Load Metadata

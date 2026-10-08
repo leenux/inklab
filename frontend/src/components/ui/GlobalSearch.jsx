@@ -5,12 +5,12 @@ import { useEntityNavigate } from '../../utils/entityNav'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 import { useGlobalSearch } from '../../hooks/queries/search'
 
-const TYPE_BADGE = { npc: 'NPC', quest: '任务', spell: '法术', object: '物体', item: '' }
+const TYPE_BADGE = { npc: '生物', quest: '任务', spell: '法术', object: '物体', item: '' }
 const TYPE_COLOR = { npc: '#FFD100', spell: '#a855f7', object: '#00B4FF', quest: '#fff' }
 // category tabs in display order; `key` matches the result item's `type`
 const CATEGORIES = [
     { key: 'item', label: '物品' },
-    { key: 'npc', label: 'NPC' },
+    { key: 'npc', label: '生物' },
     { key: 'quest', label: '任务' },
     { key: 'spell', label: '法术' },
     { key: 'object', label: '物体' },
@@ -144,7 +144,7 @@ function GlobalSearch() {
                     onKeyDown={(e) => {
                         if (e.key === 'Escape') setOpen(false)
                     }}
-                    placeholder="搜索物品、NPC、任务…"
+                    placeholder="搜索物品、生物、任务…"
                     className="w-full rounded border border-border-dark bg-bg-main py-1.5 pl-7 pr-3 text-sm text-white outline-none transition-colors focus:border-wow-rare"
                 />
             </div>

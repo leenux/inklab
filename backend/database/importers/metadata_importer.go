@@ -47,9 +47,9 @@ func (m *MetadataImporter) initStaticMetadata() {
 		ID   int
 		Name string
 	}{
-		{0, "Eastern Kingdoms"}, {1, "Kalimdor"}, {2, "Dungeons"},
-		{3, "Raids"}, {4, "Classes"}, {5, "Professions"},
-		{6, "Battlegrounds"}, {7, "Misc"},
+		{0, "东部王国"}, {1, "卡利姆多"}, {2, "地下城"},
+		{3, "团队副本"}, {4, "职业"}, {5, "专业"},
+		{6, "战场"}, {7, "其他"},
 	}
 	m.db.Exec("DELETE FROM quest_category_groups")
 	for _, g := range groups {
@@ -64,9 +64,9 @@ func (m *MetadataImporter) initStaticMetadata() {
 		ID   int
 		Name string
 	}{
-		{6, "Weapon Skills"}, {8, "Armor Proficiencies"}, {10, "Languages"},
-		{7, "Class Skills"}, {9, "Secondary Skills"}, {11, "Professions"},
-		{13, "Racial Traits"},
+		{6, "武器技能"}, {8, "护甲专精"}, {10, "语言"},
+		{7, "职业技能"}, {9, "辅助技能"}, {11, "专业"},
+		{13, "种族特长"},
 	}
 	m.db.Exec("DELETE FROM spell_skill_categories")
 	for _, c := range spellCats {
@@ -268,11 +268,35 @@ func (m *MetadataImporter) importQuestSorts(dataDir string) error {
 	}
 	defer tx.Rollback()
 
-	stmt, _ := tx.Prepare("REPLACE INTO quest_categories_enhanced (id, group_id, name) VALUES (?, ?, ?)")
+	stmt, _ := tx.Prepare("REPLACE INTO quest_categories_enhanced (id, group_id, name, display_name) VALUES (?, ?, ?, ?)")
 	defer stmt.Close()
 
 	for _, s := range sorts {
-		stmt.Exec(-s.SortID, questSortGroup(s.Name), s.Name)
+		name := s.Name
+		// Turtle WoW reuses QuestSort "Inscription" (371) for Jewelcrafting.
+		if s.SortID == 371 || name == "Inscription" {
+			name = "Jewelcrafting"
+		}
+		display := localizeQuestSortName(name)
+		stmt.Exec(-s.SortID, questSortGroup(name), name, display)
 	}
 	return tx.Commit()
+}
+
+// localizeQuestSortName maps QuestSort.dbc English names to zhCN labels.
+func localizeQuestSortName(name string) string {
+	zh := map[string]string{
+		"Warrior": "战士", "Paladin": "圣骑士", "Hunter": "猎人", "Rogue": "潜行者",
+		"Priest": "牧师", "Shaman": "萨满祭司", "Mage": "法师", "Warlock": "术士",
+		"Druid": "德鲁伊", "Death Knight": "死亡骑士",
+		"Alchemy": "炼金术", "Blacksmithing": "锻造", "Cooking": "烹饪",
+		"Enchanting": "附魔", "Engineering": "工程学", "First Aid": "急救",
+		"Fishing": "钓鱼", "Herbalism": "草药学", "Leatherworking": "制皮",
+		"Mining": "采矿", "Skinning": "剥皮", "Tailoring": "裁缝",
+		"Jewelcrafting": "珠宝加工", "Inscription": "铭文",
+	}
+	if v, ok := zh[name]; ok {
+		return v
+	}
+	return name
 }

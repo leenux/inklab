@@ -492,6 +492,7 @@ type ItemTemplateEntry struct {
 type ItemSetEntry struct {
 	ID         int    `json:"itemsetID"`
 	Name       string `json:"name_loc0"`
+	NameLoc4   string `json:"name_loc4"`
 	Item1      int    `json:"item1"`
 	Item2      int    `json:"item2"`
 	Item3      int    `json:"item3"`

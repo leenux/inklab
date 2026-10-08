@@ -23,18 +23,18 @@ import {
     ZoneName,
 } from '../../ui'
 
-// reactionColor maps a faction reaction ("friendly"/"hostile"/"neutral") to a
-// text color: friendly = green, hostile = red, neutral = gray.
-const reactionColor = (reaction) => {
+// reactionStyle maps a faction reaction to Alliance/Horde attitude colors
+// (inline styles so Tailwind purge can't drop them).
+const reactionStyle = (reaction) => {
     switch (reaction) {
         case 'friendly':
         case '友好':
-            return 'text-green-400'
+            return { color: '#40bf40' } // green
         case 'hostile':
         case '敌对':
-            return 'text-red-400'
+            return { color: '#e0294a' } // red
         default:
-            return 'text-gray-500'
+            return { color: '#9d9d9d' } // gray / neutral
     }
 }
 
@@ -645,14 +645,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                         {npc.reactionA || npc.reactionH ? (
                                             <span className="inline-flex gap-0.5 font-mono text-[11px] font-bold">
                                                 <span
-                                                    className={reactionColor(npc.reactionA)}
-                                                    title={`联盟：${npc.reactionA}`}
+                                                    style={reactionStyle(npc.reactionA)}
+                                                    title={`联盟：${npc.reactionA || '中立'}`}
                                                 >
                                                     联
                                                 </span>
                                                 <span
-                                                    className={reactionColor(npc.reactionH)}
-                                                    title={`部落：${npc.reactionH}`}
+                                                    style={reactionStyle(npc.reactionH)}
+                                                    title={`部落：${npc.reactionH || '中立'}`}
                                                 >
                                                     部
                                                 </span>
@@ -812,7 +812,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             className="rounded bg-purple-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-purple-600"
                             title="在 Turtle WoW 数据库中查看"
                         >
-                            🔗 OctoHead
+                            🔗 Octo 数据库
                         </a>
                         <button
                             onClick={() => {
@@ -852,7 +852,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             className="rounded bg-green-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-green-600"
                             title="复制游戏内物品链接命令到剪贴板"
                         >
-                            🔗 In-Game Link
+                            🔗 游戏内链接
                         </button>
                         <button
                             onClick={handleFavoriteToggle}

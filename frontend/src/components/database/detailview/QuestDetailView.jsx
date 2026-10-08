@@ -106,7 +106,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             className="rounded bg-purple-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-purple-600"
                             title="在 Turtle WoW 数据库中查看"
                         >
-                            🔗 OctoHead
+                            🔗 Octo 数据库
                         </a>
                     </div>
                 }

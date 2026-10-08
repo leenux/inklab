@@ -23,8 +23,20 @@ var (
 func SetSchoolNames(m map[int]string) { schoolNames = m }
 
 // SetCreatureTypeNames installs client-localized creature type names (from
-// CreatureType.dbc). Nil/empty → built-in fallback.
-func SetCreatureTypeNames(m map[int]string) { creatureTypeNames = m }
+// CreatureType.dbc). CN overlay always wins over English DBC strings.
+func SetCreatureTypeNames(m map[int]string) {
+	if m == nil {
+		m = map[int]string{}
+	}
+	// CN overlay (matches zhCN CreatureType.dbc). Always wins over English DBC.
+	for id, zh := range map[int]string{
+		0: "无", 1: "野兽", 2: "龙类", 3: "恶魔", 4: "元素生物", 5: "巨人",
+		6: "亡灵", 7: "人型生物", 8: "小动物", 9: "机械", 10: "未指定", 11: "图腾",
+	} {
+		m[id] = zh
+	}
+	creatureTypeNames = m
+}
 
 // SetClientStrings installs curated GlobalStrings UI values (item quality, bind
 // type, spell-trigger prefix, creature rank). Nil/empty → built-in fallback.
@@ -42,11 +54,92 @@ func clientString(key string) string {
 // after the reference tables are imported; safe to call with nil maps (no-op
 // override → built-in fallback). Not safe for concurrent use with the getters,
 // so call during single-threaded startup before serving requests.
+//
+// CN builds always overlay zhCN names on top of whatever the (usually English)
+// client DBC tables provided, so "Weapon"/"Mace" never leak into the UI.
 func SetItemNameTables(class map[int]string, subShort, subVerbose map[[2]int]string, inv map[int]string) {
+	if class == nil {
+		class = map[int]string{}
+	}
+	if subShort == nil {
+		subShort = map[[2]int]string{}
+	}
+	if subVerbose == nil {
+		subVerbose = map[[2]int]string{}
+	}
+	if inv == nil {
+		inv = map[int]string{}
+	}
+	for id, zh := range itemClassNamesZH {
+		class[id] = zh
+	}
+	for key, zh := range itemSubclassShortZH {
+		subShort[key] = zh
+	}
+	for key, zh := range itemSubclassVerboseZH {
+		subVerbose[key] = zh
+	}
+	for id, zh := range inventoryTypeNamesZH {
+		inv[id] = zh
+	}
 	itemClassNames = class
 	itemSubclassShort = subShort
 	itemSubclassVerbose = subVerbose
 	inventoryTypeNames = inv
+}
+
+// zhCN overlays for ItemClass / ItemSubClass / InventoryType (1.12).
+var itemClassNamesZH = map[int]string{
+	0: "消耗品", 1: "容器", 2: "武器", 3: "珠宝（过时）", 4: "护甲", 5: "材料",
+	6: "弹药", 7: "商品", 8: "通用（已过时）", 9: "配方", 10: "钱（过时）", 11: "箭袋",
+	12: "任务", 13: "钥匙", 14: "永久", 15: "其它",
+}
+
+var itemSubclassShortZH = map[[2]int]string{
+	{0, 0}: "消耗品", {0, 1}: "食物", {0, 2}: "液体",
+	{1, 0}: "容器", {1, 1}: "灵魂袋", {1, 2}: "草药袋", {1, 3}: "附魔材料袋",
+	{1, 4}: "工程学材料袋", {1, 5}: "宝石袋", {1, 6}: "矿石袋",
+	{1, 7}: "制皮材料袋", {1, 8}: "肉类袋", {1, 9}: "钓鱼袋",
+	{2, 0}: "斧", {2, 1}: "斧", {2, 2}: "弓", {2, 3}: "枪械",
+	{2, 4}: "锤", {2, 5}: "锤", {2, 6}: "长柄武器", {2, 7}: "剑", {2, 8}: "剑",
+	{2, 9}: "已废弃", {2, 10}: "法杖", 	{2, 11}: "异种武器", {2, 12}: "异种武器",
+	{2, 13}: "拳套", {2, 14}: "其它", {2, 15}: "匕首", {2, 16}: "投掷武器",
+	{2, 17}: "矛", {2, 18}: "弩", {2, 19}: "魔杖", {2, 20}: "鱼竿",
+	{3, 0}: "宝石",
+	{4, 0}: "杂项", {4, 1}: "布甲", {4, 2}: "皮甲", {4, 3}: "锁甲", {4, 4}: "板甲",
+	{4, 5}: "小盾", {4, 6}: "盾牌", {4, 7}: "圣契", {4, 8}: "神像", {4, 9}: "图腾",
+	{5, 0}: "材料",
+	{6, 0}: "魔杖", {6, 1}: "箭矢", {6, 2}: "箭", {6, 3}: "子弹", {6, 4}: "投掷武器",
+	{7, 0}: "商品", {7, 1}: "零件", {7, 2}: "爆炸物", {7, 3}: "装置",
+	{8, 0}: "通用",
+	{9, 0}: "书籍", {9, 1}: "制皮", {9, 2}: "裁缝", {9, 3}: "工程学",
+	{9, 4}: "锻造", {9, 5}: "烹饪", {9, 6}: "炼金术", {9, 7}: "急救",
+	{9, 8}: "附魔", {9, 9}: "钓鱼", {9, 10}: "珠宝加工", {9, 11}: "生存",
+	{10, 0}: "金钱",
+	{11, 0}: "箭袋", {11, 1}: "箭袋", {11, 2}: "箭袋", {11, 3}: "弹药袋",
+	{12, 0}: "任务",
+	{13, 0}: "钥匙", {13, 1}: "开锁器",
+	{14, 0}: "永久",
+	{15, 0}: "垃圾", {15, 1}: "材料", {15, 2}: "小伙伴", {15, 3}: "节日", {15, 4}: "坐骑",
+}
+
+var itemSubclassVerboseZH = map[[2]int]string{
+	{2, 0}: "单手斧", {2, 1}: "双手斧", {2, 2}: "弓", {2, 3}: "枪械",
+	{2, 4}: "单手锤", {2, 5}: "双手锤", {2, 6}: "长柄武器",
+	{2, 7}: "单手剑", {2, 8}: "双手剑", {2, 10}: "法杖",
+	{2, 11}: "单手异种武器", {2, 12}: "双手异种武器", {2, 13}: "拳套",
+	{2, 15}: "匕首", {2, 16}: "投掷武器", {2, 17}: "矛", {2, 18}: "弩",
+	{2, 19}: "魔杖", {2, 20}: "鱼竿",
+	{4, 1}: "布甲", {4, 2}: "皮甲", {4, 3}: "锁甲", {4, 4}: "板甲",
+	{4, 5}: "小盾", {4, 6}: "盾牌", {4, 7}: "圣契", {4, 8}: "神像", {4, 9}: "图腾",
+}
+
+var inventoryTypeNamesZH = map[int]string{
+	0: "不可装备", 1: "头部", 2: "颈部", 3: "肩部", 4: "衬衣", 5: "胸部",
+	6: "腰部", 7: "腿部", 8: "脚", 9: "手腕", 10: "手", 11: "手指",
+	12: "饰品", 13: "单手", 14: "副手", 15: "远程", 16: "背部", 17: "双手",
+	18: "背包", 19: "战袍", 20: "胸部", 21: "主手", 22: "副手",
+	23: "副手物品", 24: "弹药", 25: "投掷武器", 26: "远程", 27: "箭袋", 28: "圣物",
 }
 
 // GetClassName returns the item class name
@@ -106,8 +199,8 @@ func GetSubClassName(c, sc int) string {
 			8:  "剑",
 			9:  "已废弃",
 			10: "法杖",
-			11: "异域武器",
-			12: "异域武器",
+			11: "异种武器",
+			12: "异种武器",
 			13: "拳套",
 			14: "杂项",
 			15: "匕首",
@@ -281,7 +374,7 @@ func GetCreatureTypeName(t int) string {
 		1:  "野兽",
 		2:  "龙类",
 		3:  "恶魔",
-		4:  "元素",
+		4:  "元素生物",
 		5:  "巨人",
 		6:  "亡灵",
 		7:  "人型生物",
@@ -399,13 +492,17 @@ const (
 
 // GetFactionReaction derives an NPC's reaction toward a player faction group
 // (target = FactionMaskAlliance or FactionMaskHorde) from its FactionTemplate
-// group masks. Returns "hostile", "friendly", or "neutral". Enemy takes
-// precedence over friend; an NPC in the target's own group counts as friendly.
+// group masks. Enemy takes precedence over friend; an NPC in the target's own
+// group counts as friendly.
+//
+// Players always belong to FACTION_MASK_PLAYER as well as Alliance/Horde, so
+// templates that only flag the Player bit (enemy_mask=1 / friend_mask=1) —
+// typical for Monster vs Friendly-to-all NPCs — must apply to both factions.
 func GetFactionReaction(ourMask, friendMask, enemyMask, target int) string {
 	switch {
-	case enemyMask&target != 0:
+	case enemyMask&target != 0 || enemyMask&FactionMaskPlayer != 0:
 		return "敌对"
-	case friendMask&target != 0:
+	case friendMask&target != 0 || friendMask&FactionMaskPlayer != 0:
 		return "友好"
 	case ourMask&target != 0:
 		return "友好"

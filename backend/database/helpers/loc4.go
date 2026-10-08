@@ -30,7 +30,9 @@ var skillNameZH = map[int]string{
 	197: "裁缝", 202: "工程学", 333: "附魔", 393: "剥皮", 755: "珠宝加工",
 	773: "铭文",
 	// Secondary
-	129: "急救", 185: "烹饪", 356: "钓鱼", 762: "骑术",
+	129: "急救", 142: "生存", 185: "烹饪", 356: "钓鱼", 762: "骑术", 155: "游泳",
+	148: "骑马", 149: "骑狼", 150: "骑虎", 152: "骑羊", 533: "骑迅猛龙",
+	553: "驾驶机械陆行鸟", 554: "骑骸骨战马", 713: "骑科多兽",
 	// Weapon skills (common)
 	43: "单手剑", 44: "单手斧", 45: "弓", 46: "枪械", 54: "单手锤",
 	55: "双手剑", 136: "法杖", 160: "双手锤", 172: "双手斧",
@@ -59,6 +61,42 @@ func LocalizeSkillName(id int, fallback string) string {
 // LocalizeSkillCategoryName returns the zhCN name for a skill category id.
 func LocalizeSkillCategoryName(id int, fallback string) string {
 	if zh, ok := skillCategoryZH[id]; ok && zh != "" {
+		return zh
+	}
+	return fallback
+}
+
+// talentTabZH maps TalentTab.dbc English names to zhCN (tabs are imported from
+// the client DBC / talents.json without a locales table).
+var talentTabZH = map[string]string{
+	"Fire": "火焰", "Frost": "冰霜", "Arcane": "奥术",
+	"Arms": "武器", "Protection": "防护", "Fury": "狂怒",
+	"Combat": "战斗", "Assassination": "刺杀", "Subtlety": "敏锐",
+	"Discipline": "戒律", "Holy": "神圣", "Shadow": "暗影",
+	"Elemental": "元素", "Restoration": "恢复", "Enhancement": "增强",
+	"Feral Combat": "野性战斗", "Balance": "平衡",
+	"Destruction": "毁灭", "Affliction": "痛苦", "Demonology": "恶魔学识",
+	"Beast Mastery": "野兽掌控", "Survival": "生存", "Marksmanship": "射击",
+	"Retribution": "惩戒",
+}
+
+// classNameZH maps ChrClasses ids to zhCN display names.
+var classNameZH = map[int]string{
+	1: "战士", 2: "圣骑士", 3: "猎人", 4: "盗贼", 5: "牧师",
+	7: "萨满祭司", 8: "法师", 9: "术士", 11: "德鲁伊",
+}
+
+// LocalizeTalentTabName returns the zhCN talent-tree name.
+func LocalizeTalentTabName(fallback string) string {
+	if zh, ok := talentTabZH[fallback]; ok && zh != "" {
+		return zh
+	}
+	return fallback
+}
+
+// LocalizeClassName returns the zhCN class display name for a class id.
+func LocalizeClassName(id int, fallback string) string {
+	if zh, ok := classNameZH[id]; ok && zh != "" {
 		return zh
 	}
 	return fallback

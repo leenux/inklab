@@ -398,7 +398,7 @@ export default function ItemBrowseFilters({
                 {/* ---- Weapon & armor stats ---- */}
                 <Group title="武器与护甲">
                     <Range
-                        label="武器 DPS"
+                        label="武器每秒伤害"
                         step="0.1"
                         min={filter.minDps}
                         max={filter.maxDps}

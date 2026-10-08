@@ -29,6 +29,13 @@ const THREE_LEVEL_CATEGORIES = [
     'Crafting',
     'PvP',
     'PvP Rewards',
+    // zhCN display names (atlasloot_categories.display_name)
+    '地下城',
+    '团队副本',
+    '套装/收藏',
+    '套装',
+    '制造',
+    'PvP 奖励',
 ]
 
 function AtlasLootPage() {

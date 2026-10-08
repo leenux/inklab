@@ -540,7 +540,10 @@ func (r *ItemRepository) resolveClasses(mask int) []*models.ItemClassReq {
 		}
 		total++
 		if mask&(1<<(uint(id)-1)) != 0 {
-			classes = append(classes, &models.ItemClassReq{Name: name, Color: color})
+			classes = append(classes, &models.ItemClassReq{
+				Name:  helpers.LocalizeClassName(id, name),
+				Color: color,
+			})
 		}
 	}
 	// A mask that covers every known class isn't a real restriction — don't show it.
@@ -579,11 +582,11 @@ func (r *ItemRepository) questRewardClassMask(itemID int) int {
 func (r *ItemRepository) GetItemSets() ([]*models.ItemSetBrowse, error) {
 	rows, err := r.db.Query(`
 		SELECT 
-			itemset_id, name,
+			itemset_id, COALESCE(NULLIF(name_loc4,''), name),
 			item1, item2, item3, item4, item5, item6, item7, item8, item9, item10,
 			skill_id, skill_level
 		FROM itemsets
-		ORDER BY name
+		ORDER BY COALESCE(NULLIF(name_loc4,''), name)
 	`)
 	if err != nil {
 		return nil, err
@@ -659,7 +662,7 @@ func (r *ItemRepository) GetItemSets() ([]*models.ItemSetBrowse, error) {
 func (r *ItemRepository) GetItemSetDetail(itemSetID int) (*models.ItemSetDetail, error) {
 	row := r.db.QueryRow(`
 		SELECT 
-			itemset_id, name,
+			itemset_id, COALESCE(NULLIF(name_loc4,''), name),
 			item1, item2, item3, item4, item5, item6, item7, item8, item9, item10,
 			spell1, spell2, spell3, spell4, spell5, spell6, spell7, spell8,
 			bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, bonus8
@@ -928,7 +931,7 @@ func (r *ItemRepository) buildTooltip(itemID int, withCrafts bool) (*models.Tool
 		var bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, bonus8 int
 
 		err := r.db.QueryRow(`
-			SELECT itemset_id, COALESCE(name, ''),
+			SELECT itemset_id, COALESCE(NULLIF(name_loc4,''), name, ''),
 				item1, item2, item3, item4, item5, item6, item7, item8, item9, item10,
 				spell1, spell2, spell3, spell4, spell5, spell6, spell7, spell8,
 				bonus1, bonus2, bonus3, bonus4, bonus5, bonus6, bonus7, bonus8,

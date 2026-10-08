@@ -209,12 +209,13 @@ func (r *QuestRepository) GetQuestCategoryGroups() ([]*models.QuestCategoryGroup
 // GetQuestCategoriesByGroup returns all categories in a group with quest counts
 func (r *QuestRepository) GetQuestCategoriesByGroup(groupID int) ([]*models.QuestCategoryEnhanced, error) {
 	rows, err := r.db.Query(`
-		SELECT qce.id, qce.group_id, qce.name,
+		SELECT qce.id, qce.group_id,
+			COALESCE(NULLIF(qce.display_name, ''), qce.name),
 			COALESCE((SELECT COUNT(*) FROM quest_template WHERE ZoneOrSort = qce.id), 0) as quest_count
 		FROM quest_categories_enhanced qce
 		WHERE qce.group_id = ?
 			AND (SELECT COUNT(*) FROM quest_template WHERE ZoneOrSort = qce.id) > 0
-		ORDER BY quest_count DESC, qce.name
+		ORDER BY quest_count DESC, COALESCE(NULLIF(qce.display_name, ''), qce.name)
 	`, groupID)
 	if err != nil {
 		return nil, err
@@ -226,6 +227,11 @@ func (r *QuestRepository) GetQuestCategoriesByGroup(groupID int) ([]*models.Ques
 		c := &models.QuestCategoryEnhanced{}
 		if err := rows.Scan(&c.ID, &c.GroupID, &c.Name, &c.QuestCount); err != nil {
 			continue
+		}
+		// Turtle WoW: QuestSort 371 is named "Inscription" in DBC but used for
+		// Jewelcrafting quests (铭文 does not exist as a Classic profession).
+		if c.ID == -371 {
+			c.Name = "珠宝加工"
 		}
 		categories = append(categories, c)
 	}

@@ -21,7 +21,7 @@ const IMPORTS = [
     },
     {
         id: 'cache',
-        name: 'WDB 缓存',
+        name: '客户端缓存（WDB）',
         fn: 'RunCacheImport',
         sub: 'WDB\\*.wdb',
         desc: '从客户端的 WDB 缓存中补全物品 / 任务 / 生物 / 游戏物体数据 — 即你在游戏中查询过的所有内容。会覆盖为服务器上最新的值；现有数据不会被清除。',

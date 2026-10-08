@@ -13,13 +13,13 @@ import { useSyncStats } from '../../hooks/queries/app'
 import { PageLayout } from '../../components/ui'
 
 const SYNC_TYPES = [
-    { id: 'npc', name: 'NPC', icon: '👤' },
+    { id: 'npc', name: '生物', icon: '👤' },
     { id: 'item', name: '物品', icon: '⚔️' },
     { id: 'quest', name: '任务', icon: '📜' },
     { id: 'object', name: '物体', icon: '📦' },
 ]
 
-const TYPE_LABELS = { npc: 'NPC', item: '物品', quest: '任务', object: '物体' }
+const TYPE_LABELS = { npc: '生物', item: '物品', quest: '任务', object: '物体' }
 const typeLabel = (t) => TYPE_LABELS[t] || String(t).toUpperCase()
 
 function SyncPage() {
@@ -185,7 +185,7 @@ function SyncPage() {
                     <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
                         <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                             <div className="mb-1 text-[10px] font-bold uppercase text-gray-500">
-                                NPC
+                                生物
                             </div>
                             <div className="font-mono text-xl text-wow-gold">
                                 {syncStats.creatureCount}
@@ -404,7 +404,7 @@ function SyncPage() {
                             🛡️ 安全第一
                         </h3>
                         <p className="text-xs leading-relaxed text-gray-400">
-                            同步过程设计为非破坏性：会更新现有记录并补充缺失记录，同时保留已手动设置的自定义字段（如 'buy_price'）。
+                            同步过程设计为非破坏性：会更新现有记录并补充缺失记录，同时保留已手动设置的自定义字段（如买入价）。
                         </p>
                     </div>
                     <div className="rounded-2xl border border-gray-700/50 bg-gray-800/30 p-6">
@@ -412,7 +412,7 @@ function SyncPage() {
                             🚀 优化
                         </h3>
                         <p className="text-xs leading-relaxed text-gray-400">
-                            NPC、物品、任务和物体的同步使用多线程工作池（10 个线程）加速下载。法术描述会在客户端数据导入时从客户端（DBC）数据本地解析 — 无需单独同步。
+                            生物、物品、任务和物体的同步使用多线程工作池（10 个线程）加速下载。法术描述会在客户端数据导入时从客户端（DBC）数据本地解析 — 无需单独同步。
                         </p>
                     </div>
                 </div>

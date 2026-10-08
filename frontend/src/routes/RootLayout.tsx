@@ -57,7 +57,7 @@ export function RootLayout() {
                     </h1>
                     <nav className="flex flex-wrap gap-1">
                         <NavTab to="/database">数据库</NavTab>
-                        <NavTab to="/atlas">AtlasLoot</NavTab>
+                        <NavTab to="/atlas">副本掉落</NavTab>
                         <NavTab to="/favorites">收藏</NavTab>
                         <NavTab to="/talents">天赋</NavTab>
                         <NavTab to="/maps">地图</NavTab>

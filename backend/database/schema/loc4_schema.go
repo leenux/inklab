@@ -71,6 +71,14 @@ var Loc4Tables = []struct {
 			{English: "name", Loc4: "name_loc4"},
 		},
 	},
+	{
+		// ItemSet.dbc has no locales_* table in the 1.18.1 world DB; CN fills
+		// name_loc4 from curated translations / item-name derivation.
+		Table: "itemsets",
+		Columns: []Loc4Column{
+			{English: "name", Loc4: "name_loc4"},
+		},
+	},
 }
 
 // MigrateLoc4 adds zhCN locale columns (*_loc4) to existing SQLite tables.

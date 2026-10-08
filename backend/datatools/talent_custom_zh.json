@@ -1,0 +1,1530 @@
+[
+  {
+    "name_en": "Kill Command",
+    "name_zh": "杀戮命令",
+    "templates": [
+      {
+        "en": "Commands your pet to instantly attack for {0} of its Attack Power. Can only be used after the Hunter lands a critical strike on the target.",
+        "zh": "命令你的宠物立即攻击，造成相当于其攻击强度{0}的伤害。仅可在猎人对该目标造成爆击后使用。"
+      }
+    ],
+    "entries": [
+      41827
+    ]
+  },
+  {
+    "name_en": "Improved Molten Blast",
+    "name_zh": "强化熔岩冲击",
+    "templates": [
+      {
+        "en": "Refreshing Flame Shock with Molten Blast deals damage equal to {0} of the refreshed duration.",
+        "zh": "用熔岩冲击刷新烈焰震击时，造成相当于被刷新持续时间{0}的伤害。"
+      }
+    ],
+    "entries": [
+      46107,
+      46108
+    ]
+  },
+  {
+    "name_en": "Lacerate",
+    "name_zh": "割伤",
+    "templates": [
+      {
+        "en": "Deepens the target's open wound, dealing damage equal to {0} of melee Attack Power and causing the target to bleed for {1} of that damage over {2} sec. Can only be used after critically striking the target. Using this ability from the target's sides increases its damage by {3}.",
+        "zh": "加深目标的伤口，造成相当于近战攻击强度{0}的伤害，并使目标流血，受到该伤害{1}的伤害，持续{2}秒。仅可在对该目标造成爆击后使用。从目标侧面使用此技能时，伤害提高{3}。"
+      }
+    ],
+    "entries": [
+      48049
+    ]
+  },
+  {
+    "name_en": "Earthquake",
+    "name_zh": "地震术",
+    "templates": [
+      {
+        "en": "Breaks the earth beneath the target, dealing {0} to {1} Nature damage to the target and an additional {2} of that damage as Nature damage to other enemies within {3} yards. Creates a patch of broken earth that slows enemies inside it by {4}. After {5} sec, the broken earth erupts in an aftershock, dealing Nature damage equal to {6} of the initial damage to all enemies within the area.",
+        "zh": "震裂目标脚下的大地，对目标造成{0}到{1}点自然伤害，并额外将该伤害的{2}以自然伤害形式对{3}码内其他敌人造成伤害。形成一片破碎大地，使其内敌人的移动速度降低{4}。{5}秒后，破碎大地发生余震，对范围内所有敌人造成相当于初始伤害{6}的自然伤害。"
+      }
+    ],
+    "entries": [
+      48306
+    ]
+  },
+  {
+    "name_en": "Coordinated Assault",
+    "name_zh": "协同突击",
+    "templates": [
+      {
+        "en": "Hitting an enemy with Arcane Shot, Steady Shot, or Raptor Strike causes your pet's next attack within {0} sec to also strike for Physical damage equal to {1} of your Attack Power. This effect can only occur once every {2} sec.",
+        "zh": "用奥术射击、稳固射击或猛禽一击命中敌人时，使你的宠物在{0}秒内的下一次攻击额外造成相当于你攻击强度{1}的物理伤害。此效果每{2}秒只能触发一次。"
+      }
+    ],
+    "entries": [
+      49559
+    ]
+  },
+  {
+    "name_en": "Resonance Cascade",
+    "name_zh": "共鸣连锁",
+    "templates": [
+      {
+        "en": "Your successful damaging Arcane spells have a {0} chance to duplicate for {1} of the damage.  This effect can trigger off of itself and duplicated Arcane Missiles are channeled in tandem with the original cast.",
+        "zh": "你成功造成伤害的奥术法术有{0}几率复制，造成原伤害的{1}。此效果可由自身触发，复制的奥术飞弹会与原施法同步引导。"
+      }
+    ],
+    "entries": [
+      51262,
+      51987,
+      51988,
+      51989,
+      51990
+    ]
+  },
+  {
+    "name_en": "Holy Judgement",
+    "name_zh": "神圣审判",
+    "templates": [
+      {
+        "en": "Casting Judgement reduces the casting time of your next Holy Light by {0} sec.",
+        "zh": "施放审判可使你的下一个圣光术施法时间缩短{0}秒。"
+      }
+    ],
+    "entries": [
+      51304,
+      51306,
+      51308
+    ]
+  },
+  {
+    "name_en": "Ironclad",
+    "name_zh": "铁壁",
+    "templates": [
+      {
+        "en": "Increases healing done by spells and effects by up to {0} of your Armor from items.",
+        "zh": "使法术和效果造成的治疗提高，数值最多相当于你装备护甲值的{0}。"
+      }
+    ],
+    "entries": [
+      51310,
+      51311
+    ]
+  },
+  {
+    "name_en": "Divine Favor",
+    "name_zh": "神恩术",
+    "templates": [
+      {
+        "en": "Improves your chance to get a critical strike with Holy Shock by {0}.",
+        "zh": "使你的神圣震击爆击几率提高{0}。"
+      }
+    ],
+    "entries": [
+      51312,
+      51313,
+      51314,
+      51315,
+      51316
+    ]
+  },
+  {
+    "name_en": "Blessed Strikes",
+    "name_zh": "祝福打击",
+    "templates": [
+      {
+        "en": "Crusader Strike has a {0} chance to reset the cooldown of your Holy Shock.  In addition, the healing effect of your Holy Strike is increased by {1} and benefits from an additional {2} of your healing power.",
+        "zh": "十字军打击有{0}几率重置神圣震击的冷却时间。此外，神圣打击的治疗效果提高{1}，并额外受益于你治疗强度的{2}。"
+      }
+    ],
+    "entries": [
+      51317,
+      51318,
+      51319,
+      51320,
+      51321
+    ]
+  },
+  {
+    "name_en": "Daybreak",
+    "name_zh": "破晓",
+    "templates": [
+      {
+        "en": "Critically healing an ally applies Daybreak for {0} sec. When the ally takes damage, Daybreak is consumed to heal them for {1} to {2}.",
+        "zh": "对盟友造成治疗爆击时施加破晓，持续{0}秒。当该盟友受到伤害时，破晓被消耗并为其恢复{1}到{2}点生命值。"
+      }
+    ],
+    "entries": [
+      51323
+    ]
+  },
+  {
+    "name_en": "Righteous Defense",
+    "name_zh": "正义防御",
+    "templates": [
+      {
+        "en": "While Righteous Fury is active, your damage taken is reduced by {0}.",
+        "zh": "正义之怒激活时，你受到的伤害降低{0}。"
+      }
+    ],
+    "entries": [
+      51328,
+      51329,
+      51330
+    ]
+  },
+  {
+    "name_en": "Improved Hand of Reckoning",
+    "name_zh": "强化清算之手",
+    "templates": [
+      {
+        "en": "Improves your chance to hit with Hand of Reckoning by {0}.",
+        "zh": "使你的清算之手命中几率提高{0}。"
+      }
+    ],
+    "entries": [
+      51334,
+      51335
+    ]
+  },
+  {
+    "name_en": "Righteous Strikes",
+    "name_zh": "正义打击",
+    "templates": [
+      {
+        "en": "Increases the threat generated by your Holy Strike by {0} and its damage by {1}. In addition, Crusader Strike grants Zealous Defense, causing the next successful block to prevent an additional {2} of the attack's damage.",
+        "zh": "使你的神圣打击产生的威胁提高{0}，伤害提高{1}。此外，十字军打击赋予热忱防御，使下一次成功格挡额外减免该次攻击伤害的{2}。"
+      }
+    ],
+    "entries": [
+      51341,
+      51342,
+      51343,
+      51344,
+      51345
+    ]
+  },
+  {
+    "name_en": "Bulwark of the Righteous",
+    "name_zh": "正义壁垒",
+    "templates": [
+      {
+        "en": "Bash the target with your shield, dealing {0} to {1} Holy damage and reducing the damage you take by {2} for {3} sec.",
+        "zh": "用盾牌猛击目标，造成{0}到{1}点神圣伤害，并使你受到的伤害降低{2}，持续{3}秒。"
+      }
+    ],
+    "entries": [
+      51346
+    ]
+  },
+  {
+    "name_en": "Vengeful Strikes",
+    "name_zh": "复仇打击",
+    "templates": [
+      {
+        "en": "Crusader Strike deals an additional {0} damage and Zeal increases your attack and casting speed by an additional {1} per stack.\r\nHoly Strike infuses you with Holy Might, increasing your Strength by {2} for {3} sec.",
+        "zh": "十字军打击额外造成{0}伤害，狂热每层额外使你的攻击和施法速度提高{1}。\r\n神圣打击为你注入神圣之力，使你的力量提高{2}，持续{3}秒。"
+      }
+    ],
+    "entries": [
+      51355,
+      51356,
+      51357,
+      51358,
+      51359
+    ]
+  },
+  {
+    "name_en": "Spirit Link",
+    "name_zh": "灵魂链接",
+    "templates": [
+      {
+        "en": "Links the spirit of an ally to that of other group members within {0} yards. When the target takes damage, {1} is distributed among nearby allies. Lasts {2} sec.",
+        "zh": "将一名盟友的灵魂与{0}码内其他小队成员相连。当目标受到伤害时，{1}的伤害由附近盟友分摊。持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51363
+    ]
+  },
+  {
+    "name_en": "Improved Water Shield",
+    "name_zh": "强化水之护盾",
+    "templates": [
+      {
+        "en": "While your Water Shield is active, you restore {0} Mana every {1} sec, and your total mana regeneration is increased by {2} for each active Water Shield globe.",
+        "zh": "水之护盾激活时，你恢复{0}点法力值，每{1}秒一次，且每个激活的水之护盾法球使你的总法力回复提高{2}。"
+      }
+    ],
+    "entries": [
+      51369,
+      51370,
+      51371
+    ]
+  },
+  {
+    "name_en": "Undertow",
+    "name_zh": "暗流",
+    "templates": [
+      {
+        "en": "Your Healing Wave and Lesser Healing Wave spells have a {0} chance to restore a charge of your active Water Shield.  When your Water Shield is at maximum charges, this effect consumes a charge instead.",
+        "zh": "你的治疗波和次级治疗波有{0}几率恢复一层激活中的水之护盾充能。当水之护盾已达最大充能时，此效果改为消耗一层充能。"
+      }
+    ],
+    "entries": [
+      51372,
+      51373
+    ]
+  },
+  {
+    "name_en": "Improved Chain Heal",
+    "name_zh": "强化治疗链",
+    "templates": [
+      {
+        "en": "Reduces the cast time of your Chain Heal spell by {0} sec.",
+        "zh": "使你的治疗链施法时间缩短{0}秒。"
+      }
+    ],
+    "entries": [
+      51374,
+      51375,
+      51376,
+      51377,
+      51378
+    ]
+  },
+  {
+    "name_en": "Totemic Alignment",
+    "name_zh": "图腾同调",
+    "templates": [
+      {
+        "en": "{0} of the threat generated by your totems is transferred to you.",
+        "zh": "你的图腾产生的威胁中有{0}转移给你。"
+      }
+    ],
+    "entries": [
+      51381,
+      51382
+    ]
+  },
+  {
+    "name_en": "Calming Winds",
+    "name_zh": "安抚之风",
+    "templates": [
+      {
+        "en": "Reduces threat generated by your physical attacks, weapon imbue effects, and your Lightning Strike and Stormstrike abilities by {0}. This effect does not apply while Rockbiter Weapon is active.",
+        "zh": "使你的物理攻击、武器灌注效果以及闪电打击和风暴打击技能产生的威胁降低{0}。石化武器激活时此效果不生效。"
+      }
+    ],
+    "entries": [
+      51383,
+      51384,
+      51385
+    ]
+  },
+  {
+    "name_en": "Lightning Strike",
+    "name_zh": "闪电打击",
+    "templates": [
+      {
+        "en": "Instantly strikes your target, causing {0} weapon damage and an additional {1} as Nature damage.  This strike also triggers an empowered version of your active shield, consuming {2} charge.",
+        "zh": "立即打击目标，造成{0}武器伤害以及额外{1}的自然伤害。此打击还会触发你激活中护盾的强化效果，并消耗{2}层充能。"
+      }
+    ],
+    "entries": [
+      51387
+    ]
+  },
+  {
+    "name_en": "Open Wounds",
+    "name_zh": "撕裂伤口",
+    "templates": [
+      {
+        "en": "Increases the damage of Rip by {0}. In addition, increases the damage of Claw by {1} for each of your active Bleed effects on the target.",
+        "zh": "使撕扯的伤害提高{0}。此外，目标身上你每有一个激活的流血效果，使爪击的伤害提高{1}。"
+      }
+    ],
+    "entries": [
+      51402,
+      51403,
+      51404
+    ]
+  },
+  {
+    "name_en": "Ancient Brutality",
+    "name_zh": "远古残暴",
+    "templates": [
+      {
+        "en": "Dodging an attack while in Bear or Dire Bear Form imbues you with the spirit of the Ancients, generating {0} Rage per second for {1} sec. This effect can only occur once every {2} seconds.  While in Cat Form, periodic ticks of your Bleed effects restore {3} Energy.",
+        "zh": "在熊形态或巨熊形态下躲闪攻击时，你被远古之灵灌注，每秒产生{0}点怒气，持续{1}秒。此效果每{2}秒只能触发一次。在猎豹形态下，你的流血效果每次周期伤害回复{3}点能量。"
+      }
+    ],
+    "entries": [
+      51415,
+      51416
+    ]
+  },
+  {
+    "name_en": "Sylvan Blessing",
+    "name_zh": "林间祝福",
+    "templates": [
+      {
+        "en": "Gives you a {0} chance after killing a target that yields experience or honor to allow your Mana to regenerate at a {1} rate while casting.  Lasts {2} sec.",
+        "zh": "杀死可提供经验或荣誉的目标后，有{0}几率使你在施法时仍以{1}的速率回复法力值。持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51421,
+      51422
+    ]
+  },
+  {
+    "name_en": "Guidance of the Dream",
+    "name_zh": "梦境指引",
+    "templates": [
+      {
+        "en": "Gives you a {0} chance to avoid interruption caused by damage while casting your Balance spells.",
+        "zh": "使你施放平衡系法术时有{0}几率避免因受到伤害而施法被打断。"
+      }
+    ],
+    "entries": [
+      51423,
+      51424,
+      51425
+    ]
+  },
+  {
+    "name_en": "Owlkin Frenzy",
+    "name_zh": "枭兽狂乱",
+    "templates": [
+      {
+        "en": "Damage taken while in Moonkin Form has a {0} chance to enrage you, granting a {1} chance to avoid interruption caused by damage while casting and regenerating {2} of your maximum mana per second for {3} sec. This effect can only trigger once every {4} seconds.",
+        "zh": "在枭兽形态下受到伤害时有{0}几率激怒你，获得{1}几率避免因受到伤害而施法被打断，并每秒回复最大法力值的{2}，持续{3}秒。此效果每{4}秒只能触发一次。"
+      }
+    ],
+    "entries": [
+      51426,
+      51427
+    ]
+  },
+  {
+    "name_en": "Balance of All Things",
+    "name_zh": "万物平衡",
+    "templates": [
+      {
+        "en": "Damaging a target afflicted by Insect Swarm with Wrath refunds {0} of its mana cost.\n\nStarfire has a {1} increased chance to critically strike against targets affected by Moonfire.",
+        "zh": "用愤怒对受虫群影响的目标造成伤害时，返还其法力消耗的{0}。\n\n星火术对受月火术影响的目标爆击几率提高{1}。"
+      }
+    ],
+    "entries": [
+      51433,
+      51434,
+      51435
+    ]
+  },
+  {
+    "name_en": "Gale Winds",
+    "name_zh": "烈风",
+    "templates": [
+      {
+        "en": "Reduces the mana cost of Hurricane by {0} and causes it to reduce the attack speed of affected enemies by {1}.",
+        "zh": "使飓风术的法力消耗降低{0}，并使其降低受影响敌人的攻击速度{1}。"
+      }
+    ],
+    "entries": [
+      51440,
+      51441
+    ]
+  },
+  {
+    "name_en": "Eclipse",
+    "name_zh": "日蚀",
+    "templates": [
+      {
+        "en": "Aligns natural and astral energies. Damage from Wrath has a {0} chance to grant Arcane Eclipse, increasing Arcane damage dealt. Damage from Starfire has a {1} chance to grant Nature Eclipse, increasing Nature damage dealt.\n\nThe damage bonus is {2} plus {3} of your spell critical strike chance. Each effect lasts {4} sec and has its own {5} sec cooldown. Only one Eclipse can be active at a time.",
+        "zh": "调谐自然与星界能量。愤怒造成的伤害有{0}几率赋予奥术日蚀，提高造成的奥术伤害。星火术造成的伤害有{1}几率赋予自然日蚀，提高造成的自然伤害。\n\n伤害加成为基础{2}再加上你法术爆击几率的{3}。每种效果持续{4}秒，并各自有{5}秒冷却时间。同一时间只能有一种日蚀激活。"
+      }
+    ],
+    "entries": [
+      51444
+    ]
+  },
+  {
+    "name_en": "Aessina's Bloom",
+    "name_zh": "艾森娜之花",
+    "templates": [
+      {
+        "en": "Healing a target affected by Regrowth or Rejuvenation with your Healing Touch spells reduces the casting time of your next Healing Touch spell by {0} sec and refunds {1} of its mana cost within {2} sec.",
+        "zh": "用治疗之触治疗受愈合或回春术影响的目标时，使你的下一个治疗之触施法时间缩短{0}秒，并返还其法力消耗的{1}。此效果持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51446,
+      51447
+    ]
+  },
+  {
+    "name_en": "Preservation",
+    "name_zh": "庇护",
+    "templates": [
+      {
+        "en": "Increases the periodic healing of Regrowth by {0} if the friendly target is affected by Rejuvenation.",
+        "zh": "若友方目标受回春术影响，使愈合的周期治疗效果提高{0}。"
+      }
+    ],
+    "entries": [
+      51448,
+      51449,
+      51450
+    ]
+  },
+  {
+    "name_en": "Piercing Light",
+    "name_zh": "穿透圣光",
+    "templates": [
+      {
+        "en": "Reduces the chance for enemies to resist your Holy and Discipline spells by {0}.",
+        "zh": "使敌人抵抗你的神圣系和戒律系法术的几率降低{0}。"
+      }
+    ],
+    "entries": [
+      51462,
+      51463,
+      51464
+    ]
+  },
+  {
+    "name_en": "Searing Light",
+    "name_zh": "灼热之光",
+    "templates": [
+      {
+        "en": "Your damaging Holy and Discipline spell critical strikes have a {0} chance to cause your next Smite spell to be instant cast and cost {1} less mana.  Lasts {2} sec.",
+        "zh": "你造成伤害的神圣系和戒律系法术爆击有{0}几率使你的下一个惩击变为瞬发，且法力消耗降低{1}。持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51466,
+      51467,
+      51468
+    ]
+  },
+  {
+    "name_en": "Purifying Flames",
+    "name_zh": "净化烈焰",
+    "templates": [
+      {
+        "en": "Your Holy Fire has a {0} chance to increase your Holy damage by {1} for {2} sec.",
+        "zh": "你的神圣之火有{0}几率使你的神圣伤害提高{1}，持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51470,
+      51471
+    ]
+  },
+  {
+    "name_en": "Enlighten",
+    "name_zh": "启迪",
+    "templates": [
+      {
+        "en": "Bring a party member under your tutelage for {0} min. Whenever you cast a Discipline or Holy spell, you have a {1} chance with helpful spells, or {2} chance with harmful spells, to burn them for {3} of their total health as Holy damage and increase both your and their spell damage and healing by {4} for {5} sec.  If cast on yourself, the spell damage and healing bonus is increased to {6}.  Only one party member can be under your tutelage at a time.",
+        "zh": "将一名小队成员置于你的教导之下，持续{0}分钟。每当你施放戒律系或神圣系法术时，有益法术有{1}几率、有害法术有{2}几率对其造成相当于其总生命值{3}的神圣伤害，并使你与其的法术伤害和治疗提高{4}，持续{5}秒。若对自己施放，法术伤害和治疗加成提高至{6}。同一时间只能教导一名小队成员。"
+      }
+    ],
+    "entries": [
+      51476
+    ]
+  },
+  {
+    "name_en": "Chastise",
+    "name_zh": "责罚",
+    "templates": [
+      {
+        "en": "Chastise the target, causing {0} to {1} Holy damage.  If the target is an enemy, they are disoriented for up to {2} sec or until they take damage.  If the target is an ally, their attack and casting speed is increased by {3} for {4} sec, increased to {5} sec if the damage results in a critical strike.  Cannot be used on allies with less than {6} health or below level {7}.",
+        "zh": "责罚目标，造成{0}到{1}点神圣伤害。若目标为敌人，使其迷惑最多{2}秒或直到其受到伤害。若目标为盟友，使其攻击和施法速度提高{3}，持续{4}秒；若造成爆击，持续时间提高至{5}秒。不能对生命值低于{6}或等级低于{7}的盟友使用。"
+      }
+    ],
+    "entries": [
+      51478
+    ]
+  },
+  {
+    "name_en": "Empowered Recovery",
+    "name_zh": "强化恢复",
+    "templates": [
+      {
+        "en": "Increases the duration of Renew by {0} sec and increases healing done by your healing spells by {1} to targets affected by Renew.",
+        "zh": "使恢复的持续时间延长{0}秒，并对受恢复影响的目标提高你治疗法术造成的治疗{1}。"
+      }
+    ],
+    "entries": [
+      51484,
+      51485
+    ]
+  },
+  {
+    "name_en": "Reservoir of Light",
+    "name_zh": "圣光储备",
+    "templates": [
+      {
+        "en": "Increases the effectiveness of Lightwell's Splendor of Light by {0}.",
+        "zh": "使光明之泉的圣光光辉效果提高{0}。"
+      }
+    ],
+    "entries": [
+      51486,
+      51487,
+      51488
+    ]
+  },
+  {
+    "name_en": "Tidal Surge",
+    "name_zh": "潮汐涌动",
+    "templates": [
+      {
+        "en": "After healing a target affected by your Healing Way effect, you have a {0} chance to regain mana equal to {1} of the base cost of the spell.",
+        "zh": "治疗受你治疗之道效果影响的目标后，有{0}几率回复相当于该法术基础法力消耗{1}的法力值。"
+      }
+    ],
+    "entries": [
+      51491,
+      51492
+    ]
+  },
+  {
+    "name_en": "Piercing Shots",
+    "name_zh": "穿透射击",
+    "templates": [
+      {
+        "en": "Your critical strikes from Multi-Shot, Steady Shot and Aimed Shot cause the target to bleed, dealing {0} of the damage over {1} sec.  This damage generates no threat.",
+        "zh": "你的多重射击、稳固射击和瞄准射击造成的爆击使目标流血，造成该伤害的{0}，持续{1}秒。此伤害不产生威胁。"
+      }
+    ],
+    "entries": [
+      51512,
+      51513
+    ]
+  },
+  {
+    "name_en": "Improved Marksmanship",
+    "name_zh": "强化射击专精",
+    "templates": [
+      {
+        "en": "Increases the damage of Steady Shot and Aimed Shot by {0}.",
+        "zh": "使稳固射击和瞄准射击的伤害提高{0}。"
+      }
+    ],
+    "entries": [
+      51515,
+      51516
+    ]
+  },
+  {
+    "name_en": "Endless Quiver",
+    "name_zh": "无尽箭袋",
+    "templates": [
+      {
+        "en": "Your Auto Shot, Arcane Shot, Steady Shot and Multi-Shot have a {0} chance to fire an additional normal ranged attack.  This additional shot does not spend ammo.",
+        "zh": "你的自动射击、奥术射击、稳固射击和多重射击有{0}几率额外进行一次普通远程攻击。此次额外射击不消耗弹药。"
+      }
+    ],
+    "entries": [
+      51517,
+      51518
+    ]
+  },
+  {
+    "name_en": "Bestial Precision",
+    "name_zh": "野兽精准",
+    "templates": [
+      {
+        "en": "Increases the physical hit chance of your pets by {0} and the spell hit chance of your pets by {1}. In addition, increases the weapon skill of your pets by {2}.",
+        "zh": "使你宠物的物理命中几率提高{0}，法术命中几率提高{1}。此外，使你宠物的武器技能提高{2}。"
+      }
+    ],
+    "entries": [
+      51554,
+      51555
+    ]
+  },
+  {
+    "name_en": "Resourcefulness",
+    "name_zh": "足智多谋",
+    "templates": [
+      {
+        "en": "Reduces the Mana cost of all traps and melee abilities by {0}.",
+        "zh": "使所有陷阱和近战技能的法力消耗降低{0}。"
+      }
+    ],
+    "entries": [
+      51570,
+      51571,
+      51572,
+      51573,
+      51574
+    ]
+  },
+  {
+    "name_en": "Carve",
+    "name_zh": "劈砍",
+    "templates": [
+      {
+        "en": "A sweeping attack that strikes up to {0} enemies in a {1} yard cone in front of you, dealing {2} weapon damage.\nThis ability shares a cooldown with Multi-Shot.",
+        "zh": "横扫攻击，最多打击{0}个敌人，这些敌人须位于你前方{1}码的锥形范围内，造成{2}武器伤害。\n此技能与多重射击共享冷却时间。"
+      }
+    ],
+    "entries": [
+      51575
+    ]
+  },
+  {
+    "name_en": "Planning Ahead",
+    "name_zh": "未雨绸缪",
+    "templates": [
+      {
+        "en": "The duration of Freezing and Frost Trap effects and the damage of Immolation and Explosive Trap effects are increased by {0} if the traps are not triggered within the first {1} sec after being placed.",
+        "zh": "冰冻陷阱和冰霜陷阱效果的持续时间以及献祭陷阱和爆炸陷阱效果的伤害提高{0}，若陷阱在放置后的前{1}秒内未被触发。"
+      }
+    ],
+    "entries": [
+      51576,
+      51577
+    ]
+  },
+  {
+    "name_en": "Stinging Nettle",
+    "name_zh": "刺荨麻",
+    "templates": [
+      {
+        "en": "Your Mongoose Bite and triggered Fire traps now apply your highest rank of Serpent Sting for {0} of the duration. Serpent Stings applied this way ignore resistances and immunities.",
+        "zh": "你的猫鼬撕咬和触发的火焰陷阱现在施加你最高等级的毒蛇钉刺，持续时间为{0}。以此方式施加的毒蛇钉刺无视抗性和免疫。"
+      }
+    ],
+    "entries": [
+      51579,
+      51580
+    ]
+  },
+  {
+    "name_en": "Trap Mastery",
+    "name_zh": "陷阱掌握",
+    "templates": [
+      {
+        "en": "Increases the duration of Freezing and Frost Trap effects by {0} and the damage of Immolation and Explosive Trap effects by {1}.  In addition, reduces the chance that enemies will resist trap effects by {2}.",
+        "zh": "使冰冻陷阱和冰霜陷阱效果的持续时间延长{0}，献祭陷阱和爆炸陷阱效果的伤害提高{1}。此外，使敌人抵抗陷阱效果的几率降低{2}。"
+      }
+    ],
+    "entries": [
+      51581
+    ]
+  },
+  {
+    "name_en": "Vicious Strikes",
+    "name_zh": "凶猛打击",
+    "templates": [
+      {
+        "en": "Reduces the cooldown of Raptor Strike and Mongoose Bite by {0} sec and increases the damage they deal by {1}.",
+        "zh": "使猛禽一击和猫鼬撕咬的冷却时间缩短{0}秒，造成的伤害提高{1}。"
+      }
+    ],
+    "entries": [
+      51584,
+      51585
+    ]
+  },
+  {
+    "name_en": "Untamed Trapper",
+    "name_zh": "野性陷阱师",
+    "templates": [
+      {
+        "en": "Reduces the mana cost of your Immolation Trap and Explosive Trap effects by {0} and increases their damage based on your melee Attack Power. In addition, all traps can be placed while in combat.",
+        "zh": "使献祭陷阱和爆炸陷阱效果的法力消耗降低{0}，并根据你的近战攻击强度提高其伤害。此外，所有陷阱可在战斗中放置。"
+      }
+    ],
+    "entries": [
+      51586
+    ]
+  },
+  {
+    "name_en": "Improved Intervene",
+    "name_zh": "强化援护",
+    "templates": [
+      {
+        "en": "Grants a {0} chance to gain immunity to movement impairing effects for {1} sec after using Intervene.",
+        "zh": "使用援护后有{0}几率获得对移动限制效果的免疫，持续{1}秒。"
+      }
+    ],
+    "entries": [
+      51591,
+      51592
+    ]
+  },
+  {
+    "name_en": "Reprisal",
+    "name_zh": "反击",
+    "templates": [
+      {
+        "en": "Increases the damage dealt by your Revenge ability by {0}, and has a {1} chance to refund its rage cost if successful.",
+        "zh": "使你的复仇技能造成的伤害提高{0}，并有{1}几率在成功时返还其怒气消耗。"
+      }
+    ],
+    "entries": [
+      51593,
+      51594
+    ]
+  },
+  {
+    "name_en": "Improved Shield Slam",
+    "name_zh": "强化盾牌猛击",
+    "templates": [
+      {
+        "en": "Reduces the cooldown of Shield Slam by {0} sec, and using this ability will also grant you an extra {1} chance to block the next attack within {2} sec.",
+        "zh": "使盾牌猛击的冷却时间缩短{0}秒，使用此技能还会使你获得额外{1}的格挡几率以格挡{2}秒内的下一次攻击。"
+      }
+    ],
+    "entries": [
+      51598,
+      51599
+    ]
+  },
+  {
+    "name_en": "Defensive Tactics",
+    "name_zh": "防御战术",
+    "templates": [
+      {
+        "en": "While wearing a shield, you retain {0} of the increased threat generation from Defensive Stance in other stances.",
+        "zh": "装备盾牌时，你在其他姿态下仍保留防御姿态威胁加成的{0}。"
+      }
+    ],
+    "entries": [
+      51606,
+      51607,
+      51608
+    ]
+  },
+  {
+    "name_en": "Improved Shouts",
+    "name_zh": "强化怒吼",
+    "templates": [
+      {
+        "en": "Increases the melee attack power bonus of your Battle Shout by {0} and increases the melee attack power reduction of your Demoralizing Shout by {1}.",
+        "zh": "使战斗怒吼的近战攻击强度加成提高{0}，挫志怒吼的近战攻击强度削减提高{1}。"
+      }
+    ],
+    "entries": [
+      51609,
+      51610,
+      51611,
+      51612,
+      51613
+    ]
+  },
+  {
+    "name_en": "Improved Pummel",
+    "name_zh": "强化拳击",
+    "templates": [
+      {
+        "en": "Gives your Pummel ability a {0} chance to slow the victim for {1} sec. In addition, increases the duration of spellcasting school lockouts by {2} sec.",
+        "zh": "使你的拳击有{0}几率使目标减速，持续{1}秒。此外，使法术学校封锁的持续时间延长{2}秒。"
+      }
+    ],
+    "entries": [
+      51614,
+      51615
+    ]
+  },
+  {
+    "name_en": "Ravager",
+    "name_zh": "破坏者",
+    "templates": [
+      {
+        "en": "Reduces the cooldown of your Whirlwind by {0} sec and the Rage cost of your Cleave by {1}.",
+        "zh": "使旋风斩的冷却时间缩短{0}秒，顺劈斩的怒气消耗降低{1}。"
+      }
+    ],
+    "entries": [
+      51616,
+      51617,
+      51618
+    ]
+  },
+  {
+    "name_en": "Blood Drinker",
+    "name_zh": "饮血者",
+    "templates": [
+      {
+        "en": "While affected by Enrage, Death Wish, or Recklessness, your melee attacks and abilities restore {0} of your maximum health.",
+        "zh": "受到狂怒、死亡之愿或鲁莽效果影响时，你的近战攻击和技能回复最大生命值的{0}。"
+      }
+    ],
+    "entries": [
+      51623,
+      51624,
+      51625
+    ]
+  },
+  {
+    "name_en": "Precision Cut",
+    "name_zh": "精准斩击",
+    "templates": [
+      {
+        "en": "Increases damage dealt per extra rage point spent on Execute by {0}.",
+        "zh": "使斩杀每额外消耗一点怒气所造成的伤害提高{0}。"
+      }
+    ],
+    "entries": [
+      51641,
+      51642,
+      51643
+    ]
+  },
+  {
+    "name_en": "Master of Arms",
+    "name_zh": "武器大师",
+    "templates": [
+      {
+        "en": "Adds the following effects to your weapons, based on the weapon type:\r\n\r\nAxe - Increases your chance to get a critical strike by {0}.\r\nMace - Causes your attacks to ignore {1} of your target's Armor per level.\r\nSword - Gives you a {2} chance to get an extra attack on the same target after hitting your target.\r\nPolearm - Increases the range of melee attacks by {3} yd.",
+        "zh": "根据武器类型为你的武器添加以下效果：\r\n\r\n斧 - 使你的爆击几率提高{0}。\r\n锤 - 使你的攻击每等级无视目标护甲的{1}。\r\n剑 - 命中目标后有{2}几率对其发动一次额外攻击。\r\n长柄武器 - 使近战攻击距离增加{3}码。"
+      }
+    ],
+    "entries": [
+      51644,
+      51655,
+      51656,
+      51657,
+      51658
+    ]
+  },
+  {
+    "name_en": "Blinding Haze",
+    "name_zh": "致盲迷雾",
+    "templates": [
+      {
+        "en": "Reduces the Energy cost of your Distract by {0}. In addition, targets hit by your Distract have their chance to hit reduced by {1} for {2} sec. This effect is guaranteed to be applied.",
+        "zh": "使扰乱的能量消耗降低{0}。此外，被你的扰乱命中的目标命中几率降低{1}，持续{2}秒。此效果必定施加。"
+      }
+    ],
+    "entries": [
+      51680,
+      51681,
+      51682
+    ]
+  },
+  {
+    "name_en": "Soul Entrapment",
+    "name_zh": "灵魂禁锢",
+    "templates": [
+      {
+        "en": "While you have no demon under your control, all damage dealt is increased by {0}.",
+        "zh": "当你未控制任何恶魔时，造成的所有伤害提高{0}。"
+      }
+    ],
+    "entries": [
+      51706,
+      51707,
+      51708
+    ]
+  },
+  {
+    "name_en": "Nether Studies",
+    "name_zh": "虚空研习",
+    "templates": [
+      {
+        "en": "Increases the effect of your Succubus' Seduction, your Voidwalker's Torment, your Imp's Blood Pact, and your Felhunter's Tainted Blood spells by {0}.",
+        "zh": "使你的魅魔诱惑、虚空行者折磨、小鬼血之契以及地狱猎犬腐坏之血法术的效果提高{0}。"
+      }
+    ],
+    "entries": [
+      51709,
+      51710,
+      51711
+    ]
+  },
+  {
+    "name_en": "Improved Stones",
+    "name_zh": "强化法石",
+    "templates": [
+      {
+        "en": "Increases the effectiveness of your Felstone, Wrathstone, Voidstone, and Spellstone by {0}, and increases the critical strike chance bonus of your Firestone by {1}.",
+        "zh": "使邪能石、愤怒石、虚空石和法术石的效果提高{0}，并使火焰石的爆击几率加成提高{1}。"
+      }
+    ],
+    "entries": [
+      51712,
+      51713
+    ]
+  },
+  {
+    "name_en": "Power Overwhelming",
+    "name_zh": "压倒之力",
+    "templates": [
+      {
+        "en": "Channel energy into your demon, breaking all crowd control effects and increasing its damage dealt by {0} for {1} sec. The demon takes {2} of its base health as damage over the duration.",
+        "zh": "将能量注入你的恶魔，解除所有控制效果，并使其造成的伤害提高{0}，持续{1}秒。该恶魔在持续时间内受到相当于其基础生命值{2}的伤害。"
+      }
+    ],
+    "entries": [
+      51714
+    ]
+  },
+  {
+    "name_en": "Demonic Precision",
+    "name_zh": "恶魔精准",
+    "templates": [
+      {
+        "en": "Your demons gain {0} increased chance to hit and critically strike, and they also inherit {1} of your spell hit and crit chance as melee and spell hit and crit chance, respectively.",
+        "zh": "你的恶魔命中和爆击几率提高{0}，并分别继承你法术命中和爆击几率的{1}作为近战与法术的命中和爆击几率。"
+      }
+    ],
+    "entries": [
+      51715,
+      51716,
+      51717
+    ]
+  },
+  {
+    "name_en": "Unleashed Potential",
+    "name_zh": "释放潜能",
+    "templates": [
+      {
+        "en": "Your direct damage spell hits allow your demon to benefit from {0} of your Fire and Shadow spell bonus damage for {1} sec. Each tick of your funnel spells refreshes its duration. Stacks up to {2} times.",
+        "zh": "你的直接伤害法术命中使你的恶魔受益于你火焰和暗影法术伤害加成的{0}，持续{1}秒。你的引导吸取类法术每次周期效果刷新其持续时间。最多叠加{2}层。"
+      }
+    ],
+    "entries": [
+      51721,
+      51722,
+      51723
+    ]
+  },
+  {
+    "name_en": "Improved Soul Fire",
+    "name_zh": "强化灵魂之火",
+    "templates": [
+      {
+        "en": "Your Soul Fire has a {0} chance to refund a Soul Shard and increase your Fire damage by {1} for {2} sec.",
+        "zh": "你的灵魂之火有{0}几率返还一枚灵魂碎片，并使你的火焰伤害提高{1}，持续{2}秒。"
+      }
+    ],
+    "entries": [
+      51736,
+      51737
+    ]
+  },
+  {
+    "name_en": "Hot Streak",
+    "name_zh": "炽热连击",
+    "templates": [
+      {
+        "en": "Gives your Fireball and Fire Blast critical strikes a {0} chance to grant Hot Streak, reducing the cast time of your next Pyroblast by {1} sec per stack for {2} min. Stacks up to {3} times.",
+        "zh": "使你的火球术和火焰冲击爆击有{0}几率获得炽热连击，每层使你的下一个炎爆术施法时间缩短{1}秒，持续{2}分钟。最多叠加{3}层。"
+      }
+    ],
+    "entries": [
+      51927,
+      51928
+    ]
+  },
+  {
+    "name_en": "Arcane Rupture",
+    "name_zh": "奥术撕裂",
+    "templates": [
+      {
+        "en": "Rupture your target with the force of concentrated arcane energy, dealing {0} to {1} Arcane damage and increasing the damage and mana cost of your Arcane Missiles spell by {2} for {3} sec.",
+        "zh": "以浓缩奥术能量撕裂目标，造成{0}到{1}点奥术伤害，并使你的奥术飞弹伤害和法力消耗提高{2}，持续{3}秒。"
+      }
+    ],
+    "entries": [
+      51949
+    ]
+  },
+  {
+    "name_en": "Temporal Convergence",
+    "name_zh": "时空汇聚",
+    "templates": [
+      {
+        "en": "Your Arcane Missiles have a chance of {0} to reset the cooldown of Arcane Rupture and cause it to return its base mana cost on its next cast.  This effect can occur once every {1} sec.",
+        "zh": "你的奥术飞弹有{0}几率重置奥术撕裂的冷却时间，并使其下一次施放返还基础法力消耗。此效果每{1}秒只能触发一次。"
+      }
+    ],
+    "entries": [
+      51963,
+      51964,
+      51965
+    ]
+  },
+  {
+    "name_en": "Smoke Bomb",
+    "name_zh": "烟雾弹",
+    "templates": [
+      {
+        "en": "Creates a cloud of thick smoke in {0} yards around you for {1} sec. All targets inside the smoke have a {2} reduced chance of being hit by attacks and spells for the duration.",
+        "zh": "在你周围{0}码内制造一团浓烟，持续{1}秒。烟雾内所有目标被攻击和法术命中的几率降低{2}。"
+      }
+    ],
+    "entries": [
+      51969
+    ]
+  },
+  {
+    "name_en": "Improved Ghostly Strike",
+    "name_zh": "强化幽魂之击",
+    "templates": [
+      {
+        "en": "Your Ghostly Strike increases your movement speed by {0} and increases your party members' movement speed by {1} within {2} yards for {3} sec. In addition, reduces the Energy cost of your Ghostly Strike by {4}.",
+        "zh": "你的幽魂之击使你的移动速度提高{0}，并使小队成员的移动速度提高{1}（{2}码内），持续{3}秒。此外，使幽魂之击的能量消耗降低{4}。"
+      }
+    ],
+    "entries": [
+      51970,
+      51971,
+      51972
+    ]
+  },
+  {
+    "name_en": "Bloody Mess",
+    "name_zh": "血腥混乱",
+    "templates": [
+      {
+        "en": "Reduces the Energy cost of your Hemorrhage by {0} and increases the Physical damage dealt bonus of your Hemorrhage by {1}.",
+        "zh": "使出血的能量消耗降低{0}，并使出血的物理伤害加成提高{1}。"
+      }
+    ],
+    "entries": [
+      51974,
+      51975
+    ]
+  },
+  {
+    "name_en": "Accelerated Arcana",
+    "name_zh": "奥术加速",
+    "templates": [
+      {
+        "en": "Increases the casting speed of your Arcane spells by {0}.  In addition, casting speed increase effects increase the cooldown recovery speed of your Arcane spells and the tick speed of your Arcane Missiles, reducing their duration.",
+        "zh": "使你的奥术法术施法速度提高{0}。此外，施法速度提高效果还会加快你奥术法术的冷却回复速度以及奥术飞弹的跳动速度，并缩短其持续时间。"
+      }
+    ],
+    "entries": [
+      51981
+    ]
+  },
+  {
+    "name_en": "Flash Freeze",
+    "name_zh": "急速冰冻",
+    "templates": [
+      {
+        "en": "If an effect that causes a target to freeze is not applied due to the target being permanently immune to freeze effects, you have a {0} chance to gain Flash Freeze instead. Flash Freeze resets the cooldown of Icicles and reduces the duration and the time between each Icicle by {1} for your next Icicles.",
+        "zh": "若因目标永久免疫冰冻效果而未能施加冰冻效果，你有{0}几率获得急速冰冻。急速冰冻重置冰锥的冷却时间，并使你的下一次冰锥持续时间和冰锥间隔缩短{1}。"
+      }
+    ],
+    "entries": [
+      51999,
+      52501
+    ]
+  },
+  {
+    "name_en": "Blade Rush",
+    "name_zh": "利刃突袭",
+    "templates": [
+      {
+        "en": "Increases your melee attack speed by {0} and reduces the time between your Energy regeneration ticks by an amount equal to your Agility.",
+        "zh": "使你的近战攻击速度提高{0}，并使能量回复间隔缩短，缩短量相当于你的敏捷。"
+      },
+      {
+        "en": "Increases your melee attack speed by {0} and reduces the time between your Energy regeneration ticks by an amount equal to your Agility. More effective than Blade Rush (Rank {1}).",
+        "zh": "使你的近战攻击速度提高{0}，并使能量回复间隔缩短，缩短量相当于你的敏捷。效果优于利刃突袭（等级{1}）。"
+      }
+    ],
+    "entries": [
+      52507,
+      52508
+    ]
+  },
+  {
+    "name_en": "Surprise Attack",
+    "name_zh": "突袭",
+    "templates": [
+      {
+        "en": "A surprise strike that deals {0} of your Attack Power as damage.\nOnly useable after the target dodges and cannot be blocked, dodged or parried by the target.  Awards {1} combo point.",
+        "zh": "一次突袭打击，造成相当于你攻击强度{0}的伤害。\n仅可在目标躲闪后使用，且无法被目标格挡、躲闪或招架。奖励{1}个连击点数。"
+      }
+    ],
+    "entries": [
+      52511
+    ]
+  },
+  {
+    "name_en": "Honor Among Thieves",
+    "name_zh": "盗贼的尊严",
+    "templates": [
+      {
+        "en": "Physical critical strikes by you or party members within {0} yards grant you {1} Energy.",
+        "zh": "你或{0}码内小队成员造成的物理爆击使你获得{1}点能量。"
+      }
+    ],
+    "entries": [
+      52512,
+      52514
+    ]
+  },
+  {
+    "name_en": "Icicles",
+    "name_zh": "冰锥",
+    "templates": [
+      {
+        "en": "Draw upon frost leylines, becoming frozen in place, and launch icicles at the enemy, dealing {0} Frost damage every {1} sec for {2} sec.  Damage taken has a high chance to shatter your icy prison, dealing {3} of your base health as Frost damage to you.  Cancelling the effect early will not remove the freeze effect.",
+        "zh": "汲取冰霜魔网，使自己被冻结在原地，并向敌人发射冰锥，造成{0}点冰霜伤害，每{1}秒一次，持续{2}秒。受到伤害有较高几率击碎你的冰牢，对你造成相当于基础生命值{3}的冰霜伤害。提前取消效果不会移除冻结状态。"
+      }
+    ],
+    "entries": [
+      52516
+    ]
+  },
+  {
+    "name_en": "Efficient Poisons",
+    "name_zh": "高效毒药",
+    "templates": [
+      {
+        "en": "Reduces the chance your poisons will be resisted by {0} and gives your poison applications a {1} chance to not consume a charge.",
+        "zh": "使你的毒药被抵抗的几率降低{0}，并使你施加毒药时有{1}几率不消耗充能。"
+      }
+    ],
+    "entries": [
+      52518,
+      52519,
+      52520
+    ]
+  },
+  {
+    "name_en": "Vigor",
+    "name_zh": "精力",
+    "templates": [
+      {
+        "en": "Increases your maximum Energy by {0}.  Each time you apply poison to your target, you have a {1} chance to gain {2} Energy.",
+        "zh": "使你的最大能量提高{0}。每次对目标施加毒药时，有{1}几率获得{2}点能量。"
+      }
+    ],
+    "entries": [
+      52527
+    ]
+  },
+  {
+    "name_en": "Envenom",
+    "name_zh": "毒伤",
+    "templates": [
+      {
+        "en": "Finishing move that increases the effectiveness and the chance to apply poisons to your target by {0}.  Lasts longer per combo point:\n   {1} point  : {2} seconds\n   {3} points: {4} seconds\n   {5} points: {6} seconds\n   {7} points: {8} seconds\n   {9} points: {10} seconds",
+        "zh": "终结技，使对目标施加毒药的效果和几率提高{0}。每个连击点数延长持续时间：\n   {1}点：{2}秒\n   {3}点：{4}秒\n   {5}点：{6}秒\n   {7}点：{8}秒\n   {9}点：{10}秒"
+      }
+    ],
+    "entries": [
+      52531
+    ]
+  },
+  {
+    "name_en": "Mark for Death",
+    "name_zh": "死亡印记",
+    "templates": [
+      {
+        "en": "A marking strike that deals {0} weapon damage and reveals the target’s vulnerabilities, increasing your party members' Attack Power by {1} and damage done by magical spells and effects up to {2} of your melee Attack Power for {3} sec. Cannot be blocked, dodged or parried by the target. Awards {4} combo points.",
+        "zh": "一次标记打击，造成{0}武器伤害并揭露目标弱点，使小队成员的攻击强度提高{1}，法术和效果造成的伤害最多提高相当于你近战攻击强度{2}的数值，持续{3}秒。无法被目标格挡、躲闪或招架。奖励{4}个连击点数。"
+      }
+    ],
+    "entries": [
+      52538
+    ]
+  },
+  {
+    "name_en": "Tricks of the Trade",
+    "name_zh": "嫁祸诀窍",
+    "templates": [
+      {
+        "en": "Your opening moves have a {0} chance and your finishing moves have a $b{1} chance per combo point to increase your party members' critical strike chance by {2} for {3} sec. This effect stacks up to {4} times.",
+        "zh": "你的起手技有{0}几率、终结技每消耗一个连击点数有$b{1}几率使小队成员的爆击几率提高{2}，持续{3}秒。此效果最多叠加{4}层。"
+      }
+    ],
+    "entries": [
+      52541,
+      52542,
+      52543,
+      52544,
+      52545
+    ]
+  },
+  {
+    "name_en": "Malediction",
+    "name_zh": "咒诅",
+    "templates": [
+      {
+        "en": "Your Curse of Agony can be used alongside your other curses, except Curse of Doom.\n\nApplying Curse of Recklessness, Curse of Shadows, or Curse of Elements also afflicts the target with the highest rank of your Curse of Agony.",
+        "zh": "你的痛苦诅咒可与其他诅咒同时存在，末日诅咒除外。\n\n施加鲁莽诅咒、暗影诅咒或元素诅咒时，同时使目标受到你最高等级的痛苦诅咒。"
+      }
+    ],
+    "entries": [
+      52546
+    ]
+  },
+  {
+    "name_en": "Resilient Shadows",
+    "name_zh": "坚韧暗影",
+    "templates": [
+      {
+        "en": "Reduces the chance your Affliction spells will be dispelled by an additional {0}.",
+        "zh": "使你的痛苦系法术被驱散的几率额外降低{0}。"
+      }
+    ],
+    "entries": [
+      52547,
+      52548,
+      52549
+    ]
+  },
+  {
+    "name_en": "Dark Harvest",
+    "name_zh": "黑暗收割",
+    "templates": [
+      {
+        "en": "Reaps the target's life, dealing {0} Shadow damage over {1} sec. While channeling, the time between periodic ticks of your Affliction spells on the target is reduced by {2}. If the target dies while channeling, the cooldown of Dark Harvest is reset.",
+        "zh": "收割目标的生命，造成{0}点暗影伤害，持续{1}秒。引导期间，你在目标身上的痛苦系法术周期间隔缩短{2}。若目标在引导期间死亡，重置黑暗收割的冷却时间。"
+      }
+    ],
+    "entries": [
+      52550
+    ]
+  },
+  {
+    "name_en": "Rapid Deterioration",
+    "name_zh": "急速恶化",
+    "templates": [
+      {
+        "en": "Increases the casting speed of your Affliction spells by {0}.  In addition, casting speed increase effects increase the tick speed of your damage over time and channeled Affliction spells with {1} efficiency, reducing their duration.",
+        "zh": "使你的痛苦系法术施法速度提高{0}。此外，施法速度提高效果还会以{1}的效率加快你的持续伤害和引导类痛苦系法术的跳动速度，并缩短其持续时间。"
+      }
+    ],
+    "entries": [
+      52555,
+      52556
+    ]
+  },
+  {
+    "name_en": "Soul Siphon",
+    "name_zh": "灵魂虹吸",
+    "templates": [
+      {
+        "en": "Increases the damage of your Drain Soul, Dark Harvest and Death Coil by an additional {0} for each of your Affliction effects on the target, up to a maximum of {1} effects.",
+        "zh": "目标身上你每有一个痛苦系效果，使吸取灵魂、黑暗收割和死亡缠绕的伤害额外提高{0}，最多计算{1}个效果。"
+      }
+    ],
+    "entries": [
+      52558,
+      52559,
+      52560
+    ]
+  },
+  {
+    "name_en": "Cloaked in Shadows",
+    "name_zh": "暗影披风",
+    "templates": [
+      {
+        "en": "Whenever you Vanish, you and nearby party members within {0} yards are cloaked in shadows, gaining a barrier that absorbs up to {1} of your maximum health for {2} sec.",
+        "zh": "每当你使用消失时，你和{0}码内附近小队成员被暗影笼罩，获得一道屏障，吸收最多相当于你最大生命值{1}的伤害，持续{2}秒。"
+      }
+    ],
+    "entries": [
+      52707,
+      52709
+    ]
+  },
+  {
+    "name_en": "Shadow of Death",
+    "name_zh": "死亡之影",
+    "templates": [
+      {
+        "en": "A finishing move that etches a sigil onto the target for {0} sec. The sigil accumulates damage equal to a percentage of all damage the target takes during its duration, up to a percentage of your Attack Power. When the maximum capacity is reached or the sigil expires, the stored damage is unleashed as Physical damage. Both values increase with each combo point:\n   {1} point : {2} of damage accumulated, up to {3} of Attack Power\n   {4} points: {5} of damage accumulated, up to {6} of Attack Power\n   {7} points: {8} of damage accumulated, up to {9} of Attack Power\n   {10} points: {11} of damage accumulated, up to {12} of Attack Power\n   {13} points: {14} of damage accumulated, up to {15} of Attack Power",
+        "zh": "终结技，在目标身上刻下印记，持续{0}秒。印记会累积目标在持续时间内受到伤害的一定百分比，上限为你攻击强度的一定百分比。当达到最大容量或印记到期时，储存的伤害以物理伤害释放。两个数值均随连击点数提高：\n   {1}点：累积伤害的{2}，上限为攻击强度的{3}\n   {4}点：累积伤害的{5}，上限为攻击强度的{6}\n   {7}点：累积伤害的{8}，上限为攻击强度的{9}\n   {10}点：累积伤害的{11}，上限为攻击强度的{12}\n   {13}点：累积伤害的{14}，上限为攻击强度的{15}"
+      }
+    ],
+    "entries": [
+      52710
+    ]
+  },
+  {
+    "name_en": "Noxious Assault",
+    "name_zh": "剧毒突袭",
+    "templates": [
+      {
+        "en": "Strikes with both weapons, dealing {0} damage plus {1} of your Attack Power and applies poisons from both weapons. Awards {2} combo point.",
+        "zh": "双武器打击，造成{0}点伤害加上相当于你攻击强度{1}的伤害，并施加双武器上的毒药。奖励{2}个连击点数。"
+      }
+    ],
+    "entries": [
+      52714
+    ]
+  },
+  {
+    "name_en": "Sinister Pursuit",
+    "name_zh": "邪恶追猎",
+    "templates": [
+      {
+        "en": "Increases the movement speed of your demons by {0}.",
+        "zh": "使你恶魔的移动速度提高{0}。"
+      }
+    ],
+    "entries": [
+      52737,
+      52739
+    ]
+  },
+  {
+    "name_en": "Alone Against the World",
+    "name_zh": "独战天下",
+    "templates": [
+      {
+        "en": "While you have no pet under your control, all damage dealt is increased by {0}.",
+        "zh": "当你未控制任何宠物时，造成的所有伤害提高{0}。"
+      }
+    ],
+    "entries": [
+      52891,
+      52892
+    ]
+  },
+  {
+    "name_en": "Lock and Load",
+    "name_zh": "填弹完毕",
+    "templates": [
+      {
+        "en": "Your Steady Shot, Aimed Shot, and Arcane Shot critical strikes have a {0} chance to reset the cooldown of Aimed Shot and trigger Lock and Load. Lock and Load reduces the cast time of Aimed Shot by {1} sec and causes Aimed Shot to hit all enemies between you and the target. Lasts {2} sec or until Aimed Shot is cast.",
+        "zh": "你的稳固射击、瞄准射击和奥术射击爆击有{0}几率重置瞄准射击的冷却时间并触发填弹完毕。填弹完毕使瞄准射击的施法时间缩短{1}秒，并使瞄准射击命中你与目标之间的所有敌人。持续{2}秒或直到施放瞄准射击。"
+      }
+    ],
+    "entries": [
+      52920
+    ]
+  },
+  {
+    "name_en": "Book of Prayer",
+    "name_zh": "祈祷之书",
+    "templates": [
+      {
+        "en": "Whenever you cast a healing spell, you regain {0} of its mana cost if it is different from your previous healing spell.",
+        "zh": "每当你施放治疗法术时，若与上一次治疗法术不同，回复其法力消耗的{0}。"
+      }
+    ],
+    "entries": [
+      52943,
+      52944
+    ]
+  },
+  {
+    "name_en": "Ascendance",
+    "name_zh": "飞升",
+    "templates": [
+      {
+        "en": "Calls upon divine aid, purging all forms of crowd control and empowering your healing spells. Healing spells cost {0} less mana and their cast time is reduced by {1}. Allies healed gain Apotheosis, increasing healing received by {2} for {3} sec. Lasts {4} sec.",
+        "zh": "祈求神圣援助，清除所有控制效果并强化你的治疗法术。治疗法术法力消耗降低{0}，施法时间缩短{1}。被治疗的盟友获得神化，受到的治疗提高{2}，持续{3}秒。持续{4}秒。"
+      }
+    ],
+    "entries": [
+      52962
+    ]
+  },
+  {
+    "name_en": "Scent of Blood",
+    "name_zh": "血腥气息",
+    "templates": [
+      {
+        "en": "Your attacks have a {0} chance to send your pet into a rage, causing it to deal {1} additional damage for {2} sec.",
+        "zh": "你的攻击有{0}几率使宠物进入狂怒，造成的伤害提高{1}，持续{2}秒。"
+      }
+    ],
+    "entries": [
+      52994,
+      52996,
+      52997
+    ]
+  },
+  {
+    "name_en": "Master Strike",
+    "name_zh": "宗师打击",
+    "templates": [
+      {
+        "en": "Performs a skillful attack, dealing {0} weapon damage and causing an additional effect depending on your main hand weapon.\n\nMace: Disorients the target for {1} sec. Any damage caused will remove the effect.\nSword: Disarms the target for {2} sec.\nAxe: Immobilizes the target for {3} sec.\nPolearm: Deals an additional {4} weapon damage if the target is mounted and dismounts them.\nFist Weapon: Knocks down the target for {5} sec.\nStaff: Increases your chance to parry by {6} for {7} sec.\nDagger: Silences the target for {8} sec.",
+        "zh": "发动一次精湛攻击，造成{0}武器伤害，并根据主手武器产生额外效果。\n\n锤：迷惑目标{1}秒。任何伤害都会移除该效果。\n剑：缴械目标{2}秒。\n斧：定身目标{3}秒。\n长柄武器：若目标在坐骑上，额外造成{4}武器伤害并使其下马。\n拳套：击倒目标{5}秒。\n法杖：使你的招架几率提高{6}，持续{7}秒。\n匕首：沉默目标{8}秒。"
+      }
+    ],
+    "entries": [
+      54023
+    ]
+  },
+  {
+    "name_en": "Elemental Fury",
+    "name_zh": "元素之怒",
+    "templates": [
+      {
+        "en": "Increases damage done by your Frost, Fire, and Nature spells by {0}, and increases the critical strike damage bonus of Searing, Magma, and Fire Nova Totems, as well as your Fire, Frost, and Nature spells, by {1}.",
+        "zh": "使你的冰霜、火焰和自然法术造成的伤害提高{0}，并使灼热图腾、熔岩图腾和火焰新星图腾以及你的火焰、冰霜和自然法术的爆击伤害加成提高{1}。"
+      }
+    ],
+    "entries": [
+      56556,
+      56557
+    ]
+  },
+  {
+    "name_en": "Boundless Anger",
+    "name_zh": "无尽怒火",
+    "templates": [
+      {
+        "en": "Increases your maximum Rage by {0}.",
+        "zh": "使你的最大怒气提高{0}。"
+      }
+    ],
+    "entries": [
+      57709,
+      57710,
+      57711
+    ]
+  },
+  {
+    "name_en": "Demonic Swiftness",
+    "name_zh": "恶魔迅捷",
+    "templates": [
+      {
+        "en": "Reduces the casting time of your Imp's Firebolt spell by {0} sec and reduces the cooldown of your Succubus' Lash of Pain spell by {1} sec.",
+        "zh": "使小鬼火焰箭的施法时间缩短{0}秒，并使魅魔痛苦鞭笞的冷却时间缩短{1}秒。"
+      }
+    ],
+    "entries": [
+      57730,
+      57731
+    ]
+  },
+  {
+    "name_en": "Experimental Ammunition",
+    "name_zh": "实验弹药",
+    "templates": [
+      {
+        "en": "Your Aimed Shot deals an additional {0} of its damage as Fire, Arcane, or Nature damage, based on the active effect. Grants a further benefit depending on the element:\n- Explosive Ammunition: Your next Multi-Shot causes hits to explode, dealing {1} ranged weapon damage to enemies within {2} yards of the targets.\n- Poisonous Ammunition: Your next Serpent Sting deals {3} increased damage and applies a corrosive poison that reduces the target's armor by {4} for {5} sec.\n- Enchanted Ammunition: Your next Arcane Shot deals {6} increased damage and weakens the target's resistance to magic, increasing magic damage taken by {7} for {8} sec.",
+        "zh": "你的瞄准射击额外造成其伤害{0}的火焰、奥术或自然伤害，取决于激活效果。并根据元素获得进一步增益：\n- 爆破弹药：你的下一次多重射击命中时爆炸，造成{1}远程武器伤害，作用于目标周围{2}码内的敌人。\n- 剧毒弹药：你的下一次毒蛇钉刺伤害提高{3}，并施加腐蚀毒药，使目标护甲降低{4}，持续{5}秒。\n- 附魔弹药：你的下一次奥术射击伤害提高{6}，并削弱目标的魔法抗性，使其受到的魔法伤害提高{7}，持续{8}秒。"
+      }
+    ],
+    "entries": [
+      58108
+    ]
+  },
+  {
+    "name_en": "Call of Earth",
+    "name_zh": "大地的呼唤",
+    "templates": [
+      {
+        "en": "Increases the maximum charges of your Earth Shield by {0}. While Earth Shield is active, increases your chance to avoid interruption caused by damage while casting damaging spells by an additional {1}, and causes your direct damaging spells to replenish {2} charge.",
+        "zh": "使大地之盾的最大充能提高{0}。大地之盾激活时，使你施放伤害法术时因受到伤害而施法被打断的几率额外降低{1}，并使你的直接伤害法术回复{2}层充能。"
+      }
+    ],
+    "entries": [
+      58238,
+      58239
+    ]
+  }
+]

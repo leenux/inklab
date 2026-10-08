@@ -19,7 +19,7 @@ import {
  * push a sibling detail route, so the browser Back button walks the trail.
  */
 const TYPE_LABELS: Record<string, string> = {
-    npc: 'NPC',
+    npc: '生物',
     quest: '任务',
     item: '物品',
     spell: '法术',

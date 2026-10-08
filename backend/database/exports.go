@@ -187,6 +187,16 @@ var GetTriggerPrefix = helpers.GetTriggerPrefix
 var CleanName = helpers.CleanName
 var CleanItemName = helpers.CleanItemName
 var FormatSpellDesc = helpers.FormatSpellDesc
+var LocalizeClassName = helpers.LocalizeClassName
+var LocalizeTalentTabName = helpers.LocalizeTalentTabName
+var LocalizeSkillName = helpers.LocalizeSkillName
+var LocalizeSkillCategoryName = helpers.LocalizeSkillCategoryName
+var GetFactionReaction = helpers.GetFactionReaction
+
+const (
+	FactionMaskAlliance = helpers.FactionMaskAlliance
+	FactionMaskHorde    = helpers.FactionMaskHorde
+)
 
 // === Importer Factory Functions ===
 

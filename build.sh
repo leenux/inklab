@@ -20,7 +20,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
-VERSION="0.7.42"
+VERSION="0.7.43"
 PLATFORMS="windows,linux,macos"
 SKIP_DEPS=0
 OUT_DIR="${ROOT}/dist"

@@ -175,7 +175,7 @@ function NPCsTab({ onNavigate, tooltipHook }) {
                             ? `${selectedFamily ? selectedFamily.name : selectedCreatureType.name} (${filteredCreatures.length}${total > creatures.length ? ` / ${total}` : ''})`
                             : '请选择类型'
                     }
-                    placeholder="筛选 NPC..."
+                    placeholder="筛选生物..."
                     onFilterChange={setCreatureFilter}
                 />
 

@@ -521,7 +521,8 @@ func (a *App) MatchFlightmasters() {
 		if !ok {
 			return true // unknown faction: don't exclude it
 		}
-		return helpers.GetFactionReaction(m[0], m[1], m[2], target) != "hostile"
+		r := helpers.GetFactionReaction(m[0], m[1], m[2], target)
+		return r != "hostile" && r != "敌对"
 	}
 
 	// All creature spawn coords from MySQL (the world DB) — we need any creature,

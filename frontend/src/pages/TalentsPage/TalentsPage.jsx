@@ -694,10 +694,10 @@ function TalentsPage() {
                     </button>
                     <button
                         onClick={() => copy(octoUrl, 'octo')}
-                        title="复制为 OctoWoW 天赋计算器链接"
+                        title="复制为天赋计算器链接"
                         className="rounded border border-border-dark bg-bg-panel px-2.5 py-1 text-xs text-zinc-300 hover:bg-bg-hover"
                     >
-                        {copied === 'octo' ? '已复制！' : 'Octo 链接'}
+                        {copied === 'octo' ? '已复制！' : '天赋计算器链接'}
                     </button>
                     <span className="mx-1 text-zinc-700">|</span>
                     <input

@@ -20,7 +20,7 @@ import { useTooltipCtx } from '../hooks/useTooltipContext'
 const TABS: [string, string][] = [
     ['items', '物品'],
     ['sets', '套装'],
-    ['npcs', 'NPC'],
+    ['npcs', '生物'],
     ['quests', '任务'],
     ['objects', '物体'],
     ['zones', '区域'],
