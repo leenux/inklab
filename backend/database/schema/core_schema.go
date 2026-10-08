@@ -235,6 +235,8 @@ func CoreSchema() string {
 		id INTEGER PRIMARY KEY,
 		name TEXT NOT NULL,
 		description TEXT,
+		name_loc4 TEXT DEFAULT '',
+		description_loc4 TEXT DEFAULT '',
 		side INTEGER DEFAULT 0,
 		category_id INTEGER DEFAULT 0
 	);
@@ -404,6 +406,7 @@ func CoreSchema() string {
 		map_id INTEGER DEFAULT 0,
 		continent TEXT DEFAULT '',  -- continent map image key (WorldMapArea area name)
 		name TEXT NOT NULL,
+		name_loc4 TEXT DEFAULT '',
 		alliance INTEGER DEFAULT 0,
 		horde INTEGER DEFAULT 0,
 		px REAL DEFAULT 0,

@@ -45,10 +45,10 @@ const reqTextFor = (tree, points, t) => {
     const open = tierOpen(tree, points, t)
     if (ok && open) return ''
     const parts = []
-    if (!open) parts.push(`Requires ${5 * t.row} points in ${tree.name}`)
+    if (!open) parts.push(`需要在${tree.name}中投入 ${5 * t.row} 点天赋`)
     if (!ok) {
         const req = tree.talents.find((x) => x.id === t.reqTalent)
-        parts.push(`Requires ${req?.name || 'prerequisite'}`)
+        parts.push(`需要 ${req?.name || '前置天赋'}`)
     }
     return parts.join('\n')
 }
@@ -224,23 +224,23 @@ function TalentTooltip({ talent, rank, reqText, available, x, y }) {
             style={style}
         >
             <div className="font-semibold leading-tight text-wow-gold">
-                {talent.name || `Talent ${talent.id}`}
+                {talent.name || `天赋 ${talent.id}`}
             </div>
             <div className="mb-1 text-xs text-zinc-400">
-                Rank {rank}/{talent.maxRank}
+                等级 {rank}/{talent.maxRank}
             </div>
             {rankDesc && (
                 <div className="whitespace-pre-wrap leading-snug text-[#ffd100]">{rankDesc}</div>
             )}
             {nextDesc && (
                 <div className="mt-1.5 border-t border-zinc-700 pt-1.5">
-                    <div className="text-xs text-zinc-400">Next rank:</div>
+                    <div className="text-xs text-zinc-400">下一等级：</div>
                     <div className="whitespace-pre-wrap leading-snug text-zinc-300">{nextDesc}</div>
                 </div>
             )}
             {reqText && <div className="mt-1.5 whitespace-pre-line text-red-400">{reqText}</div>}
             {!reqText && rank < talent.maxRank && available && (
-                <div className="mt-1.5 text-xs text-emerald-400/80">Click to learn</div>
+                <div className="mt-1.5 text-xs text-emerald-400/80">点击学习</div>
             )}
         </div>
     )
@@ -496,7 +496,7 @@ function TalentsPage() {
             const t = talentById[id]
             return {
                 level: i + 10,
-                name: t?.name || `Talent ${id}`,
+                name: t?.name || `天赋 ${id}`,
                 icon: t?.icon,
                 rank: seen[id],
                 maxRank: t?.maxRank || 0,
@@ -566,7 +566,7 @@ function TalentsPage() {
                 d = null
             }
             if (!d?.trees) {
-                setImportErr('Unrecognized build code')
+                setImportErr('无法识别的配置代码')
                 return
             }
             const next = makeOrder(d.trees)
@@ -580,7 +580,7 @@ function TalentsPage() {
         const octo = parseOctoLink(raw)
         if (octo) {
             if (!classMap.byClass[octo.classKey]) {
-                setImportErr('Unrecognized build code')
+                setImportErr('无法识别的配置代码')
                 return
             }
             await apply(octo.classKey, (trees) => orderFromRanks(trees, octo.ranks))
@@ -590,13 +590,13 @@ function TalentsPage() {
         // Our own "<classId>-<body>" order-preserving code.
         const dash = raw.indexOf('-')
         if (dash === -1) {
-            setImportErr('Unrecognized build code')
+            setImportErr('无法识别的配置代码')
             return
         }
         const classKey = classMap.byId[parseInt(raw.slice(0, dash).trim(), 10)]
         const body = raw.slice(dash + 1).trim()
         if (!classKey) {
-            setImportErr('Unrecognized build code')
+            setImportErr('无法识别的配置代码')
             return
         }
         await apply(classKey, (trees) => decodeBuild(trees, body))
@@ -614,7 +614,7 @@ function TalentsPage() {
     // No class in the URL → redirect to the last class viewed this session (so
     // returning to Talents restores your build), else the first alphabetical.
     if (!selected) {
-        if (!classes.length) return <div className="px-5 py-10 text-zinc-500">Loading…</div>
+        if (!classes.length) return <div className="px-5 py-10 text-zinc-500">加载中…</div>
         const last = getLastTalentClass()
         const target = last && classMap.byClass[last] ? last : classes[0].class
         return <Navigate to="/talents/$class" params={{ class: target.toLowerCase() }} replace />
@@ -648,11 +648,11 @@ function TalentsPage() {
             {/* totals header */}
             <div className="flex items-center justify-between px-5 py-3">
                 <h2 className="text-xl font-semibold" style={{ color: info?.color }}>
-                    {info?.name} Talents
+                    {info?.name}天赋
                 </h2>
                 <div className="flex items-center gap-4">
                     <span className="text-zinc-300">
-                        Points:{' '}
+                        点数：{' '}
                         <span
                             className={
                                 totalSpent >= MAX_POINTS ? 'text-emerald-400' : 'text-wow-gold'
@@ -671,7 +671,7 @@ function TalentsPage() {
                         onClick={() => applyOrder([])}
                         className="rounded border border-border-dark bg-bg-panel px-3 py-1.5 text-sm text-zinc-300 hover:bg-bg-hover"
                     >
-                        Reset
+                        重置
                     </button>
                 </div>
             </div>
@@ -679,7 +679,7 @@ function TalentsPage() {
             {/* share / import build code */}
             {data?.trees && (
                 <div className="flex flex-wrap items-center justify-center gap-2 px-5 pb-3">
-                    <span className="text-xs text-zinc-500">Build:</span>
+                    <span className="text-xs text-zinc-500">配置：</span>
                     <input
                         readOnly
                         value={code}
@@ -690,14 +690,14 @@ function TalentsPage() {
                         onClick={() => copy(code, 'mine')}
                         className="rounded border border-border-dark bg-bg-panel px-2.5 py-1 text-xs text-zinc-300 hover:bg-bg-hover"
                     >
-                        {copied === 'mine' ? 'Copied!' : 'Copy'}
+                        {copied === 'mine' ? '已复制！' : '复制'}
                     </button>
                     <button
                         onClick={() => copy(octoUrl, 'octo')}
-                        title="Copy as an OctoWoW talent calculator link"
+                        title="复制为 OctoWoW 天赋计算器链接"
                         className="rounded border border-border-dark bg-bg-panel px-2.5 py-1 text-xs text-zinc-300 hover:bg-bg-hover"
                     >
-                        {copied === 'octo' ? 'Copied!' : 'Octo link'}
+                        {copied === 'octo' ? '已复制！' : 'Octo 链接'}
                     </button>
                     <span className="mx-1 text-zinc-700">|</span>
                     <input
@@ -707,14 +707,14 @@ function TalentsPage() {
                             if (importErr) setImportErr('')
                         }}
                         onKeyDown={(e) => e.key === 'Enter' && doImport()}
-                        placeholder="Paste a build code or talent link…"
+                        placeholder="粘贴配置代码或天赋链接…"
                         className="w-[240px] rounded border border-border-dark bg-bg-main px-2 py-1 font-mono text-xs text-white outline-none focus:border-wow-rare"
                     />
                     <button
                         onClick={doImport}
                         className="rounded bg-wow-rare/80 px-2.5 py-1 text-xs font-semibold text-white hover:bg-wow-rare"
                     >
-                        Import
+                        导入
                     </button>
                     {importErr && <span className="text-xs text-red-400">{importErr}</span>}
                 </div>
@@ -722,7 +722,7 @@ function TalentsPage() {
 
             {/* trees */}
             {loading ? (
-                <div className="px-5 py-10 text-zinc-500">Loading talents…</div>
+                <div className="px-5 py-10 text-zinc-500">加载天赋中…</div>
             ) : data?.trees ? (
                 <div className="flex flex-wrap justify-center gap-6 px-5 pb-8">
                     {data.trees
@@ -742,7 +742,7 @@ function TalentsPage() {
                         ))}
                 </div>
             ) : (
-                <div className="px-5 py-10 text-zinc-500">No talent data.</div>
+                <div className="px-5 py-10 text-zinc-500">暂无天赋数据。</div>
             )}
 
             {/* leveling order: the sequence points were spent in */}
@@ -750,14 +750,14 @@ function TalentsPage() {
                 <div className="flex justify-center px-5 pb-12">
                     <div className="w-full max-w-md">
                         <h3 className="mb-2 text-center text-sm font-semibold uppercase text-wow-gold">
-                            Leveling Order
+                            加点顺序
                         </h3>
                         <table className="w-full border-collapse text-sm">
                             <thead>
                                 <tr className="text-[11px] uppercase tracking-wide text-zinc-500">
-                                    <th className="w-12 px-2 py-1 text-left font-medium">Lvl</th>
+                                    <th className="w-12 px-2 py-1 text-left font-medium">等级</th>
                                     <th className="px-2 py-1 text-left font-medium" colSpan={2}>
-                                        Talent
+                                        天赋
                                     </th>
                                 </tr>
                             </thead>

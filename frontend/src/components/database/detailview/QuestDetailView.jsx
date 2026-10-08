@@ -50,14 +50,14 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
     }
 
     const getQuestType = (type) => {
-        const types = { 1: 'Group', 41: 'PVP', 62: 'Raid', 81: 'Dungeon' }
-        return types[type] || 'Normal'
+        const types = { 1: '小队', 41: 'PVP', 62: '团队', 81: '地下城' }
+        return types[type] || '普通'
     }
 
     if (loading) return <DetailLoading />
     if (isError) return <DetailError message={String(error)} onBack={onBack} />
-    if (!detail) return <DetailError message="Quest data is empty or invalid." onBack={onBack} />
-    if (!detail) return <DetailError message="Quest not found" onBack={onBack} />
+    if (!detail) return <DetailError message="任务数据为空或无效。" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到任务" onBack={onBack} />
 
     return (
         <DetailPageLayout onBack={onBack}>
@@ -67,16 +67,16 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                 subtitle={
                     <div className="flex items-center">
                         <span>
-                            Level {detail.questLevel} (Min {detail.minLevel}) -{' '}
+                            等级 {detail.questLevel}（最低 {detail.minLevel}）-{' '}
                             {getQuestType(detail.type)}
                         </span>
-                        {detail.side && detail.side !== 'Both' && (
+                        {detail.side && detail.side !== 'Both' && detail.side !== '双方' && (
                             <span
-                                className={`ml-3 inline-flex items-center gap-1.5 rounded border border-white/5 bg-black/20 px-2 py-0.5 ${detail.side === 'Horde' ? 'text-red-400' : 'text-blue-400'}`}
+                                className={`ml-3 inline-flex items-center gap-1.5 rounded border border-white/5 bg-black/20 px-2 py-0.5 ${(detail.side === 'Horde' || detail.side === '部落') ? 'text-red-400' : 'text-blue-400'}`}
                             >
                                 <img
                                     src={
-                                        detail.side === 'Horde'
+                                        (detail.side === 'Horde' || detail.side === '部落')
                                             ? '/Horde_15.webp'
                                             : '/Alliance_15.webp'
                                     }
@@ -95,16 +95,16 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                         <button
                             onClick={handleSync}
                             className="flex items-center gap-1 rounded border border-blue-700 bg-blue-600 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-blue-500"
-                            title="Re-download data from external sources"
+                            title="从外部数据源重新下载数据"
                         >
-                            <span>↻</span> Sync
+                            <span>↻</span> 同步
                         </button>
                         <a
                             href={`${DATABASE_BASE_URL}/?quest=${entry}`}
                             target="_blank"
                             rel="noreferrer"
                             className="rounded bg-purple-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-purple-600"
-                            title="View on Turtle WoW Database"
+                            title="在 Turtle WoW 数据库中查看"
                         >
                             🔗 OctoHead
                         </a>
@@ -115,22 +115,22 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1fr]">
                 {/* Main Content */}
                 <div className="space-y-8">
-                    <DetailSection title="Description">
+                    <DetailSection title="描述">
                         <p className="whitespace-pre-wrap leading-relaxed text-gray-300">
-                            {detail.details || 'No description available.'}
+                            {detail.details || '暂无描述。'}
                         </p>
                     </DetailSection>
 
-                    <DetailSection title="Objectives">
+                    <DetailSection title="目标">
                         <p className="whitespace-pre-wrap leading-relaxed text-gray-300">
-                            {detail.objectives || 'No objectives listed.'}
+                            {detail.objectives || '暂无目标。'}
                         </p>
 
                         {(detail.requiredItems?.length > 0 ||
                             detail.requiredObjectives?.length > 0) && (
                             <div className="mt-4 space-y-1">
                                 <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">
-                                    Required
+                                    需要
                                 </h4>
                                 {detail.requiredItems?.map((it) => (
                                     <div
@@ -144,7 +144,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                             className="font-semibold"
                                             style={{ color: getQualityColor(it.quality) }}
                                         >
-                                            {it.name || `Item #${it.entry}`}
+                                            {it.name || `物品 #${it.entry}`}
                                         </span>
                                         {it.count > 1 && (
                                             <span className="ml-auto font-mono text-xs text-gray-400">
@@ -160,7 +160,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         className="flex cursor-pointer items-center gap-2 rounded border border-white/5 bg-white/[0.02] p-2 transition-colors hover:bg-white/5"
                                     >
                                         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-wow-rare/30 bg-wow-rare/10 text-[9px] font-bold text-wow-rare">
-                                            {o.kind === 'object' ? 'OBJ' : 'NPC'}
+                                            {o.kind === 'object' ? '物体' : 'NPC'}
                                         </span>
                                         <span className="text-gray-200">
                                             {o.name || `#${o.entry}`}
@@ -177,12 +177,12 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     </DetailSection>
 
                     {/* Rewards */}
-                    <DetailSection title="Rewards">
+                    <DetailSection title="奖励">
                         <div className="space-y-4">
                             {detail.rewardMoney > 0 && (
                                 <div className="flex w-fit items-center gap-2 rounded border border-wow-gold/10 bg-wow-gold/5 px-3 py-1.5">
                                     <span className="text-xs font-bold uppercase text-gray-500">
-                                        Money:
+                                        金钱：
                                     </span>
                                     <Money copper={detail.rewardMoney} />
                                 </div>
@@ -190,9 +190,9 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             {detail.rewardXp > 0 && (
                                 <div className="flex w-fit items-center gap-2 rounded border border-wow-rare/10 bg-wow-rare/5 px-3 py-1.5 text-wow-rare">
                                     <span className="text-xs font-bold uppercase text-gray-500">
-                                        Experience:
+                                        经验：
                                     </span>
-                                    <span>{detail.rewardXp} XP</span>
+                                    <span>{detail.rewardXp} 经验</span>
                                 </div>
                             )}
                             {detail.reputation?.map((rep, idx) => (
@@ -201,7 +201,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                     className={`flex w-fit items-center gap-2 rounded border px-3 py-1.5 ${rep.value >= 0 ? 'border-green-400/10 bg-green-400/5 text-green-400' : 'border-red-400/10 bg-red-400/5 text-red-400'}`}
                                 >
                                     <span className="text-xs font-bold uppercase text-gray-500">
-                                        Reputation:
+                                        声望：
                                     </span>
                                     <span>
                                         {rep.value >= 0 ? '+' : ''}
@@ -229,12 +229,12 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                     }
                                 >
                                     <span className="text-xs font-bold uppercase text-gray-500">
-                                        Learn:
+                                        学习：
                                     </span>
                                     <ReqIcon name={detail.rewardSpellInfo.iconName} />
                                     <span className="font-medium text-wow-rare">
                                         {detail.rewardSpellInfo.name ||
-                                            `Spell #${detail.rewardSpellInfo.spellId}`}
+                                            `法术 #${detail.rewardSpellInfo.spellId}`}
                                     </span>
                                 </div>
                             )}
@@ -243,7 +243,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                         {detail.rewardItems?.length > 0 && (
                             <div className="mt-6">
                                 <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-                                    You will receive:
+                                    你将获得：
                                 </h4>
                                 <LootGrid>
                                     {detail.rewardItems.map((i) => renderRewardItem(i))}
@@ -254,7 +254,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                         {detail.choiceItems?.length > 0 && (
                             <div className="mt-6">
                                 <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
-                                    Choose one of:
+                                    以下任选其一：
                                 </h4>
                                 <LootGrid>
                                     {detail.choiceItems.map((i) => renderRewardItem(i))}
@@ -269,7 +269,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     {/* Quest Chain */}
                     <div>
                         <h3 className="mb-3 border-b border-wow-gold/20 pb-1 font-bold text-wow-gold">
-                            Quest Chain
+                            任务链
                         </h3>
                         {detail.series?.length > 0 ? (
                             <div className="space-y-1">
@@ -303,7 +303,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                 })}
                             </div>
                         ) : (
-                            <div className="text-sm italic text-gray-600">Standalone quest.</div>
+                            <div className="text-sm italic text-gray-600">独立任务。</div>
                         )}
                     </div>
 
@@ -311,7 +311,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     {detail.prevQuests?.length > 0 && (
                         <div>
                             <h3 className="mb-3 border-b border-wow-gold/20 pb-1 font-bold text-wow-gold">
-                                Prerequisites
+                                前置任务
                             </h3>
                             <div className="space-y-2">
                                 {detail.prevQuests.map((q) => (
@@ -331,12 +331,12 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     {/* Requirements */}
                     <div>
                         <h3 className="mb-3 border-b border-wow-gold/20 pb-1 font-bold text-wow-gold">
-                            Requirements
+                            要求
                         </h3>
                         <div className="space-y-2 text-[13px] text-gray-300">
                             {(detail.raceNames || detail.requiredRaces > 0) && (
                                 <div className="flex justify-between border-b border-white/5 pb-1">
-                                    <span>Races:</span>
+                                    <span>种族：</span>
                                     <span className="max-w-[200px] pl-4 text-right font-mono text-xs leading-tight text-white">
                                         {detail.raceNames || detail.requiredRaces}
                                     </span>
@@ -344,7 +344,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             )}
                             {(detail.classes?.length > 0 || detail.requiredClasses > 0) && (
                                 <div className="flex justify-between border-b border-white/5 pb-1">
-                                    <span>Classes:</span>
+                                    <span>职业：</span>
                                     <span className="max-w-[200px] pl-4 text-right font-mono text-xs leading-tight text-white">
                                         {detail.classes?.length > 0
                                             ? detail.classes.map((c, i) => (
@@ -367,19 +367,19 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             )}
                             {detail.srcItemId > 0 && (
                                 <div className="flex items-center gap-2">
-                                    <span>Starts from:</span>
+                                    <span>起始于：</span>
                                     <a
                                         className="cursor-pointer rounded border border-wow-gold/20 bg-wow-gold/5 px-2 py-0.5 text-wow-gold hover:underline"
                                         onClick={() => onNavigate('item', detail.srcItemId)}
                                     >
-                                        [Item {detail.srcItemId}]
+                                        [物品 {detail.srcItemId}]
                                     </a>
                                 </div>
                             )}
                             {!detail.requiredRaces &&
                                 !detail.requiredClasses &&
                                 !detail.srcItemId && (
-                                    <div className="italic text-gray-600">None</div>
+                                    <div className="italic text-gray-600">无</div>
                                 )}
                         </div>
                     </div>
@@ -387,13 +387,13 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     {/* Relations */}
                     <div>
                         <h3 className="mb-3 border-b border-wow-gold/20 pb-1 font-bold text-wow-gold">
-                            Relations
+                            关联
                         </h3>
                         <div className="space-y-4">
                             {detail.starters?.length > 0 && (
                                 <div>
                                     <h4 className="mb-2 text-xs font-bold uppercase tracking-tighter text-gray-500">
-                                        Starts with:
+                                        开始于：
                                     </h4>
                                     <div className="space-y-1">
                                         {detail.starters.map((s) => (
@@ -409,7 +409,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                                 }`}
                                             >
                                                 {s.name}{' '}
-                                                <span className="opacity-50">({s.type})</span>
+                                                <span className="opacity-50">({({ npc: 'NPC', object: '物体', item: '物品' })[s.type] || s.type})</span>
                                             </div>
                                         ))}
                                     </div>
@@ -418,7 +418,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             {detail.enders?.length > 0 && (
                                 <div>
                                     <h4 className="mb-2 text-xs font-bold uppercase tracking-tighter text-gray-500">
-                                        Ends with:
+                                        结束于：
                                     </h4>
                                     <div className="space-y-1">
                                         {detail.enders.map((s) => (
@@ -434,7 +434,7 @@ const QuestDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                                 }`}
                                             >
                                                 {s.name}{' '}
-                                                <span className="opacity-50">({s.type})</span>
+                                                <span className="opacity-50">({({ npc: 'NPC', object: '物体', item: '物品' })[s.type] || s.type})</span>
                                             </div>
                                         ))}
                                     </div>

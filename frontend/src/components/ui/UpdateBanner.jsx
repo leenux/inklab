@@ -70,22 +70,22 @@ export function UpdateBanner() {
         <div className="flex items-center justify-between gap-4 border-b border-wow-gold/40 bg-wow-gold/15 px-5 py-2 text-sm text-wow-gold">
             <span>
                 {phase === 'downloading' && (
-                    <>Downloading <strong>{info.latest}</strong>{pct !== null ? ` — ${pct}%` : '…'}</>
+                    <>正在下载 <strong>{info.latest}</strong>{pct !== null ? ` — ${pct}%` : '…'}</>
                 )}
-                {phase === 'restarting' && <>Update installed — restarting…</>}
+                {phase === 'restarting' && <>更新已安装 — 正在重启…</>}
                 {phase === 'error' && (
                     <>
-                        Update failed: {error} — you can retry or{' '}
+                        更新失败：{error} — 你可以重试或{' '}
                         <a href={info.url} target="_blank" rel="noreferrer" className="underline">
-                            download manually
+                            手动下载
                         </a>
                         .
                     </>
                 )}
                 {phase === 'idle' && (
                     <>
-                        A new version <strong>{info.latest}</strong> is available — you're on{' '}
-                        {info.current}.
+                        发现新版本 <strong>{info.latest}</strong> — 当前版本为{' '}
+                        {info.current}。
                     </>
                 )}
             </span>
@@ -95,7 +95,7 @@ export function UpdateBanner() {
                         onClick={applyUpdate}
                         className="font-semibold underline hover:no-underline"
                     >
-                        {phase === 'error' ? 'Retry update' : 'Update & restart'}
+                        {phase === 'error' ? '重试更新' : '更新并重启'}
                     </button>
                 )}
                 {phase === 'idle' && (
@@ -109,14 +109,14 @@ export function UpdateBanner() {
                                 : 'font-semibold underline hover:no-underline'
                         }
                     >
-                        Download
+                        下载
                     </a>
                 )}
                 {phase !== 'downloading' && phase !== 'restarting' && (
                     <button
                         onClick={dismiss}
-                        aria-label="Dismiss for a week"
-                        title="Dismiss for a week"
+                        aria-label="一周内不再提示"
+                        title="一周内不再提示"
                         className="text-base leading-none text-wow-gold/70 hover:text-wow-gold"
                     >
                         ✕

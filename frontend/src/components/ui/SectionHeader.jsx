@@ -5,7 +5,7 @@ import React, { useState } from 'react'
  */
 export const SectionHeader = ({
     title,
-    placeholder = 'Filter...',
+    placeholder = '筛选...',
     onFilterChange,
     titleColor,
     className = '',

@@ -33,9 +33,9 @@ const ItemTooltip = ({
                     className="text-sm font-bold leading-tight"
                     style={{ color: getQualityColor(item?.quality) }}
                 >
-                    {item?.name || item?.itemName || 'Unknown Item'}
+                    {item?.name || item?.itemName || '未知物品'}
                 </div>
-                <div className="animate-pulse text-[11px] italic text-gray-500">Loading...</div>
+                <div className="animate-pulse text-[11px] italic text-gray-500">加载中...</div>
             </div>
         )
     }
@@ -82,7 +82,7 @@ const ItemTooltip = ({
             {tooltip.binding && <div className="leading-tight text-white">{tooltip.binding}</div>}
 
             {/* Unique */}
-            {tooltip.unique && <div className="leading-tight text-white">Unique</div>}
+            {tooltip.unique && <div className="leading-tight text-white">唯一</div>}
 
             {/* Slot / Type */}
             {(() => {
@@ -90,8 +90,12 @@ const ItemTooltip = ({
                 const shouldShowType =
                     tooltip.typeName &&
                     tooltip.typeName !== 'Consumable' &&
+                    tooltip.typeName !== '消耗品' &&
                     tooltip.typeName !== 'Junk' &&
-                    tooltip.typeName !== 'Miscellaneous'
+                    tooltip.typeName !== '垃圾' &&
+                    tooltip.typeName !== 'Miscellaneous' &&
+                    tooltip.typeName !== '其它' &&
+                    tooltip.typeName !== '杂项'
                 const hasContent = tooltip.slotName || shouldShowType
                 return hasContent ? (
                     <div className="flex w-full flex-row items-center justify-between leading-tight text-white">
@@ -117,7 +121,7 @@ const ItemTooltip = ({
 
             {/* Armor */}
             {tooltip.armor > 0 && (
-                <div className="leading-tight text-white">{tooltip.armor} Armor</div>
+                <div className="leading-tight text-white">{tooltip.armor} 护甲</div>
             )}
 
             {/* Stats */}
@@ -163,7 +167,7 @@ const ItemTooltip = ({
                 legacy plain string if present. */}
             {tooltip.classReqs?.length > 0 ? (
                 <div className="leading-tight text-white">
-                    Classes:{' '}
+                    职业：{' '}
                     {tooltip.classReqs.map((c, i) => (
                         <span key={c.name}>
                             <span style={{ color: c.color || undefined }}>{c.name}</span>
@@ -178,14 +182,14 @@ const ItemTooltip = ({
             {/* Required Level */}
             {tooltip.requiredLevel > 1 && (
                 <div className="leading-tight text-white">
-                    Requires Level {tooltip.requiredLevel}
+                    需要等级 {tooltip.requiredLevel}
                 </div>
             )}
 
             {/* Reputation requirement, e.g. "Requires The League of Arathor - Revered" */}
             {tooltip.reqRepFaction && (
                 <div className="leading-tight text-white">
-                    Requires {tooltip.reqRepFaction}
+                    需要 {tooltip.reqRepFaction}
                     {tooltip.reqRepStanding ? ` - ${tooltip.reqRepStanding}` : ''}
                 </div>
             )}
@@ -194,12 +198,12 @@ const ItemTooltip = ({
                 and a specialization like "Requires Armorsmith" (recipes). */}
             {tooltip.reqSkill && (
                 <div className="leading-tight text-white">
-                    Requires {tooltip.reqSkill}
+                    需要 {tooltip.reqSkill}
                     {tooltip.reqSkillRank > 0 ? ` (${tooltip.reqSkillRank})` : ''}
                 </div>
             )}
             {tooltip.reqSpell && (
-                <div className="leading-tight text-white">Requires {tooltip.reqSpell}</div>
+                <div className="leading-tight text-white">需要 {tooltip.reqSpell}</div>
             )}
 
             {/* Spell Effects (green) - WoW style: after stats/durability. In the
@@ -256,7 +260,7 @@ const ItemTooltip = ({
             {/* Sell Price */}
             {tooltip.sellPrice > 0 && (
                 <div className="mt-1 flex items-center gap-1 text-[11px] leading-tight text-white">
-                    <span className="text-gray-500">Sell Price:</span>
+                    <span className="text-gray-500">售价：</span>
                     <Money copper={tooltip.sellPrice} />
                 </div>
             )}

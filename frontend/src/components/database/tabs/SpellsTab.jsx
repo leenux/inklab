@@ -56,7 +56,7 @@ function SpellsTab({ onNavigate, tooltipHook }) {
     const [spellFilter, setSpellFilter] = useStickyState('spells.spellFilter', '')
 
     // "Class Skills" gets an extra Class tier: Class Skills -> Warlock -> Affliction
-    const isClassCategory = selectedCategory?.name === 'Class Skills'
+    const isClassCategory = selectedCategory?.name === 'Class Skills' || selectedCategory?.name === '职业技能'
 
     // Data via domain query hooks, keyed by the current selection. Each cascading
     // query enables only once its parent is selected; switching selection swaps
@@ -110,7 +110,7 @@ function SpellsTab({ onNavigate, tooltipHook }) {
     // Whether the middle pane is showing the class picker (vs. skill lines)
     const showingClassPicker = isClassCategory && !selectedClass
 
-    let middleTitle = 'Select Category'
+    let middleTitle = '请选择分类'
     if (selectedCategory) {
         if (showingClassPicker) middleTitle = `${selectedCategory.name} (${filteredClasses.length})`
         else if (isClassCategory && selectedClass)
@@ -123,8 +123,8 @@ function SpellsTab({ onNavigate, tooltipHook }) {
             {/* 1. Categories */}
             <SidebarPanel>
                 <SectionHeader
-                    title={`Categories (${filteredCategories.length})`}
-                    placeholder="Filter categories..."
+                    title={`分类 (${filteredCategories.length})`}
+                    placeholder="筛选分类..."
                     onFilterChange={setCategoryFilter}
                 />
                 <ScrollList>
@@ -144,7 +144,7 @@ function SpellsTab({ onNavigate, tooltipHook }) {
             <SidebarPanel>
                 <SectionHeader
                     title={middleTitle}
-                    placeholder={showingClassPicker ? 'Filter classes...' : 'Filter skills...'}
+                    placeholder={showingClassPicker ? '筛选职业...' : '筛选技能...'}
                     onFilterChange={setSkillFilter}
                 />
                 <ScrollList>
@@ -166,7 +166,7 @@ function SpellsTab({ onNavigate, tooltipHook }) {
                     {/* Back to classes */}
                     {isClassCategory && selectedClass && (
                         <ListItem onClick={backToClasses}>
-                            <span className="text-gray-400">← All classes</span>
+                            <span className="text-gray-400">← 全部职业</span>
                         </ListItem>
                     )}
 
@@ -195,9 +195,9 @@ function SpellsTab({ onNavigate, tooltipHook }) {
                     title={
                         selectedSkill
                             ? `${selectedSkill.name} (${filteredSpells.length})`
-                            : 'Select Skill'
+                            : '请选择技能'
                     }
-                    placeholder="Filter spells..."
+                    placeholder="筛选法术..."
                     onFilterChange={setSpellFilter}
                     titleColor={SPELL_COLOR}
                 />
@@ -207,13 +207,13 @@ function SpellsTab({ onNavigate, tooltipHook }) {
                         className="flex flex-1 animate-pulse items-center justify-center italic"
                         style={{ color: SPELL_COLOR }}
                     >
-                        Loading spells...
+                        加载法术中...
                     </div>
                 )}
 
                 {!selectedSkill && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a skill to browse spells.
+                        选择一个技能以浏览法术。
                     </div>
                 )}
 
@@ -233,7 +233,7 @@ function SpellsTab({ onNavigate, tooltipHook }) {
                                         spellColor={SPELL_COLOR}
                                     />
                                 ) : (
-                                    <EntityIcon label="SPL" color={SPELL_COLOR} size="md" />
+                                    <EntityIcon label="法术" color={SPELL_COLOR} size="md" />
                                 )}
 
                                 <span className="min-w-[50px] font-mono text-[11px] text-gray-600">

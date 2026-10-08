@@ -109,14 +109,14 @@ function NPCsTab({ onNavigate, tooltipHook }) {
             {/* Creature Types (spans 1 column) */}
             <SidebarPanel className="col-span-1">
                 <SectionHeader
-                    title={`Creature Types (${filteredTypes.length})`}
-                    placeholder="Filter types..."
+                    title={`生物类型 (${filteredTypes.length})`}
+                    placeholder="筛选类型..."
                     onFilterChange={setTypeFilter}
                 />
                 <ScrollList>
                     {typesQuery.isLoading && (
                         <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                            Loading types...
+                            加载类型中...
                         </div>
                     )}
                     {filteredTypes.map((type) => (
@@ -138,14 +138,14 @@ function NPCsTab({ onNavigate, tooltipHook }) {
             {isBeast && families.length > 0 && (
                 <SidebarPanel className="col-span-1">
                     <SectionHeader
-                        title={`Families (${filteredFamilies.length})`}
-                        placeholder="Filter families..."
+                        title={`家族 (${filteredFamilies.length})`}
+                        placeholder="筛选家族..."
                         onFilterChange={setFamilyFilter}
                     />
                     <ScrollList>
                         <ListItem active={!selectedFamily} onClick={() => setSelectedFamily(null)}>
                             <span className="flex w-full justify-between">
-                                <span>All {selectedCreatureType.name}</span>
+                                <span>全部{selectedCreatureType.name}</span>
                                 <span className="text-xs text-gray-600">
                                     ({selectedCreatureType.count})
                                 </span>
@@ -172,16 +172,16 @@ function NPCsTab({ onNavigate, tooltipHook }) {
                 <SectionHeader
                     title={
                         selectedCreatureType
-                            ? `${selectedFamily ? selectedFamily.name : selectedCreatureType.name} (${filteredCreatures.length}${total > creatures.length ? ` of ${total}` : ''})`
-                            : 'Select a Type'
+                            ? `${selectedFamily ? selectedFamily.name : selectedCreatureType.name} (${filteredCreatures.length}${total > creatures.length ? ` / ${total}` : ''})`
+                            : '请选择类型'
                     }
-                    placeholder="Filter NPCs..."
+                    placeholder="筛选 NPC..."
                     onFilterChange={setCreatureFilter}
                 />
 
                 {creaturesQuery.isLoading && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading creatures...
+                        加载生物中...
                     </div>
                 )}
 
@@ -230,7 +230,7 @@ function NPCsTab({ onNavigate, tooltipHook }) {
 
                                     {/* Stats */}
                                     <div className="ml-auto flex items-center gap-3 text-xs text-gray-500">
-                                        {creature.rankName !== 'Normal' && (
+                                        {creature.rankName !== 'Normal' && creature.rankName !== '普通' && (
                                             <span
                                                 className="rounded border px-1.5 py-0.5"
                                                 style={{
@@ -242,7 +242,7 @@ function NPCsTab({ onNavigate, tooltipHook }) {
                                             </span>
                                         )}
                                         <span className="font-mono">
-                                            HP:{' '}
+                                            生命：{' '}
                                             <b className="text-gray-400">
                                                 {creature.healthMax.toLocaleString()}
                                             </b>
@@ -255,14 +255,14 @@ function NPCsTab({ onNavigate, tooltipHook }) {
                         {/* Loading more indicator */}
                         {creaturesQuery.isFetchingNextPage && (
                             <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                                Loading more...
+                                加载更多...
                             </div>
                         )}
 
                         {/* Has more indicator */}
                         {creaturesQuery.hasNextPage && !creaturesQuery.isFetchingNextPage && (
                             <div className="p-2 text-center text-sm text-gray-600">
-                                Scroll for more ({creatures.length} of {total})
+                                向下滚动加载更多（{creatures.length} / {total}）
                             </div>
                         )}
                     </ScrollList>
@@ -270,7 +270,7 @@ function NPCsTab({ onNavigate, tooltipHook }) {
 
                 {!selectedCreatureType && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a creature type to browse NPCs
+                        选择一个生物类型以浏览 NPC
                     </div>
                 )}
             </ContentPanel>

@@ -65,7 +65,7 @@ export function IconHoverPopup({ name, counts, anchor, onEnter, onLeave, onOpen,
                         e.stopPropagation()
                         onOpen()
                     }}
-                    title="Open icon page"
+                    title="打开图标页面"
                 >
                     <img
                         src={img.src || QUESTION_MARK_ICON}
@@ -81,7 +81,7 @@ export function IconHoverPopup({ name, counts, anchor, onEnter, onLeave, onOpen,
                     <button
                         className="shrink-0 rounded border border-gray-700 bg-black/50 px-1.5 py-1 text-[11px] text-gray-400 transition-colors hover:border-wow-gold/60 hover:text-white"
                         onClick={copy}
-                        title="Copy icon name"
+                        title="复制图标名称"
                     >
                         {copied ? '✓' : '⧉'}
                     </button>
@@ -91,7 +91,7 @@ export function IconHoverPopup({ name, counts, anchor, onEnter, onLeave, onOpen,
                     {!loaded ? (
                         <span className="italic text-gray-600">...</span>
                     ) : itemCount + spellCount === 0 ? (
-                        <span className="italic text-gray-500">unused</span>
+                        <span className="italic text-gray-500">未使用</span>
                     ) : (
                         <>
                             {itemCount > 0 && (
@@ -102,7 +102,7 @@ export function IconHoverPopup({ name, counts, anchor, onEnter, onLeave, onOpen,
                                         onOpen('items')
                                     }}
                                 >
-                                    {itemCount} item{itemCount !== 1 ? 's' : ''}
+                                    {itemCount} 个物品
                                 </div>
                             )}
                             {spellCount > 0 && (
@@ -113,7 +113,7 @@ export function IconHoverPopup({ name, counts, anchor, onEnter, onLeave, onOpen,
                                         onOpen('spells')
                                     }}
                                 >
-                                    {spellCount} spell{spellCount !== 1 ? 's' : ''}
+                                    {spellCount} 个法术
                                 </div>
                             )}
                         </>

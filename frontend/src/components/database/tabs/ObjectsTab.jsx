@@ -47,14 +47,14 @@ function ObjectsTab({ onNavigate }) {
             {/* Object Types */}
             <SidebarPanel className="col-span-1">
                 <SectionHeader
-                    title={`Object Types (${filteredTypes.length})`}
-                    placeholder="Filter types..."
+                    title={`物体类型 (${filteredTypes.length})`}
+                    placeholder="筛选类型..."
                     onFilterChange={setTypeFilter}
                 />
                 <ScrollList>
                     {typesQuery.isLoading && (
                         <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                            Loading types...
+                            加载类型中...
                         </div>
                     )}
                     {filteredTypes.map((type) => (
@@ -78,15 +78,15 @@ function ObjectsTab({ onNavigate }) {
                     title={
                         selectedObjectType
                             ? `${selectedObjectType.name} (${filteredObjects.length})`
-                            : 'Select a Type'
+                            : '请选择类型'
                     }
-                    placeholder="Filter objects..."
+                    placeholder="筛选物体..."
                     onFilterChange={setObjectFilter}
                 />
 
                 {objectsQuery.isLoading && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading objects...
+                        加载物体中...
                     </div>
                 )}
 
@@ -99,7 +99,7 @@ function ObjectsTab({ onNavigate }) {
                                 style={{ borderLeftColor: OBJECT_COLOR }}
                                 onClick={() => onNavigate?.('object', obj.entry)}
                             >
-                                <EntityIcon label="OBJ" color={OBJECT_COLOR} size="md" />
+                                <EntityIcon label="物体" color={OBJECT_COLOR} size="md" />
 
                                 <span className="min-w-[50px] font-mono text-[11px] text-gray-600">
                                     [{obj.entry}]
@@ -113,7 +113,7 @@ function ObjectsTab({ onNavigate }) {
                                 </span>
 
                                 <span className="ml-auto text-xs text-gray-500">
-                                    Type: {obj.typeName || obj.type} | Size: {obj.size.toFixed(1)}
+                                    类型：{obj.typeName || obj.type} | 大小：{obj.size.toFixed(1)}
                                 </span>
                             </div>
                         ))}
@@ -122,7 +122,7 @@ function ObjectsTab({ onNavigate }) {
 
                 {!selectedObjectType && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select an object type to browse
+                        选择一个物体类型以浏览
                     </div>
                 )}
             </ContentPanel>

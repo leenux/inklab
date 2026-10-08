@@ -94,7 +94,7 @@ func (r *AtlasLootRepository) GetTables(categoryName, moduleName string) ([]mode
 func (r *AtlasLootRepository) GetLootItems(catName, modName, tableKey string) ([]*models.LootEntry, error) {
 	rows, err := r.db.Query(`
 		SELECT al.item_id, al.drop_chance, al.sort_order, 
-		       COALESCE(NULLIF(al.override_name, ''), i.name, ''), 
+		       CASE WHEN al.override_name IS NOT NULL AND TRIM(al.override_name)<>'' AND al.override_name <> i.name THEN al.override_name ELSE COALESCE(NULLIF(i.name_loc4,''), i.name, '') END, 
 		       COALESCE(NULLIF(al.override_icon, ''), idi.icon, ''), 
 		       COALESCE(i.quality, al.quality, 0),
 		       al.spell_id

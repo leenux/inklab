@@ -106,7 +106,7 @@ export const StatBadge = ({ label, value, color }) => (
  */
 export const DetailLoading = () => (
     <div className="flex flex-1 items-center justify-center bg-bg-dark">
-        <div className="animate-pulse text-lg italic text-wow-gold">Loading...</div>
+        <div className="animate-pulse text-lg italic text-wow-gold">加载中...</div>
     </div>
 )
 
@@ -118,7 +118,7 @@ export const DetailError = ({ message, onBack }) => (
         <div className="text-lg font-bold text-red-500">{message}</div>
         {onBack && (
             <WowButton variant="back" onClick={onBack}>
-                ← Back
+                ← 返回
             </WowButton>
         )}
     </div>

@@ -19,7 +19,7 @@ const PANEL_H = 668
 const WORLD_ORDER = { Kalimdor: 0, Azeroth: 1 }
 // The map-0 WorldMapArea name is "Azeroth", but the continent is Eastern
 // Kingdoms. Relabel for display only — "Azeroth" stays the map-image key.
-const CONTINENT_LABEL = { Azeroth: 'Eastern Kingdoms' }
+const CONTINENT_LABEL = { Azeroth: '东部王国', Kalimdor: '卡利姆多' }
 const continentLabel = (name) => CONTINENT_LABEL[name] || name
 
 const nodeColor = (n) =>
@@ -27,7 +27,7 @@ const nodeColor = (n) =>
 const visibleForFaction = (n, f) => (f === 'alliance' ? n.alliance : f === 'horde' ? n.horde : true)
 const transportColor = (t) => (t.type === 'zeppelin' ? C_ZEP : C_BOAT)
 const TRANSPORT_ICON = { boat: 'inv_garrison_cargoship', zeppelin: 'ability_mount_gyrocoptor' }
-const transportLabel = (t) => (t.type === 'zeppelin' ? 'Zeppelin' : 'Boat')
+const transportLabel = (t) => (t.type === 'zeppelin' ? '飞艇' : '船')
 
 // ---- pan/zoom viewport -----------------------------------------------------
 
@@ -345,21 +345,21 @@ function FlightsView() {
             {/* controls */}
             <div className="flex flex-wrap items-center gap-4 border-b border-border-dark bg-bg-main px-5 py-3">
                 <div className="flex gap-2">
-                    {tabBtn('world', 'World', isWorld)}
+                    {tabBtn('world', '世界', isWorld)}
                     {continents.map((c) =>
                         tabBtn(c.mapId, continentLabel(c.name), view === c.mapId),
                     )}
                 </div>
                 <div className="flex gap-2">
-                    {factionBtn('all', 'All', '#e5e7eb')}
-                    {factionBtn('alliance', 'Alliance', C_ALLIANCE)}
-                    {factionBtn('horde', 'Horde', C_HORDE)}
+                    {factionBtn('all', '全部', '#e5e7eb')}
+                    {factionBtn('alliance', '联盟', C_ALLIANCE)}
+                    {factionBtn('horde', '部落', C_HORDE)}
                 </div>
                 <div className="flex gap-1.5">
-                    {layerChip('flights', 'Flights', C_NEUTRAL)}
-                    {layerChip('transports', 'Transports', C_BOAT)}
+                    {layerChip('flights', '飞行路线', C_NEUTRAL)}
+                    {layerChip('transports', '交通工具', C_BOAT)}
                 </div>
-                <span className="ml-auto text-xs text-zinc-500">scroll to zoom · drag to pan</span>
+                <span className="ml-auto text-xs text-zinc-500">滚轮缩放 · 拖动平移</span>
             </div>
 
             {/* map */}
@@ -370,18 +370,17 @@ function FlightsView() {
                         zoneKey={zone.key}
                         backLabel={
                             continentLabel(continents.find((c) => c.mapId === zone.mapId)?.name) ||
-                            'map'
+                            '地图'
                         }
                         onBack={() => setZone(null)}
                     />
                 ) : loading ? (
-                    <div className="py-10 text-center text-zinc-500">Loading map…</div>
+                    <div className="py-10 text-center text-zinc-500">加载地图中…</div>
                 ) : continents.length === 0 ? (
                     <div className="py-10 text-center text-zinc-500">
-                        No map data found.
+                        未找到地图数据。
                         <div className="mt-1 text-xs">
-                            If you just updated InkLab, restart the app; otherwise run a Client Data
-                            import.
+                            如果你刚更新了 InkLab，请重启应用；否则请运行客户端数据导入。
                         </div>
                     </div>
                 ) : (
@@ -549,9 +548,9 @@ function ZoneView({ mapId, zoneKey, backLabel, onBack }) {
                 <span className="font-semibold text-wow-gold">{zoneKey}</span>
             </div>
             {loading ? (
-                <div className="py-10 text-center text-zinc-500">Loading zone…</div>
+                <div className="py-10 text-center text-zinc-500">加载区域中…</div>
             ) : !src ? (
-                <div className="py-10 text-center text-zinc-500">No map image for “{zoneKey}”.</div>
+                <div className="py-10 text-center text-zinc-500">“{zoneKey}”暂无地图图片。</div>
             ) : (
                 <div className="flex-1">
                     <PanZoom canvasW={PANEL_W} canvasH={PANEL_H} fitKey={zoneKey}>
@@ -607,12 +606,12 @@ function ZoneView({ mapId, zoneKey, backLabel, onBack }) {
 function FlightTooltip({ node, dests, x, y }) {
     const faction =
         node.alliance && node.horde
-            ? 'Neutral'
+            ? '中立'
             : node.alliance
-              ? 'Alliance'
+              ? '联盟'
               : node.horde
-                ? 'Horde'
-                : 'Neutral'
+                ? '部落'
+                : '中立'
     const color = node.alliance && node.horde ? C_NEUTRAL : node.alliance ? C_ALLIANCE : C_HORDE
     const style = {
         left: Math.min(x + 16, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 280),
@@ -635,16 +634,16 @@ function FlightTooltip({ node, dests, x, y }) {
                     node.allianceNpcName !== node.hordeNpcName ? (
                         <>
                             <div>
-                                <span style={{ color: C_ALLIANCE }}>FM:</span>{' '}
+                                <span style={{ color: C_ALLIANCE }}>飞行管理员：</span>{' '}
                                 {node.allianceNpcName}
                             </div>
                             <div>
-                                <span style={{ color: C_HORDE }}>FM:</span> {node.hordeNpcName}
+                                <span style={{ color: C_HORDE }}>飞行管理员：</span> {node.hordeNpcName}
                             </div>
                         </>
                     ) : (
                         <div>
-                            <span className="text-zinc-400">Flight Master:</span>{' '}
+                            <span className="text-zinc-400">飞行管理员：</span>{' '}
                             {node.allianceNpcName || node.hordeNpcName}
                         </div>
                     )}
@@ -652,7 +651,7 @@ function FlightTooltip({ node, dests, x, y }) {
             )}
             {sorted.length ? (
                 <>
-                    <div className="text-xs text-zinc-400">Connects to ({sorted.length}):</div>
+                    <div className="text-xs text-zinc-400">可前往（{sorted.length}）：</div>
                     <ul className="mt-0.5 max-h-48 overflow-hidden text-xs leading-snug text-zinc-300">
                         {sorted.map((d) => (
                             <li key={d}>• {d}</li>
@@ -660,7 +659,7 @@ function FlightTooltip({ node, dests, x, y }) {
                     </ul>
                 </>
             ) : (
-                <div className="text-xs text-zinc-500">No outgoing routes for this faction.</div>
+                <div className="text-xs text-zinc-500">该阵营没有可出发的路线。</div>
             )}
         </div>
     )
@@ -685,7 +684,7 @@ function TransportTooltip({ t, x, y }) {
                 <span className="text-wow-gold">{t.dest}</span>
             </div>
             {!isFiniteSame(t) && (
-                <div className="mt-0.5 text-xs text-zinc-500">cross-continent</div>
+                <div className="mt-0.5 text-xs text-zinc-500">跨大陆</div>
             )}
         </div>
     )
@@ -706,10 +705,10 @@ function MapsPage() {
         <div className="flex h-full flex-col overflow-hidden bg-bg-dark">
             <TabBar>
                 <TabButton active={tab === 'flights'} onClick={() => setTab('flights')}>
-                    Flight Paths
+                    飞行路线
                 </TabButton>
                 <TabButton active={tab === 'gathering'} onClick={() => setTab('gathering')}>
-                    Gathering
+                    采集
                 </TabButton>
             </TabBar>
             {tab === 'flights' ? <FlightsView /> : <GatheringView />}

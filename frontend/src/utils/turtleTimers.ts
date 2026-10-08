@@ -31,37 +31,37 @@ export type PeriodicTimer = {
 export const RAID_TIMERS: PeriodicTimer[] = [
     {
         id: 'raid40',
-        name: 'Raid 40',
+        name: '40人团队副本',
         detail: 'MC · BWL · AQ40 · Naxx · ES',
         periodDays: 7,
         anchorMs: utc(2023, 5, 24, 4),
     },
-    { id: 'onyxia', name: "Onyxia's Lair", periodDays: 5, anchorMs: utc(2023, 5, 30, 4) },
+    { id: 'onyxia', name: '奥妮克希亚的巢穴', periodDays: 5, anchorMs: utc(2023, 5, 30, 4) },
     {
         id: 'karazhan',
-        name: 'Karazhan',
-        detail: 'Lower & Upper Halls',
+        name: '卡拉赞',
+        detail: '下层与上层大厅',
         periodDays: 5,
         anchorMs: utc(2023, 5, 31, 4),
     },
     {
         id: 'raid20',
-        name: 'Raid 20',
+        name: '20人团队副本',
         detail: 'ZG · AQ20',
         periodDays: 3,
         anchorMs: utc(2023, 5, 28, 4),
     },
-    { id: 'timbermaw', name: 'Timbermaw Hold', periodDays: 7, anchorMs: utc(2026, 3, 20, 4) },
+    { id: 'timbermaw', name: '木喉要塞', periodDays: 7, anchorMs: utc(2026, 3, 20, 4) },
 ]
 
 export const MISC_TIMERS: PeriodicTimer[] = [
-    { id: 'honor', name: 'Honor Reset', periodDays: 7, anchorMs: utc(2023, 5, 23, 23) },
+    { id: 'honor', name: '荣誉重置', periodDays: 7, anchorMs: utc(2023, 5, 23, 23) },
     {
         id: 'weeklyQuests',
-        name: 'Weekly Quests',
+        name: '每周任务',
         periodDays: 7,
         anchorMs: utc(2023, 5, 24, 4),
-        note: 'Safe pickup time — quests taken right at the actual reset can vanish again (double-reset bug).',
+        note: '建议领取时间 — 在实际重置的瞬间领取的任务可能再次消失（双重重置 bug）。',
     },
 ]
 
@@ -76,11 +76,11 @@ const mod = (n: number, len: number) => ((n % len) + len) % len
 
 // Daily battleground rotation; index 0 falls on the anchor day (00:00 UTC).
 export const BG_ROTATION = [
-    'Alterac Valley',
-    'Warsong Gulch',
-    'Arathi Basin',
-    'Blood Ring Arena',
-    'Thorn Gorge',
+    '奥特兰克山谷',
+    '战歌峡谷',
+    '阿拉希盆地',
+    '血环竞技场',
+    '荆棘峡谷',
 ]
 const BG_ANCHOR_MS = utc(2023, 10, 13)
 
@@ -94,7 +94,7 @@ export function battlegroundState(nowMs: number) {
 }
 
 // Edge of Madness (Zul'Gurub) boss, rotating every 14 days.
-export const EOM_BOSSES = ["Gri'lek", "Hazza'rah", 'Renataki', 'Wushoolay']
+export const EOM_BOSSES = ['格里雷克', '哈扎拉尔', '雷纳塔基', '乌苏雷']
 const EOM_ANCHOR_MS = utc(2023, 10, 24)
 const EOM_PERIOD_DAYS = 14
 
@@ -130,8 +130,8 @@ export function dmfStateAt(ms: number): DmfState {
     const horde = mod(weeks, 2) === 1
     return {
         faction: horde ? 'Horde' : 'Alliance',
-        location: horde ? 'Mulgore' : 'Elwynn Forest',
-        town: horde ? 'Thunder Bluff' : 'Goldshire',
+        location: horde ? '莫高雷' : '艾尔文森林',
+        town: horde ? '雷霆崖' : '闪金镇',
         // The relocation Wednesday: the first day of each faire week.
         setupDay: mod(Math.floor((ms - DMF_ANCHOR_MS) / DAY_MS), 7) === 0,
     }
@@ -162,20 +162,20 @@ export function dmfSchedule(nowMs: number) {
 }
 
 export function formatCountdown(ms: number): string {
-    if (ms <= 0) return 'now'
+    if (ms <= 0) return '现在'
     const total = Math.floor(ms / 1000)
     const days = Math.floor(total / 86400)
     const hours = Math.floor((total % 86400) / 3600)
     const minutes = Math.floor((total % 3600) / 60)
     const seconds = total % 60
-    if (days > 0) return `${days}d ${hours}h ${minutes}m`
-    if (hours > 0) return `${hours}h ${minutes}m ${String(seconds).padStart(2, '0')}s`
-    return `${minutes}m ${String(seconds).padStart(2, '0')}s`
+    if (days > 0) return `${days}天 ${hours}时 ${minutes}分`
+    if (hours > 0) return `${hours}时 ${minutes}分 ${String(seconds).padStart(2, '0')}秒`
+    return `${minutes}分 ${String(seconds).padStart(2, '0')}秒`
 }
 
-/** "Wed 8 Jul, 06:00" in the user's local timezone. */
+/** "7月8日周三 06:00" in the user's local timezone. */
 export function formatLocal(ms: number): string {
-    return new Date(ms).toLocaleString(undefined, {
+    return new Date(ms).toLocaleString('zh-CN', {
         weekday: 'short',
         day: 'numeric',
         month: 'short',

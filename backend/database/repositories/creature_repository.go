@@ -57,7 +57,7 @@ func (r *CreatureRepository) GetCreaturesByType(creatureType int, nameFilter str
 	args := []interface{}{creatureType}
 
 	if nameFilter != "" {
-		whereClause += " AND name LIKE ?"
+		whereClause += " AND name_loc4 LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
 
@@ -72,12 +72,12 @@ func (r *CreatureRepository) GetCreaturesByType(creatureType int, nameFilter str
 	// Data
 	dataArgs := append(args, limit, offset)
 	dataQuery := fmt.Sprintf(`
-		SELECT entry, name, subname, level_min, level_max,
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max,
 			health_min, health_max, mana_min, mana_max,
 			type, rank, faction, npc_flags, display_id1
 		FROM creature_template
 		%s
-		ORDER BY level_max DESC, name
+		ORDER BY level_max DESC, COALESCE(NULLIF(name_loc4,''), name)
 		LIMIT ? OFFSET ?
 	`, whereClause)
 
@@ -145,7 +145,7 @@ func (r *CreatureRepository) GetCreaturesByFamily(family int, nameFilter string,
 	whereClause := "WHERE type = 1 AND beast_family = ?"
 	args := []interface{}{family}
 	if nameFilter != "" {
-		whereClause += " AND name LIKE ?"
+		whereClause += " AND name_loc4 LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
 
@@ -156,12 +156,12 @@ func (r *CreatureRepository) GetCreaturesByFamily(family int, nameFilter string,
 
 	dataArgs := append(args, limit, offset)
 	dataQuery := fmt.Sprintf(`
-		SELECT entry, name, subname, level_min, level_max,
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max,
 			health_min, health_max, mana_min, mana_max,
 			type, rank, faction, npc_flags, display_id1
 		FROM creature_template
 		%s
-		ORDER BY level_max DESC, name
+		ORDER BY level_max DESC, COALESCE(NULLIF(name_loc4,''), name)
 		LIMIT ? OFFSET ?
 	`, whereClause)
 
@@ -200,22 +200,22 @@ func (r *CreatureRepository) SearchCreatures(query string, limit int) ([]*models
 	// Check if query is a number
 	if id, parseErr := strconv.Atoi(query); parseErr == nil {
 		rows, err = r.db.Query(`
-		SELECT entry, name, subname, level_min, level_max,
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max,
 			health_min, health_max, mana_min, mana_max,
 			type, rank, faction, npc_flags, display_id1
 		FROM creature_template
-		WHERE name LIKE ? OR entry = ?
-		ORDER BY length(name), name
+		WHERE name_loc4 LIKE ? OR entry = ?
+		ORDER BY length(COALESCE(NULLIF(name_loc4,''), name)), COALESCE(NULLIF(name_loc4,''), name)
 		LIMIT ?
 	`, "%"+query+"%", id, limit)
 	} else {
 		rows, err = r.db.Query(`
-		SELECT entry, name, subname, level_min, level_max,
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max,
 			health_min, health_max, mana_min, mana_max,
 			type, rank, faction, npc_flags, display_id1
 		FROM creature_template
-		WHERE name LIKE ?
-		ORDER BY length(name), name
+		WHERE name_loc4 LIKE ?
+		ORDER BY length(COALESCE(NULLIF(name_loc4,''), name)), COALESCE(NULLIF(name_loc4,''), name)
 		LIMIT ?
 	`, "%"+query+"%", limit)
 	}
@@ -253,7 +253,7 @@ func (r *CreatureRepository) GetCreatureByID(entry int) (*models.Creature, error
 	c := &models.Creature{}
 	var subname *string
 	err := r.db.QueryRow(`
-		SELECT entry, name, subname, level_min, level_max, 
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max, 
 			health_min, health_max, mana_min, mana_max,
 			type, rank, faction, npc_flags,
 			gold_min, gold_max,
@@ -306,7 +306,7 @@ func (r *CreatureRepository) GetCreatureDetail(entry int) (*models.CreatureDetai
 
 	// Get quests this creature starts
 	rows, err := r.db.Query(`
-		SELECT q.entry, q.Title
+		SELECT q.entry, COALESCE(NULLIF(q.Title_loc4,''), q.Title)
 		FROM creature_questrelation nqs
 		JOIN quest_template q ON nqs.quest = q.entry
 		WHERE nqs.id = ?
@@ -322,7 +322,7 @@ func (r *CreatureRepository) GetCreatureDetail(entry int) (*models.CreatureDetai
 
 	// Get quests this creature ends
 	rows2, err := r.db.Query(`
-		SELECT q.entry, q.Title
+		SELECT q.entry, COALESCE(NULLIF(q.Title_loc4,''), q.Title)
 		FROM creature_involvedrelation nqe
 		JOIN quest_template q ON nqe.quest = q.entry
 		WHERE nqe.id = ?
@@ -407,24 +407,21 @@ func (r *CreatureRepository) getCreatureDetailMySQL(entry int) (*models.Creature
 	err = r.mysqlDB.QueryRow("SELECT spell1, spell2, spell3, spell4 FROM creature_template WHERE entry = ?", entry).Scan(&s1, &s2, &s3, &s4)
 	if err == nil {
 		spellIDs := []int{s1, s2, s3, s4}
+		ir := &ItemRepository{db: r.db}
 		for _, sid := range spellIDs {
 			if sid > 0 {
 				ab := &models.CreatureAbility{ID: sid}
-				// Fetch spell info from SQLite (faster/easier as we have it) or MySQL?
-				// Use MySQL to be consistent.
-				var sname, sdesc string
-				// spell_template in MySQL might be different table name? `spell_template` usually.
-				// In 1.12 it's `spell_template`.
-				r.mysqlDB.QueryRow("SELECT name, description FROM spell_template WHERE entry = ?", sid).Scan(&sname, &sdesc)
+				var sname, icon string
+				r.db.QueryRow(`
+					SELECT COALESCE(NULLIF(sp.name_loc4,''), sp.name, ''),
+					       COALESCE(NULLIF(si.icon_name, ''), sp.iconName, '')
+					FROM spell_template sp
+					LEFT JOIN spell_icons si ON sp.spellIconId = si.id
+					WHERE sp.entry = ?
+				`, sid).Scan(&sname, &icon)
 				ab.Name = sname
-				ab.Description = sdesc
-				// Icon? Standard DB doesn't have icon path directly usually, requires DBC lookup.
-				// But we have local SQLite `spell_template` with icon_path!
-				// So let's fallback to local SQLite for icon and rich text.
-				var iconPath string
-				r.db.QueryRow("SELECT icon_path FROM spell_template WHERE entry = ?", sid).Scan(&iconPath)
-				ab.Icon = iconPath
-
+				ab.Description = ir.resolveSpellText(sid)
+				ab.Icon = icon
 				detail.Abilities = append(detail.Abilities, ab)
 			}
 		}
@@ -445,7 +442,7 @@ func (r *CreatureRepository) getCreatureDetailMySQL(entry int) (*models.Creature
 			var iName, iIcon string
 			var iQual int
 			r.db.QueryRow(`
-				SELECT i.name, i.quality, COALESCE(idi.icon, '') 
+				SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, '') 
 				FROM item_template i 
 				LEFT JOIN item_display_info idi ON i.display_id = idi.ID 
 				WHERE i.entry = ?

@@ -61,6 +61,12 @@ func main() {
 		fatal("mysql import", err)
 	}
 
+	// 1b. zhCN locale columns (*_loc4) from locales_*; missing Chinese → English.
+	fmt.Println("Filling *_loc4 Chinese fields...")
+	if err := database.NewLoc4Importer(db.DB(), mysqlConn.DB()).FillAll(); err != nil {
+		fatal("loc4 fill", err)
+	}
+
 	// 2. DBC-derived reference tables from JSON.
 	fmt.Println("Importing item sets, factions, metadata...")
 	if err := database.NewItemSetImporter(db).CheckAndImport(dataDir); err != nil {

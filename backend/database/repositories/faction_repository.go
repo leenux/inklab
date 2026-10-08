@@ -19,9 +19,9 @@ func NewFactionRepository(db *sql.DB) *FactionRepository {
 // GetFactions returns all factions ordered by side and name
 func (r *FactionRepository) GetFactions() ([]*models.Faction, error) {
 	rows, err := r.db.Query(`
-		SELECT id, name, description, side, category_id
+		SELECT id, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(description_loc4,''), description), side, category_id
 		FROM factions
-		ORDER BY side, name
+		ORDER BY side, COALESCE(NULLIF(name_loc4,''), name)
 	`)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 
 	var desc *string
 	err := r.db.QueryRow(`
-		SELECT id, name, description, side, category_id
+		SELECT id, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(description_loc4,''), description), side, category_id
 		FROM factions WHERE id = ?
 	`, id).Scan(&f.ID, &f.Name, &desc, &f.Side, &f.CategoryId)
 	if err != nil {
@@ -62,16 +62,16 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 	// Side name mapping
 	switch f.Side {
 	case 1:
-		f.SideName = "Alliance"
+		f.SideName = "联盟"
 	case 2:
-		f.SideName = "Horde"
+		f.SideName = "部落"
 	default:
-		f.SideName = "Neutral"
+		f.SideName = "中立"
 	}
 
 	// Get quests that reward reputation with this faction
 	questRows, _ := r.db.Query(`
-		SELECT entry, Title, QuestLevel, IFNULL(RequiredRaces,0)
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel, IFNULL(RequiredRaces,0)
 		FROM quest_template
 		WHERE RewRepFaction1 = ? OR RewRepFaction2 = ? OR RewRepFaction3 = ? OR RewRepFaction4 = ?
 		ORDER BY QuestLevel
@@ -91,7 +91,7 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 
 	// Quest Givers: NPCs that start or end any of this faction's rep quests.
 	giverRows, _ := r.db.Query(`
-		SELECT DISTINCT c.entry, c.name, COALESCE(c.subname, ''), c.level_min, c.level_max
+		SELECT DISTINCT c.entry, COALESCE(NULLIF(c.name_loc4,''), c.name), COALESCE(COALESCE(NULLIF(c.subname_loc4,''), c.subname), ''), c.level_min, c.level_max
 		FROM creature_template c
 		JOIN (
 			SELECT id FROM creature_questrelation WHERE quest IN (
@@ -104,7 +104,7 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 				WHERE RewRepFaction1=? OR RewRepFaction2=? OR RewRepFaction3=? OR RewRepFaction4=? OR RewRepFaction5=?
 			)
 		) rel ON c.entry = rel.id
-		ORDER BY c.name
+		ORDER BY COALESCE(NULLIF(c.name_loc4,''), c.name)
 		LIMIT 200
 	`, id, id, id, id, id, id, id, id, id, id)
 	if giverRows != nil {
@@ -121,10 +121,10 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 	// Requires faction_template (imported from FactionTemplate.dbc); empty until
 	// the client import has generated it.
 	memberRows, _ := r.db.Query(`
-		SELECT entry, name, COALESCE(subname, ''), level_min, level_max
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), COALESCE(NULLIF(subname_loc4,''), subname), level_min, level_max
 		FROM creature_template
 		WHERE faction IN (SELECT template_id FROM faction_template WHERE faction_id = ?)
-		ORDER BY name
+		ORDER BY COALESCE(NULLIF(name_loc4,''), name)
 		LIMIT 300
 	`, id)
 	if memberRows != nil {
@@ -139,11 +139,11 @@ func (r *FactionRepository) GetFactionDetail(id int) (*models.FactionDetail, err
 
 	// Items gated behind reputation with this faction, highest standing first.
 	itemRows, _ := r.db.Query(`
-		SELECT t.entry, t.name, t.quality, COALESCE(d.icon, ''), t.required_reputation_rank
+		SELECT t.entry, COALESCE(NULLIF(t.name_loc4,''), t.name), t.quality, COALESCE(d.icon, ''), t.required_reputation_rank
 		FROM item_template t
 		LEFT JOIN item_display_info d ON t.display_id = d.ID
 		WHERE t.required_reputation_faction = ?
-		ORDER BY t.required_reputation_rank DESC, t.quality DESC, t.name
+		ORDER BY t.required_reputation_rank DESC, t.quality DESC, COALESCE(NULLIF(t.name_loc4,''), t.name)
 		LIMIT 300
 	`, id)
 	if itemRows != nil {

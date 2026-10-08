@@ -56,14 +56,14 @@ export function RootLayout() {
                         <span className="hidden lg:inline">InkLab</span>
                     </h1>
                     <nav className="flex flex-wrap gap-1">
-                        <NavTab to="/database">Database</NavTab>
+                        <NavTab to="/database">数据库</NavTab>
                         <NavTab to="/atlas">AtlasLoot</NavTab>
-                        <NavTab to="/favorites">Favorites</NavTab>
-                        <NavTab to="/talents">Talents</NavTab>
-                        <NavTab to="/maps">Maps</NavTab>
-                        <NavTab to="/timers">Timers</NavTab>
-                        <NavTab to="/tools">Import</NavTab>
-                        <NavTab to="/sync">Sync</NavTab>
+                        <NavTab to="/favorites">收藏</NavTab>
+                        <NavTab to="/talents">天赋</NavTab>
+                        <NavTab to="/maps">地图</NavTab>
+                        <NavTab to="/timers">计时</NavTab>
+                        <NavTab to="/tools">导入</NavTab>
+                        <NavTab to="/sync">同步</NavTab>
                     </nav>
                 </div>
                 <GlobalSearch />

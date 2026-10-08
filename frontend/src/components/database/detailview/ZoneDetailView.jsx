@@ -73,19 +73,19 @@ const MAX_MARKERS = 800
 // bits; books/mailboxes are game-object types. Selecting one narrows the map
 // markers and the matching list to just that service.
 const SERVICES = [
-    { id: 'questgiver', label: 'Quest Givers', kind: 'npc', bit: 0x2 },
-    { id: 'vendor', label: 'Vendors', kind: 'npc', bit: 0x80 },
-    { id: 'trainer', label: 'Trainers', kind: 'npc', bit: 0x10 | 0x20 | 0x40 },
-    { id: 'repair', label: 'Repairers', kind: 'npc', bit: 0x1000 },
-    { id: 'flightmaster', label: 'Flight Masters', kind: 'npc', bit: 0x2000 },
-    { id: 'spirithealer', label: 'Spirit Healers', kind: 'npc', bit: 0x4000 },
-    { id: 'innkeeper', label: 'Innkeepers', kind: 'npc', bit: 0x10000 },
-    { id: 'banker', label: 'Bankers', kind: 'npc', bit: 0x20000 },
-    { id: 'battlemaster', label: 'Battlemasters', kind: 'npc', bit: 0x100000 },
-    { id: 'auctioneer', label: 'Auctioneers', kind: 'npc', bit: 0x200000 },
-    { id: 'stablemaster', label: 'Stable Masters', kind: 'npc', bit: 0x400000 },
-    { id: 'books', label: 'Books', kind: 'obj', type: 9 },
-    { id: 'mailbox', label: 'Mailboxes', kind: 'obj', type: 19 },
+    { id: 'questgiver', label: '任务发布者', kind: 'npc', bit: 0x2 },
+    { id: 'vendor', label: '商人', kind: 'npc', bit: 0x80 },
+    { id: 'trainer', label: '训练师', kind: 'npc', bit: 0x10 | 0x20 | 0x40 },
+    { id: 'repair', label: '修理师', kind: 'npc', bit: 0x1000 },
+    { id: 'flightmaster', label: '飞行管理员', kind: 'npc', bit: 0x2000 },
+    { id: 'spirithealer', label: '灵魂医者', kind: 'npc', bit: 0x4000 },
+    { id: 'innkeeper', label: '旅店老板', kind: 'npc', bit: 0x10000 },
+    { id: 'banker', label: '银行职员', kind: 'npc', bit: 0x20000 },
+    { id: 'battlemaster', label: '战场军官', kind: 'npc', bit: 0x100000 },
+    { id: 'auctioneer', label: '拍卖师', kind: 'npc', bit: 0x200000 },
+    { id: 'stablemaster', label: '兽栏管理员', kind: 'npc', bit: 0x400000 },
+    { id: 'books', label: '书籍', kind: 'obj', type: 9 },
+    { id: 'mailbox', label: '邮箱', kind: 'obj', type: 19 },
 ]
 
 const npcMatchesService = (n, svc) => svc.kind === 'npc' && (n.npcFlags & svc.bit) !== 0
@@ -128,7 +128,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
     const mapImage = showTerrain ? terrainMap : atlasMap
 
     if (loading) return <DetailLoading />
-    if (!detail) return <DetailError message="Zone not found" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到区域" onBack={onBack} />
 
     const allNpcs = detail.npcs || []
     const quests = detail.quests || []
@@ -161,10 +161,10 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
             : '—'
 
     const tabs = [
-        { id: 'npcs', label: `NPCs (${npcs.length})` },
-        { id: 'quests', label: `Quests (${quests.length})` },
-        { id: 'objects', label: `Objects (${objects.length})` },
-        { id: 'loot', label: `Loot${loot ? ` (${loot.length})` : ''}` },
+        { id: 'npcs', label: `NPC (${npcs.length})` },
+        { id: 'quests', label: `任务 (${quests.length})` },
+        { id: 'objects', label: `物体 (${objects.length})` },
+        { id: 'loot', label: `掉落${loot ? ` (${loot.length})` : ''}` },
     ]
 
     // Effective tab: the URL/local value if it's a real tab, else NPCs.
@@ -267,7 +267,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                     : 'border-gray-600/40 bg-white/[0.02] text-gray-300 hover:bg-white/5'
                             }`}
                         >
-                            All
+                            全部
                         </button>
                         {services.map((s) => (
                             <button
@@ -289,12 +289,12 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                     {/* Left: Map */}
                     <div className="w-full flex-shrink-0 lg:w-[488px]">
                         <div className="mb-2 flex items-baseline justify-between border-b border-white/10 pb-1">
-                            <h3 className="text-sm font-bold uppercase text-wow-gold">Map</h3>
+                            <h3 className="text-sm font-bold uppercase text-wow-gold">地图</h3>
                             {spawns.length > 0 && (
                                 <span className="font-mono text-xs text-gray-400">
                                     {spawns.length}
                                     {(markerSource?.length || 0) > spawns.length ? '+' : ''}{' '}
-                                    {showingObjects ? 'object' : 'spawn'} points
+                                    {showingObjects ? '个物体点' : '个刷新点'}
                                 </span>
                             )}
                         </div>
@@ -303,8 +303,8 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                         {terrainAvailable && (
                             <div className="mb-2 inline-flex overflow-hidden rounded border border-white/10 text-[11px] font-semibold">
                                 {[
-                                    ['atlas', 'Atlas'],
-                                    ['terrain', 'Terrain'],
+                                    ['atlas', '图集'],
+                                    ['terrain', '地形'],
                                 ].map(([key, label]) => (
                                     <button
                                         key={key}
@@ -331,12 +331,12 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                         >
                             {!mapImage.src && !mapImage.loading && (
                                 <div className="flex h-full items-center justify-center text-sm text-gray-500">
-                                    No Map Data
+                                    无地图数据
                                 </div>
                             )}
                             {mapImage.loading && (
                                 <div className="flex h-full animate-pulse items-center justify-center text-sm text-gray-500">
-                                    Loading Map...
+                                    加载地图中...
                                 </div>
                             )}
 
@@ -358,29 +358,29 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                         colSpan="2"
                                         className="mb-2 border-b border-white/10 pb-1 text-left text-sm font-bold uppercase text-wow-gold"
                                     >
-                                        Quick Facts
+                                        基本信息
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>Region:</th>
+                                    <th>地区：</th>
                                     <td>{detail.groupName || '—'}</td>
                                 </tr>
                                 <tr>
-                                    <th>Creature Levels:</th>
+                                    <th>生物等级：</th>
                                     <td>{levelLabel}</td>
                                 </tr>
                                 <tr>
-                                    <th>NPCs:</th>
+                                    <th>NPC：</th>
                                     <td>{allNpcs.length}</td>
                                 </tr>
                                 <tr>
-                                    <th>Quests:</th>
+                                    <th>任务：</th>
                                     <td>{quests.length}</td>
                                 </tr>
                                 <tr>
-                                    <th>Objects:</th>
+                                    <th>物体：</th>
                                     <td>{allObjects.length}</td>
                                 </tr>
                             </tbody>
@@ -433,8 +433,8 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                             </span>
                                             <span className="whitespace-nowrap text-xs text-gray-500">
                                                 {n.levelMin === n.levelMax
-                                                    ? `Lvl ${n.levelMax}`
-                                                    : `Lvl ${n.levelMin}-${n.levelMax}`}
+                                                    ? `等级 ${n.levelMax}`
+                                                    : `等级 ${n.levelMin}-${n.levelMax}`}
                                                 {n.rank > 0 && n.rankName ? ` · ${n.rankName}` : ''}
                                             </span>
                                         </div>
@@ -442,7 +442,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                 </div>
                             ) : (
                                 <div className="italic text-gray-500">
-                                    No NPCs recorded in this zone.
+                                    该区域暂无 NPC 记录。
                                 </div>
                             )}
                         </>
@@ -470,14 +470,14 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                             </span>
                                             {q.questLevel > 0 && (
                                                 <span className="whitespace-nowrap text-xs text-gray-500">
-                                                    Lvl {q.questLevel}
+                                                    等级 {q.questLevel}
                                                 </span>
                                             )}
                                         </div>
                                     ))}
                                 </div>
                             ) : (
-                                <div className="italic text-gray-500">No quests in this zone.</div>
+                                <div className="italic text-gray-500">该区域暂无任务。</div>
                             )}
                         </>
                     )}
@@ -515,7 +515,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                 </div>
                             ) : (
                                 <div className="italic text-gray-500">
-                                    No objects recorded in this zone.
+                                    该区域暂无物体记录。
                                 </div>
                             )}
                         </>
@@ -525,17 +525,17 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                         <>
                             {lootLoading ? (
                                 <div className="animate-pulse italic text-gray-500">
-                                    Gathering loot…
+                                    收集掉落中…
                                 </div>
                             ) : loot && loot.length > 0 ? (
                                 <div className="bg-bg-sub overflow-hidden rounded border border-border-light">
                                     <table className="w-full text-sm">
                                         <thead>
                                             <tr className="border-b border-white/10 text-left text-[11px] uppercase text-gray-500">
-                                                <th className="py-2 pl-2 pr-3 font-bold">Item</th>
-                                                <th className="px-3 text-right font-bold">iLvl</th>
-                                                <th className="px-3 text-right font-bold">Drop %</th>
-                                                <th className="px-3 font-bold">Dropped By</th>
+                                                <th className="py-2 pl-2 pr-3 font-bold">物品</th>
+                                                <th className="px-3 text-right font-bold">物等</th>
+                                                <th className="px-3 text-right font-bold">掉落率 %</th>
+                                                <th className="px-3 font-bold">掉落自</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -553,7 +553,7 @@ const ZoneDetailView = ({ entry, onBack, onNavigate, activeTab, onTabChange }) =
                                 </div>
                             ) : (
                                 <div className="italic text-gray-500">
-                                    No loot recorded for this zone.
+                                    该区域暂无掉落记录。
                                 </div>
                             )}
                         </>

@@ -14,7 +14,7 @@ function Thresholds({ r }) {
     return (
         <div
             className="flex w-[150px] shrink-0 justify-end gap-1 font-mono text-[11px]"
-            title="Learnable / yellow / green / grey"
+            title="可学 / 黄 / 绿 / 灰"
         >
             {[r.learn, r.yellow, r.green, r.grey].map((v, i) => (
                 <span key={i} className="min-w-[30px] text-right" style={{ color: SKILL_COLORS[i] }}>
@@ -80,7 +80,7 @@ function RecipeRow({ r, onNavigate, tooltipHook }) {
                 </div>
                 {/* Source line: how the recipe is learned */}
                 <div className="flex items-center gap-2 text-[10px] text-gray-500">
-                    {r.trainer && <span className="text-gray-400">Trainer</span>}
+                    {r.trainer && <span className="text-gray-400">训练师</span>}
                     {r.teachItem && (
                         <span
                             className="cursor-pointer hover:underline"
@@ -94,7 +94,7 @@ function RecipeRow({ r, onNavigate, tooltipHook }) {
                             {r.teachItem.name}
                         </span>
                     )}
-                    {r.quest && <span className="text-wow-gold">Quest</span>}
+                    {r.quest && <span className="text-wow-gold">任务</span>}
                     {!r.trainer && !r.teachItem && !r.quest && <span>—</span>}
                 </div>
             </div>
@@ -163,11 +163,11 @@ function ProfessionsTab({ onNavigate, tooltipHook }) {
     return (
         <>
             <SidebarPanel className="col-span-1">
-                <SectionHeader title={`Professions (${professions.length})`} noSearch />
+                <SectionHeader title={`专业 (${professions.length})`} noSearch />
                 <ScrollList>
                     {loadingProfs && (
                         <div className="animate-pulse p-3 text-xs italic text-gray-500">
-                            Loading...
+                            加载中...
                         </div>
                     )}
                     {professions.map((p) => (
@@ -190,15 +190,15 @@ function ProfessionsTab({ onNavigate, tooltipHook }) {
                     title={
                         selected
                             ? `${selected.name} (${filtered.length})`
-                            : 'Select a Profession'
+                            : '请选择专业'
                     }
-                    placeholder="Filter by recipe, item, or reagent..."
+                    placeholder="按配方、物品或材料筛选..."
                     onFilterChange={setFilter}
                 />
 
                 {selectedId && loadingRecipes && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading recipes...
+                        加载配方中...
                     </div>
                 )}
 
@@ -211,19 +211,19 @@ function ProfessionsTab({ onNavigate, tooltipHook }) {
                                 className={`uppercase hover:text-white ${sort.key === 'name' ? 'text-gray-300' : ''}`}
                                 onClick={() => toggleSort('name')}
                             >
-                                Name {sort.key === 'name' && (sort.dir === 'asc' ? '▲' : '▼')}
+                                名称 {sort.key === 'name' && (sort.dir === 'asc' ? '▲' : '▼')}
                             </button>
                             <button
                                 className="flex items-center gap-1 hover:brightness-125"
                                 onClick={() => toggleSort('skill')}
-                                title="Sort by skill (learn / yellow / green / grey)"
+                                title="按技能排序（可学 / 黄 / 绿 / 灰）"
                             >
                                 <span
                                     className={`mr-[2px] uppercase ${sort.key === 'skill' ? 'text-gray-300' : ''}`}
                                 >
-                                    skill {sort.key === 'skill' && (sort.dir === 'asc' ? '▲' : '▼')}
+                                    技能 {sort.key === 'skill' && (sort.dir === 'asc' ? '▲' : '▼')}
                                 </span>
-                                {['learn', 'yellow', 'green', 'grey'].map((label, i) => (
+                                {['可学', '黄', '绿', '灰'].map((label, i) => (
                                     <span
                                         key={label}
                                         className="min-w-[30px] text-right"
@@ -249,7 +249,7 @@ function ProfessionsTab({ onNavigate, tooltipHook }) {
 
                 {!selectedId && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a profession to browse its recipes
+                        选择一个专业以浏览其配方
                     </div>
                 )}
             </ContentPanel>

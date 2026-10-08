@@ -126,9 +126,9 @@ func (a *App) GetWorldData() *WorldData {
 	}
 	byKey := map[string]pos{}
 	if rows, err := a.db.DB().Query(`
-		SELECT t.id, t.name, t.alliance, t.horde, t.map_id, t.px, t.py,
-		       t.alliance_npc, COALESCE((SELECT name FROM creature_template WHERE entry = t.alliance_npc), ''),
-		       t.horde_npc, COALESCE((SELECT name FROM creature_template WHERE entry = t.horde_npc), '')
+		SELECT t.id, COALESCE(NULLIF(t.name_loc4,''), t.name), t.alliance, t.horde, t.map_id, t.px, t.py,
+		       t.alliance_npc, COALESCE((SELECT COALESCE(NULLIF(name_loc4,''), name) FROM creature_template WHERE entry = t.alliance_npc), ''),
+		       t.horde_npc, COALESCE((SELECT COALESCE(NULLIF(name_loc4,''), name) FROM creature_template WHERE entry = t.horde_npc), '')
 		FROM taxi_node t`); err == nil {
 		for rows.Next() {
 			var n WorldNode
@@ -232,7 +232,7 @@ func (a *App) GetZoneData(mapID int, zone string) *ZoneData {
 
 	destsFor := func(id int) []string {
 		r, err := a.db.DB().Query(
-			"SELECT DISTINCT t.name FROM taxi_path p JOIN taxi_node t ON p.to_node = t.id WHERE p.from_node = ? ORDER BY t.name", id)
+			"SELECT DISTINCT COALESCE(NULLIF(t.name_loc4,''), t.name) FROM taxi_path p JOIN taxi_node t ON p.to_node = t.id WHERE p.from_node = ? ORDER BY COALESCE(NULLIF(t.name_loc4,''), t.name)", id)
 		if err != nil {
 			return nil
 		}
@@ -247,7 +247,7 @@ func (a *App) GetZoneData(mapID int, zone string) *ZoneData {
 		return ds
 	}
 
-	rows, err := a.db.DB().Query("SELECT id, name, alliance, horde, px, py FROM taxi_node WHERE map_id = ?", mapID)
+	rows, err := a.db.DB().Query("SELECT id, COALESCE(NULLIF(name_loc4,''), name), alliance, horde, px, py FROM taxi_node WHERE map_id = ?", mapID)
 	if err != nil {
 		return out
 	}
@@ -302,10 +302,10 @@ func (a *App) GetFlightData(mapID int) *FlightData {
 	}
 
 	nodeRows, err := a.db.DB().Query(`
-		SELECT t.id, t.name, t.alliance, t.horde, t.px, t.py,
-		       t.alliance_npc, COALESCE((SELECT name FROM creature_template WHERE entry = t.alliance_npc), ''),
-		       t.horde_npc, COALESCE((SELECT name FROM creature_template WHERE entry = t.horde_npc), '')
-		FROM taxi_node t WHERE t.map_id = ? ORDER BY t.name`, mapID)
+		SELECT t.id, COALESCE(NULLIF(t.name_loc4,''), t.name), t.alliance, t.horde, t.px, t.py,
+		       t.alliance_npc, COALESCE((SELECT COALESCE(NULLIF(name_loc4,''), name) FROM creature_template WHERE entry = t.alliance_npc), ''),
+		       t.horde_npc, COALESCE((SELECT COALESCE(NULLIF(name_loc4,''), name) FROM creature_template WHERE entry = t.horde_npc), '')
+		FROM taxi_node t WHERE t.map_id = ? ORDER BY COALESCE(NULLIF(t.name_loc4,''), t.name)`, mapID)
 	if err != nil {
 		return out
 	}

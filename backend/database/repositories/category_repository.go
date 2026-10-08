@@ -84,7 +84,7 @@ func (r *CategoryRepository) GetCategoryByKey(key string) (*models.Category, err
 // GetCategoryItems returns all items in a category
 func (r *CategoryRepository) GetCategoryItems(categoryID int) ([]*models.Item, error) {
 	rows, err := r.db.Query(`
-		SELECT i.entry, i.name, i.quality, i.item_level, i.required_level,
+		SELECT i.entry, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, i.item_level, i.required_level,
 			i.class, i.subclass, i.inventory_type, COALESCE(idi.icon, ''), ci.drop_rate
 		FROM item_template i
 		JOIN category_items ci ON i.entry = ci.item_id

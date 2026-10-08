@@ -76,7 +76,7 @@ const FavoriteItemCard = ({ item, onClick, onRemove, onStatusChange }) => {
                 <div
                     className={`flex h-6 w-6 flex-shrink-0 items-center justify-center rounded border border-white/20 bg-black/20 transition-colors hover:border-white/60 ${status === 0 ? 'border-white/10' : 'border-white/40'} `}
                     onClick={handleStatusClick}
-                    title="Click to cycle: None -> Obtained -> Abandoned"
+                    title="点击切换：无 → 已获得 → 已放弃"
                 >
                     {getStatusIcon()}
                 </div>
@@ -94,12 +94,12 @@ const FavoriteItemCard = ({ item, onClick, onRemove, onStatusChange }) => {
                         style={{ color: qualityColor }}
                         className={`truncate font-bold ${status === 2 ? 'line-through decoration-white/30' : ''}`}
                     >
-                        {item.itemName || `Item #${item.itemEntry}`}
+                        {item.itemName || `物品 #${item.itemEntry}`}
                     </div>
                     <div className="flex gap-2 text-xs text-gray-400">
-                        <span>Lvl {item.itemLevel}</span>
+                        <span>等级 {item.itemLevel}</span>
                         <span className="text-gray-500">•</span>
-                        <span className="text-gray-400">{item.category || 'Uncategorized'}</span>
+                        <span className="text-gray-400">{item.category || '未分类'}</span>
                     </div>
                 </div>
 
@@ -110,7 +110,7 @@ const FavoriteItemCard = ({ item, onClick, onRemove, onStatusChange }) => {
                         e.stopPropagation()
                         onRemove(item.itemEntry)
                     }}
-                    title="Remove from favorites"
+                    title="取消收藏"
                 >
                     ✕
                 </button>
@@ -152,7 +152,7 @@ const FavoritesPage = () => {
     }
 
     const handleRemove = async (entry) => {
-        if (window.confirm('Remove this item from favorites?')) {
+        if (window.confirm('确定要取消收藏该物品吗？')) {
             await RemoveFavorite(entry)
             queryClient.invalidateQueries({ queryKey: queryKeys.favorites })
             queryClient.invalidateQueries({ queryKey: queryKeys.favoriteCategories })
@@ -184,7 +184,7 @@ const FavoritesPage = () => {
     const groupedItems =
         activeCategory === 'All'
             ? safeFavorites.reduce((acc, item) => {
-                  const cat = item.category || 'Uncategorized'
+                  const cat = item.category || '未分类'
                   if (!acc[cat]) acc[cat] = []
                   acc[cat].push(item)
                   return acc
@@ -195,12 +195,12 @@ const FavoritesPage = () => {
         <div className="flex h-full flex-col overflow-hidden bg-bg-main">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-white/10 bg-bg-dark/50 p-4">
-                <h2 className="text-xl font-bold text-wow-gold">My Favorites</h2>
+                <h2 className="text-xl font-bold text-wow-gold">我的收藏</h2>
                 <button
                     onClick={refresh}
                     className="rounded bg-white/5 px-3 py-1 text-sm text-gray-300 hover:bg-white/10"
                 >
-                    Refresh
+                    刷新
                 </button>
             </div>
 
@@ -215,7 +215,7 @@ const FavoritesPage = () => {
                                 : 'text-gray-400 hover:bg-white/5 hover:text-white'
                         }`}
                     >
-                        <span>All Items</span>
+                        <span>全部物品</span>
                         <span className="opacity-60">{favorites.length}</span>
                     </button>
 
@@ -231,7 +231,7 @@ const FavoritesPage = () => {
                                     : 'text-gray-400 hover:bg-white/5 hover:text-white'
                             }`}
                         >
-                            <span className="truncate">{cat.name || 'Uncategorized'}</span>
+                            <span className="truncate">{cat.name || '未分类'}</span>
                             <span className="opacity-60">{cat.count}</span>
                         </button>
                     ))}
@@ -240,12 +240,12 @@ const FavoritesPage = () => {
                 {/* Main Content - Grid */}
                 <div className="flex-1 overflow-y-auto p-4">
                     {loading ? (
-                        <div className="mt-20 text-center text-gray-500">Loading favorites...</div>
+                        <div className="mt-20 text-center text-gray-500">加载收藏中...</div>
                     ) : favorites.length === 0 ? (
                         <div className="mt-20 text-center text-gray-500">
                             <div className="mb-4 text-4xl">❤️</div>
-                            No favorites yet. <br />
-                            Go to Database and search for items to add them!
+                            暂无收藏。<br />
+                            请前往数据库搜索物品并添加收藏！
                         </div>
                     ) : (
                         <div className="space-y-8">

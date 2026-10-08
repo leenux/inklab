@@ -13,11 +13,14 @@ import { useSyncStats } from '../../hooks/queries/app'
 import { PageLayout } from '../../components/ui'
 
 const SYNC_TYPES = [
-    { id: 'npc', name: 'NPCs', icon: '👤' },
-    { id: 'item', name: 'Items', icon: '⚔️' },
-    { id: 'quest', name: 'Quests', icon: '📜' },
-    { id: 'object', name: 'Objects', icon: '📦' },
+    { id: 'npc', name: 'NPC', icon: '👤' },
+    { id: 'item', name: '物品', icon: '⚔️' },
+    { id: 'quest', name: '任务', icon: '📜' },
+    { id: 'object', name: '物体', icon: '📦' },
 ]
+
+const TYPE_LABELS = { npc: 'NPC', item: '物品', quest: '任务', object: '物体' }
+const typeLabel = (t) => TYPE_LABELS[t] || String(t).toUpperCase()
 
 function SyncPage() {
     // Global stats
@@ -86,7 +89,7 @@ function SyncPage() {
             current: data.current,
             total: data.total,
             id: data.itemId || data.id,
-            name: data.itemName || `${type.toUpperCase()} ID ${data.itemId || data.id}`,
+            name: data.itemName || `${typeLabel(type)} ID ${data.itemId || data.id}`,
         })
 
         // Update startIds for resume next time
@@ -99,7 +102,7 @@ function SyncPage() {
 
         setSyncLog((prev) => {
             if (prev.length > 0 && prev[0].id === id) return prev
-            return [{ id, name: data.itemName || `${type.toUpperCase()} ID ${id}` }, ...prev].slice(
+            return [{ id, name: data.itemName || `${typeLabel(type)} ID ${id}` }, ...prev].slice(
                 0,
                 5,
             )
@@ -114,7 +117,7 @@ function SyncPage() {
 
     const handleSyncDone = (type, msg) => {
         setSyncing(false)
-        setSyncResult({ type, message: msg || 'Sync complete!' })
+        setSyncResult({ type, message: msg || '同步完成！' })
         // A full sync rewrites many rows; drop the cache so every view refetches
         // (this includes syncStats).
         queryClient.invalidateQueries()
@@ -157,7 +160,7 @@ function SyncPage() {
             setSyncing(false)
             setSyncResult({
                 type: activeSyncType,
-                message: 'Sync stop requested. It will pause after the current item finishes.',
+                message: '已请求停止同步，将在当前条目完成后暂停。',
             })
         } catch (e) {
             console.error(e)
@@ -165,7 +168,7 @@ function SyncPage() {
     }
 
     const handleResetProgress = (type) => {
-        if (window.confirm(`Reset progress for ${type.toUpperCase()}?`)) {
+        if (window.confirm(`确定要重置${typeLabel(type)}的同步进度吗？`)) {
             const storageKey = `lastSynced${type.charAt(0).toUpperCase() + type.slice(1)}Id`
             localStorage.removeItem(storageKey)
             setStartIds((prev) => ({ ...prev, [type]: 0 }))
@@ -175,14 +178,14 @@ function SyncPage() {
     return (
         <PageLayout>
             <div className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto p-8">
-                <h1 className="mb-8 text-3xl font-bold text-white">Data Synchronization</h1>
+                <h1 className="mb-8 text-3xl font-bold text-white">数据同步</h1>
 
                 {/* Global Stats */}
                 {syncStats && (
                     <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
                         <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                             <div className="mb-1 text-[10px] font-bold uppercase text-gray-500">
-                                NPCs
+                                NPC
                             </div>
                             <div className="font-mono text-xl text-wow-gold">
                                 {syncStats.creatureCount}
@@ -190,7 +193,7 @@ function SyncPage() {
                         </div>
                         <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                             <div className="mb-1 text-[10px] font-bold uppercase text-gray-500">
-                                Items
+                                物品
                             </div>
                             <div className="font-mono text-xl text-wow-gold">
                                 {syncStats.itemCount}
@@ -198,7 +201,7 @@ function SyncPage() {
                         </div>
                         <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                             <div className="mb-1 text-[10px] font-bold uppercase text-gray-500">
-                                Quests
+                                任务
                             </div>
                             <div className="font-mono text-xl text-wow-gold">
                                 {syncStats.questCount}
@@ -206,7 +209,7 @@ function SyncPage() {
                         </div>
                         <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                             <div className="mb-1 text-[10px] font-bold uppercase text-gray-500">
-                                Max Item ID
+                                最大物品 ID
                             </div>
                             <div className="font-mono text-xl text-gray-400">
                                 {syncStats.maxItemID}
@@ -218,9 +221,9 @@ function SyncPage() {
                 <div className="rounded-2xl border border-gray-700 bg-gray-800/40 p-8 shadow-2xl backdrop-blur-sm">
                     <div className="mb-8 flex flex-col justify-between gap-6 md:flex-row md:items-center">
                         <div>
-                            <h2 className="mb-2 text-2xl font-bold text-white">Sync Engine</h2>
+                            <h2 className="mb-2 text-2xl font-bold text-white">同步引擎</h2>
                             <p className="text-sm text-gray-400">
-                                Download and update database from Web & MySQL sources.
+                                从网络和 MySQL 数据源下载并更新数据库。
                             </p>
                         </div>
 
@@ -249,7 +252,7 @@ function SyncPage() {
                         <div className="space-y-4">
                             <label className="block">
                                 <span className="mb-2 block text-xs font-bold uppercase text-gray-500">
-                                    Starting Entry ID
+                                    起始条目 ID
                                 </span>
                                 <div className="group relative">
                                     <input
@@ -269,13 +272,12 @@ function SyncPage() {
                                             onClick={() => handleResetProgress(activeSyncType)}
                                             className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold uppercase text-red-400 hover:text-red-300"
                                         >
-                                            Reset
+                                            重置
                                         </button>
                                     )}
                                 </div>
                                 <p className="mt-2 px-1 text-[10px] text-gray-500">
-                                    The sync will process all {activeSyncType}s with Entry ID ≥ this
-                                    value.
+                                    同步将处理所有条目 ID ≥ 该值的{typeLabel(activeSyncType)}。
                                 </p>
                             </label>
                         </div>
@@ -284,11 +286,10 @@ function SyncPage() {
                             <span className="mt-1 text-2xl">ℹ️</span>
                             <div>
                                 <div className="mb-1 text-sm font-bold text-blue-200">
-                                    Resumable Engine
+                                    可续传引擎
                                 </div>
                                 <div className="text-xs leading-relaxed text-blue-100/60">
-                                    We remember the last successful ID for each type. You can stop
-                                    it anytime and resume from where you left off.
+                                    我们会记住每种类型最后一次成功的 ID。你可以随时停止，并从中断处继续。
                                 </div>
                             </div>
                         </div>
@@ -301,15 +302,14 @@ function SyncPage() {
                                 onClick={handleStopSync}
                                 className="flex w-full animate-pulse items-center justify-center gap-3 rounded-xl border border-red-400/30 bg-red-600 py-4 font-bold text-white shadow-lg transition-all hover:bg-red-500"
                             >
-                                <span className="text-xl">⏹</span> STOP SYNCING
+                                <span className="text-xl">⏹</span> 停止同步
                             </button>
                         ) : (
                             <button
                                 onClick={handleStartSync}
                                 className="flex w-full transform items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-wow-gold to-yellow-500 py-4 font-bold text-gray-900 shadow-[0_0_20px_rgba(198,155,0,0.3)] transition-all hover:scale-[1.01] hover:from-yellow-400 hover:to-wow-gold active:scale-[0.99]"
                             >
-                                <span className="text-xl">▶</span> START{' '}
-                                {activeSyncType.toUpperCase()} SYNC
+                                <span className="text-xl">▶</span> 开始同步{typeLabel(activeSyncType)}
                             </button>
                         )}
                     </div>
@@ -321,11 +321,11 @@ function SyncPage() {
                                 <div>
                                     <div className="text-lg font-bold text-wow-gold">
                                         {syncing
-                                            ? `Processing ${syncProgress?.type?.toUpperCase() || ''}...`
-                                            : 'Paused'}
+                                            ? `正在处理${syncProgress?.type ? typeLabel(syncProgress.type) : ''}...`
+                                            : '已暂停'}
                                     </div>
                                     <div className="font-mono text-xs text-gray-400">
-                                        {syncProgress?.name || 'Waiting...'}
+                                        {syncProgress?.name || '等待中...'}
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -387,7 +387,7 @@ function SyncPage() {
                             <span className="text-xl">{syncResult.error ? '❌' : '✅'}</span>
                             <div>
                                 <div className="mb-1 font-bold">
-                                    {syncResult.error ? 'Error' : 'Update Status'}
+                                    {syncResult.error ? '错误' : '更新状态'}
                                 </div>
                                 <div className="text-sm opacity-80">
                                     {syncResult.error || syncResult.message}
@@ -401,23 +401,18 @@ function SyncPage() {
                 <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="rounded-2xl border border-gray-700/50 bg-gray-800/30 p-6">
                         <h3 className="mb-3 flex items-center gap-2 font-bold text-wow-gold">
-                            🛡️ Safety First
+                            🛡️ 安全第一
                         </h3>
                         <p className="text-xs leading-relaxed text-gray-400">
-                            The sync process is designed to be non-destructive. It updates existing
-                            records and adds missing ones while preserving custom fields like
-                            'buy_price' if already set manually.
+                            同步过程设计为非破坏性：会更新现有记录并补充缺失记录，同时保留已手动设置的自定义字段（如 'buy_price'）。
                         </p>
                     </div>
                     <div className="rounded-2xl border border-gray-700/50 bg-gray-800/30 p-6">
                         <h3 className="mb-3 flex items-center gap-2 font-bold text-wow-gold">
-                            🚀 Optimization
+                            🚀 优化
                         </h3>
                         <p className="text-xs leading-relaxed text-gray-400">
-                            NPC, item, quest, and object sync use a multi-threaded worker pool (10
-                            workers) to speed up downloads. Spell descriptions are resolved locally
-                            from client (DBC) data as part of the Client Data import — no separate
-                            sync needed.
+                            NPC、物品、任务和物体的同步使用多线程工作池（10 个线程）加速下载。法术描述会在客户端数据导入时从客户端（DBC）数据本地解析 — 无需单独同步。
                         </p>
                     </div>
                 </div>

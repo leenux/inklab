@@ -112,7 +112,7 @@ func (r *QuestRepository) GetQuestsByCategory(categoryID int) ([]*models.Quest, 
 // GetQuestByID retrieves a single quest by ID
 func (r *QuestRepository) GetQuestByID(id int) (*models.Quest, error) {
 	row := r.db.QueryRow(`
-		SELECT q.entry, IFNULL(q.Title,''), IFNULL(q.QuestLevel,0), IFNULL(q.MinLevel,0), 
+		SELECT q.entry, IFNULL(COALESCE(NULLIF(q.Title_loc4,''), q.Title),''), IFNULL(q.QuestLevel,0), IFNULL(q.MinLevel,0), 
 			IFNULL(q.Type,0), IFNULL(q.ZoneOrSort,0),
 			IFNULL(q.RewXP,0), IFNULL(q.RewOrReqMoney,0),
 			IFNULL(q.RequiredRaces,0), IFNULL(q.RequiredClasses,0), IFNULL(q.SrcItemId,0),
@@ -145,7 +145,7 @@ func (r *QuestRepository) GetQuestByID(id int) (*models.Quest, error) {
 // SearchQuests searches for quests by title
 func (r *QuestRepository) SearchQuests(query string) ([]*models.Quest, error) {
 	rows, err := r.db.Query(`
-		SELECT q.entry, IFNULL(q.Title,''), IFNULL(q.QuestLevel,0), IFNULL(q.MinLevel,0), 
+		SELECT q.entry, IFNULL(COALESCE(NULLIF(q.Title_loc4,''), q.Title),''), IFNULL(q.QuestLevel,0), IFNULL(q.MinLevel,0), 
 			IFNULL(q.Type,0), IFNULL(q.ZoneOrSort,0),
 			IFNULL(q.RewXP,0), IFNULL(q.RewOrReqMoney,0),
 			IFNULL(q.RequiredRaces,0), IFNULL(q.RequiredClasses,0), IFNULL(q.SrcItemId,0),
@@ -153,8 +153,8 @@ func (r *QuestRepository) SearchQuests(query string) ([]*models.Quest, error) {
 			c.name
 		FROM quest_template q
 		LEFT JOIN quest_categories c ON q.ZoneOrSort = c.id
-		WHERE q.Title LIKE ?
-		ORDER BY length(q.Title), q.Title
+		WHERE COALESCE(NULLIF(q.Title_loc4,''), q.Title) LIKE ?
+		ORDER BY length(COALESCE(NULLIF(q.Title_loc4,''), q.Title)), COALESCE(NULLIF(q.Title_loc4,''), q.Title)
 		LIMIT 50
 	`, "%"+query+"%")
 	if err != nil {
@@ -243,10 +243,10 @@ func (r *QuestRepository) GetQuestsByEnhancedCategory(categoryID int, nameFilter
 	}
 
 	query := fmt.Sprintf(`
-		SELECT entry, Title, QuestLevel, MinLevel, Type, ZoneOrSort, RewXP
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel, MinLevel, Type, ZoneOrSort, RewXP
 		FROM quest_template 
 		%s
-		ORDER BY QuestLevel, Title
+		ORDER BY QuestLevel, COALESCE(NULLIF(Title_loc4,''), Title)
 		LIMIT 10000
 	`, whereClause)
 
@@ -323,7 +323,7 @@ func (r *QuestRepository) resolveQuestRewardSpell(rewSpell, rewSpellCast int) *m
 
 func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error) {
 	row := r.db.QueryRow(`
-		SELECT entry, Title, Details, Objectives, OfferRewardText, EndText,
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), COALESCE(NULLIF(Details_loc4,''), Details), COALESCE(NULLIF(Objectives_loc4,''), Objectives), COALESCE(NULLIF(OfferRewardText_loc4,''), OfferRewardText), COALESCE(NULLIF(EndText_loc4,''), EndText),
 			QuestLevel, MinLevel, Type, ZoneOrSort,
 			RequiredRaces, RequiredClasses,
 			RewXP, RewOrReqMoney, RewSpell, RewSpellCast,
@@ -418,7 +418,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 			var name, icon string
 			var quality int
 			r.db.QueryRow(`
-				SELECT i.name, COALESCE(idi.icon, ''), i.quality 
+				SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), COALESCE(idi.icon, ''), i.quality 
 				FROM item_template i 
 				LEFT JOIN item_display_info idi ON i.display_id = idi.ID 
 				WHERE i.entry = ?
@@ -437,7 +437,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 			var name, icon string
 			var quality int
 			r.db.QueryRow(`
-				SELECT i.name, COALESCE(idi.icon, ''), i.quality 
+				SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), COALESCE(idi.icon, ''), i.quality 
 				FROM item_template i 
 				LEFT JOIN item_display_info idi ON i.display_id = idi.ID 
 				WHERE i.entry = ?
@@ -456,7 +456,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 			var name, icon string
 			var quality int
 			r.db.QueryRow(`
-				SELECT i.name, COALESCE(idi.icon, ''), i.quality
+				SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), COALESCE(idi.icon, ''), i.quality
 				FROM item_template i
 				LEFT JOIN item_display_info idi ON i.display_id = idi.ID
 				WHERE i.entry = ?
@@ -489,7 +489,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 	// Process prev quests
 	if prevQuestID != 0 {
 		var title string
-		r.db.QueryRow("SELECT Title FROM quest_template WHERE entry = ?", prevQuestID).Scan(&title)
+		r.db.QueryRow("SELECT COALESCE(NULLIF(Title_loc4,''), Title) FROM quest_template WHERE entry = ?", prevQuestID).Scan(&title)
 		q.PrevQuests = append(q.PrevQuests, &models.QuestSeriesItem{Entry: prevQuestID, Title: title})
 	}
 
@@ -498,7 +498,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 
 	// Query Starters (NPCs that give this quest)
 	startersRows, err := r.db.Query(`
-		SELECT c.entry, c.name FROM creature_questrelation cq
+		SELECT c.entry, COALESCE(NULLIF(c.name_loc4,''), c.name) FROM creature_questrelation cq
 		JOIN creature_template c ON cq.id = c.entry
 		WHERE cq.quest = ?
 	`, entry)
@@ -519,7 +519,7 @@ func (r *QuestRepository) GetQuestDetail(entry int) (*models.QuestDetail, error)
 
 	// Query Enders (NPCs that complete this quest)
 	endersRows, err := r.db.Query(`
-		SELECT c.entry, c.name FROM creature_involvedrelation ci
+		SELECT c.entry, COALESCE(NULLIF(c.name_loc4,''), c.name) FROM creature_involvedrelation ci
 		JOIN creature_template c ON ci.id = c.entry
 		WHERE ci.quest = ?
 	`, entry)
@@ -554,7 +554,7 @@ func (r *QuestRepository) buildQuestChain(currentEntry int, prevQuestID int, nex
 
 	// Add current quest
 	var currentTitle string
-	r.db.QueryRow("SELECT Title FROM quest_template WHERE entry = ?", currentEntry).Scan(&currentTitle)
+	r.db.QueryRow("SELECT COALESCE(NULLIF(Title_loc4,''), Title) FROM quest_template WHERE entry = ?", currentEntry).Scan(&currentTitle)
 	chain = append(chain, &models.QuestSeriesItem{Entry: currentEntry, Title: currentTitle, Depth: 0})
 	visited[currentEntry] = true
 
@@ -581,7 +581,7 @@ func (r *QuestRepository) getQuestChainBackwards(questID int, visited map[int]bo
 
 	var title string
 	var prevID int
-	err := r.db.QueryRow("SELECT Title, IFNULL(PrevQuestId, 0) FROM quest_template WHERE entry = ?", questID).Scan(&title, &prevID)
+	err := r.db.QueryRow("SELECT COALESCE(NULLIF(Title_loc4,''), Title), IFNULL(PrevQuestId, 0) FROM quest_template WHERE entry = ?", questID).Scan(&title, &prevID)
 	if err != nil {
 		return nil
 	}
@@ -606,7 +606,7 @@ func (r *QuestRepository) getQuestChainForwards(currentQuestID int, nextQuestInC
 		visited[nextQuestInChain] = true
 		var title string
 		var nextNext int
-		err := r.db.QueryRow("SELECT Title, IFNULL(NextQuestInChain, 0) FROM quest_template WHERE entry = ?", nextQuestInChain).Scan(&title, &nextNext)
+		err := r.db.QueryRow("SELECT COALESCE(NULLIF(Title_loc4,''), Title), IFNULL(NextQuestInChain, 0) FROM quest_template WHERE entry = ?", nextQuestInChain).Scan(&title, &nextNext)
 		if err == nil {
 			result = append(result, &models.QuestSeriesItem{Entry: nextQuestInChain, Title: title, Depth: currentDepth})
 			// Continue recursively
@@ -616,7 +616,7 @@ func (r *QuestRepository) getQuestChainForwards(currentQuestID int, nextQuestInC
 	}
 
 	// Method 2: Reverse lookup - find quests that have currentQuestID as their PrevQuestId
-	rows, err := r.db.Query("SELECT entry, Title, IFNULL(NextQuestInChain, 0) FROM quest_template WHERE PrevQuestId = ? OR PrevQuestId = ?",
+	rows, err := r.db.Query("SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), IFNULL(NextQuestInChain, 0) FROM quest_template WHERE PrevQuestId = ? OR PrevQuestId = ?",
 		currentQuestID, -currentQuestID)
 	if err != nil {
 		return result
@@ -654,18 +654,29 @@ func (r *QuestRepository) getQuestChainForwards(currentQuestID int, nextQuestInC
 	return result
 }
 
-// WoW gender escapes: $GmaleText:femaleText; (and $g). Most quest text
+// WoW gender escapes: $GmaleText:femaleText; (and $g). Most quest/spell text
 // terminates them with ';', but some omit it and rely on the following
 // punctuation (e.g. "$Gboy:girl,"). Surrounding spaces also occur
 // ("$g lad : lass;"). Viewer gender is unknown, so we render both forms as
-// "male/female".
+// "male/female". Supports CJK forms like $g他:她;.
 var (
 	// Standard, ';'-terminated form (consumes the ';').
 	questGenderRe = regexp.MustCompile(`\$[Gg]\s*([^:;]*?)\s*:\s*([^;]*?)\s*;`)
-	// Fallback for the ';'-less form: single words, stop at the first
-	// non-letter so trailing punctuation/text is preserved.
-	questGenderNoSemiRe = regexp.MustCompile(`\$[Gg]\s*([A-Za-z]+)\s*:\s*([A-Za-z']+)`)
+	// Fallback for the ';'-less form: stop at punctuation/whitespace so
+	// trailing text is preserved. Allows CJK as well as Latin letters.
+	questGenderNoSemiRe = regexp.MustCompile(`\$[Gg]\s*([^\s:;]+?)\s*:\s*([^\s;,\.!?]+)`)
 )
+
+// cleanGenderEscapes resolves $g/$G male:female forms used in both quest and
+// spell locale strings.
+func cleanGenderEscapes(s string) string {
+	if s == "" {
+		return s
+	}
+	s = questGenderRe.ReplaceAllString(s, "${1}/${2}")
+	s = questGenderNoSemiRe.ReplaceAllString(s, "${1}/${2}")
+	return s
+}
 
 // cleanQuestEscapes converts WoW quest text escape codes into plain readable
 // text. The client substitutes these at display time; our stored text keeps
@@ -673,18 +684,17 @@ var (
 //
 //	$B / $b            -> line break
 //	$G male:female;    -> "male/female" (viewer gender is unknown)
-//	$N / $n            -> "you" (player name)
+//	$N / $n            -> "你" (player name; CN build)
 //	$R $C $r $c        -> stripped (race/class, unknown to us)
 func cleanQuestEscapes(s string) string {
 	if s == "" {
 		return s
 	}
-	s = questGenderRe.ReplaceAllString(s, "${1}/${2}")
-	s = questGenderNoSemiRe.ReplaceAllString(s, "${1}/${2}")
+	s = cleanGenderEscapes(s)
 	s = strings.ReplaceAll(s, "$B", "\n")
 	s = strings.ReplaceAll(s, "$b", "\n")
-	s = strings.ReplaceAll(s, "$N", "you")
-	s = strings.ReplaceAll(s, "$n", "you")
+	s = strings.ReplaceAll(s, "$N", "你")
+	s = strings.ReplaceAll(s, "$n", "你")
 	for _, code := range []string{"$R", "$r", "$C", "$c"} {
 		s = strings.ReplaceAll(s, code, "")
 	}

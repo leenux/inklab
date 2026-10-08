@@ -14,25 +14,25 @@ const DEFAULT_BASE = DEFAULT_WOW_BASE
 const IMPORTS = [
     {
         id: 'client',
-        name: 'Client Data (icons, maps, DBC)',
+        name: '客户端数据（图标、地图、DBC）',
         fn: 'RunClientImport',
-        sub: 'Data\\*.MPQ (or loose DBFilesClient\\ + BlizzardInterfaceArt\\)',
-        desc: "One pass over your WoW client: decode icons → data/icons, build fully-revealed zone maps → data/maps, and regenerate reference data (zones, skills, quest sorts, factions, item sets, spell text) into the database. Reads straight from the client's MPQ archives in memory when present (nothing is written back).",
+        sub: 'Data\\*.MPQ（或松散的 DBFilesClient\\ + BlizzardInterfaceArt\\）',
+        desc: '一次性处理你的 WoW 客户端：解码图标 → data/icons，构建完整揭示的区域地图 → data/maps，并将参考数据（区域、技能、任务分类、阵营、套装、法术文本）重新生成到数据库。存在 MPQ 归档时直接在内存中读取（不会写回任何内容）。',
     },
     {
         id: 'cache',
-        name: 'WDB Cache',
+        name: 'WDB 缓存',
         fn: 'RunCacheImport',
         sub: 'WDB\\*.wdb',
-        desc: "Patch item / quest / creature / gameobject data from your client's WDB caches — everything you've queried in-game. Overlays the freshest server values; existing data is never wiped.",
+        desc: '从客户端的 WDB 缓存中补全物品 / 任务 / 生物 / 游戏物体数据 — 即你在游戏中查询过的所有内容。会覆盖为服务器上最新的值；现有数据不会被清除。',
     },
     {
         id: 'spawnZones',
-        name: 'Rebuild Spawn Zones',
+        name: '重建刷新点区域',
         fn: 'RebuildSpawnZones',
         requiresMysql: true,
-        sub: 'data/area_grid.bin + world DB coordinates',
-        desc: 'Re-resolve every creature and gameobject spawn to the correct zone using the client area grid (the actual terrain), not overlapping zone boxes. Fixes border mislabels — e.g. Westfall mobs counted in Elwynn, or Elwynn mobs swallowed by Duskwood. No octowow scraping; reports the per-zone net change. Run after a Client Data import so the area grid exists.',
+        sub: 'data/area_grid.bin + 世界数据库坐标',
+        desc: '使用客户端区域网格（实际地形）而非相互重叠的区域框，将每个生物和游戏物体的刷新点重新解析到正确的区域。修复边界标注错误 — 例如西部荒野的怪物被算作艾尔文森林，或艾尔文森林的怪物被划入暮色森林。不进行 octowow 抓取；会报告各区域的净变化。请在客户端数据导入之后运行，以确保区域网格存在。',
     },
 ]
 
@@ -48,12 +48,12 @@ function DatasetInventory({ datasets }) {
         <div className="mt-3 border-t border-gray-700/50 pt-3">
             <div className="mb-2 flex items-center justify-between">
                 <span className="text-[11px] font-bold uppercase text-gray-500">
-                    Data inventory
+                    数据清单
                 </span>
                 <span
                     className={`font-mono text-[11px] ${missing > 0 ? 'text-red-400' : 'text-green-400'}`}
                 >
-                    {missing > 0 ? `${missing} missing` : 'all present'}
+                    {missing > 0 ? `缺少 ${missing} 项` : '全部就绪'}
                 </span>
             </div>
             <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
@@ -81,7 +81,7 @@ function DatasetInventory({ datasets }) {
                                     <span
                                         className={`shrink-0 font-mono text-[11px] ${ok ? 'text-gray-400' : 'text-red-400'}`}
                                     >
-                                        {ok ? d.count.toLocaleString() : 'missing'}
+                                        {ok ? d.count.toLocaleString() : '缺失'}
                                     </span>
                                 </div>
                                 <div
@@ -140,8 +140,8 @@ function ToolsPage() {
                 ...r,
                 [imp.id]: {
                     success: false,
-                    title: 'Unavailable',
-                    lines: ['Binding not found (dev build?)'],
+                    title: '不可用',
+                    lines: ['未找到绑定（开发版本？）'],
                 },
             }))
             return
@@ -153,7 +153,7 @@ function ToolsPage() {
         } catch (e) {
             setReports((r) => ({
                 ...r,
-                [imp.id]: { success: false, title: 'Failed', lines: [String(e)] },
+                [imp.id]: { success: false, title: '失败', lines: [String(e)] },
             }))
         } finally {
             setRunning(null)
@@ -170,37 +170,33 @@ function ToolsPage() {
 
     // Categories that are populated by an import and worth warning about when empty.
     const missing = status
-        ? [status.icons === 0 && 'icons', status.maps === 0 && 'zone maps'].filter(Boolean)
+        ? [status.icons === 0 && '图标', status.maps === 0 && '区域地图'].filter(Boolean)
         : []
 
     return (
         <PageLayout>
             <div className="mx-auto h-full max-w-3xl space-y-6 overflow-y-auto p-6">
                 <div>
-                    <h2 className="mb-1 text-xl font-bold text-wow-gold">Import</h2>
+                    <h2 className="mb-1 text-xl font-bold text-wow-gold">导入</h2>
                     <p className="text-sm text-gray-400">
-                        Refresh InkLab's data from your local WoW client. Nothing is uploaded — each
-                        import reads the files under the folder below.
+                        从本地 WoW 客户端刷新 InkLab 的数据。不会上传任何内容 — 每次导入仅读取下方文件夹中的文件。
                     </p>
                 </div>
 
                 {missing.length > 0 && (
                     <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
                         <div className="text-sm font-semibold text-amber-300">
-                            ⚠️ No {missing.join(' or ')} found
+                            ⚠️ 未找到{missing.join('或')}
                         </div>
                         <p className="mt-1 text-sm text-amber-200/80">
-                            InkLab ships without bundled {missing.join(' / ')} — they're built from
-                            your local WoW client. Set the client folder below and run the matching
-                            import, or items will show a placeholder icon and NPCs won't show a zone
-                            map.
+                            InkLab 不附带{missing.join(' / ')} — 它们需要从你本地的 WoW 客户端构建。请在下方设置客户端文件夹并运行相应的导入，否则物品将显示占位图标，NPC 也不会显示区域地图。
                         </p>
                     </div>
                 )}
 
                 <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                     <label className="mb-1 block text-[11px] font-bold uppercase text-gray-500">
-                        WoW client folder
+                        WoW 客户端文件夹
                     </label>
                     <div className="flex gap-2">
                         <input
@@ -215,15 +211,15 @@ function ToolsPage() {
                             onClick={browseBase}
                             className="shrink-0 rounded border border-border-light bg-bg-dark px-3 py-2 text-sm text-gray-200 hover:border-wow-gold/50 hover:text-wow-gold focus:border-wow-gold/50 focus:outline-none"
                         >
-                            Browse…
+                            浏览…
                         </button>
                     </div>
                     <p className="mt-1 text-[11px] text-gray-600">
-                        Reads <span className="font-mono">Data\*.MPQ</span> directly when present
-                        (nothing is written back), plus <span className="font-mono">WDB\</span> for
-                        the cache import; falls back to loose{' '}
+                        存在 <span className="font-mono">Data\*.MPQ</span> 时直接读取
+                        （不会写回任何内容），缓存导入还会读取 <span className="font-mono">WDB\</span>；
+                        否则回退到松散的{' '}
                         <span className="font-mono">DBFilesClient\</span> /{' '}
-                        <span className="font-mono">BlizzardInterfaceArt\</span> folders.
+                        <span className="font-mono">BlizzardInterfaceArt\</span> 文件夹。
                     </p>
 
                     {/* Where things live: the app's resolved paths + whether the
@@ -232,7 +228,7 @@ function ToolsPage() {
                     {diag && (
                         <div className="mt-3 space-y-1 border-t border-gray-700/50 pt-3 text-[11px]">
                             <div className="flex justify-between gap-3">
-                                <span className="shrink-0 text-gray-500">App data folder</span>
+                                <span className="shrink-0 text-gray-500">应用数据文件夹</span>
                                 <span
                                     className="truncate font-mono text-gray-300"
                                     title={diag.dataDir}
@@ -241,33 +237,32 @@ function ToolsPage() {
                                 </span>
                             </div>
                             <div className="flex justify-between gap-3">
-                                <span className="shrink-0 text-gray-500">Model render cache</span>
+                                <span className="shrink-0 text-gray-500">模型渲染缓存</span>
                                 <span
                                     className="truncate font-mono text-gray-300"
-                                    title="Renders are produced on demand when an NPC is viewed and swept after ~7 days unviewed — the count fluctuating is normal."
+                                    title="查看 NPC 时按需生成渲染图，超过约 7 天未查看会被清理 — 数量波动属正常现象。"
                                 >
-                                    {diag.npcImages} files
+                                    {diag.npcImages} 个文件
                                 </span>
                             </div>
                             <div className="flex justify-between gap-3">
-                                <span className="shrink-0 text-gray-500">Client archives</span>
+                                <span className="shrink-0 text-gray-500">客户端归档</span>
                                 {diag.mpqOk ? (
                                     <span className="font-mono text-green-400">
-                                        OK — {diag.clientData}
+                                        正常 — {diag.clientData}
                                     </span>
                                 ) : (
                                     <span
                                         className="truncate font-mono text-red-400"
-                                        title={diag.mpqError || 'Could not open the MPQ archives'}
+                                        title={diag.mpqError || '无法打开 MPQ 归档'}
                                     >
-                                        FAILED — {diag.mpqError || `cannot open ${diag.clientData}`}
+                                        失败 — {diag.mpqError || `无法打开 ${diag.clientData}`}
                                     </span>
                                 )}
                             </div>
                             {!diag.mpqOk && (
                                 <p className="pt-1 text-amber-300/80">
-                                    Model rendering needs these archives — NPC models won't render
-                                    until this opens. Check the client folder path above.
+                                    模型渲染需要这些归档 — 在其可正常打开之前，NPC 模型将无法渲染。请检查上方的客户端文件夹路径。
                                 </p>
                             )}
                         </div>
@@ -295,7 +290,7 @@ function ToolsPage() {
                                     disabled={!!running}
                                     className="shrink-0 rounded bg-wow-gold/90 px-5 py-2 font-bold text-black transition-colors hover:bg-wow-gold disabled:cursor-not-allowed disabled:opacity-40"
                                 >
-                                    {busy ? 'Running…' : 'Run'}
+                                    {busy ? '运行中…' : '运行'}
                                 </button>
                             </div>
                             {imp.id === 'client' && status?.datasets?.length > 0 && (
@@ -333,15 +328,13 @@ function ToolsPage() {
                 <div className="rounded-xl border border-gray-700/50 bg-gray-800/50 p-4">
                     <div className="flex items-start justify-between gap-4">
                         <div className="min-w-0">
-                            <h3 className="font-semibold text-white">What's New</h3>
+                            <h3 className="font-semibold text-white">更新内容</h3>
                             <p className="mt-1 text-sm text-gray-400">
-                                Rows added or changed in the database since the last committed
-                                baseline — e.g. items, NPCs and objects your imports pulled in.
-                                Click an entry to open it.
+                                自上次提交的基线以来，数据库中新增或变更的记录 — 例如你的导入带入的物品、NPC 和物体。点击条目即可打开。
                             </p>
                             {whatsNew?.baseline && (
                                 <p className="mt-1 text-[11px] text-gray-600">
-                                    vs {whatsNew.baseline}
+                                    对比 {whatsNew.baseline}
                                 </p>
                             )}
                         </div>
@@ -350,7 +343,7 @@ function ToolsPage() {
                             disabled={wnLoading}
                             className="shrink-0 rounded bg-wow-gold/90 px-5 py-2 font-bold text-black transition-colors hover:bg-wow-gold disabled:cursor-not-allowed disabled:opacity-40"
                         >
-                            {wnLoading ? 'Checking…' : 'Check'}
+                            {wnLoading ? '检查中…' : '检查'}
                         </button>
                     </div>
 
@@ -364,7 +357,7 @@ function ToolsPage() {
                         <div className="mt-3 space-y-3">
                             {!whatsNew.groups?.length && (
                                 <div className="text-sm italic text-gray-500">
-                                    No changes since the baseline.
+                                    自基线以来没有变化。
                                 </div>
                             )}
                             {whatsNew.groups?.map((g) => (
@@ -375,12 +368,12 @@ function ToolsPage() {
                                     <div className="mb-2 text-sm font-bold text-gray-200">
                                         {g.label}{' '}
                                         <span className="font-normal text-green-400">
-                                            +{g.added} added
+                                            +{g.added} 新增
                                         </span>
                                         {g.changed > 0 && (
                                             <span className="font-normal text-blue-400">
                                                 {' '}
-                                                • {g.changed} changed
+                                                • {g.changed} 变更
                                             </span>
                                         )}
                                     </div>
@@ -389,7 +382,7 @@ function ToolsPage() {
                                             <button
                                                 key={`${e.type}-${e.id}`}
                                                 onClick={() => entityNavigate(e.type, e.id)}
-                                                title={`${e.change} — open ${e.type} ${e.id}`}
+                                                title={`${e.change === 'added' ? '新增' : '变更'} — 打开 ${e.type} ${e.id}`}
                                                 className={`rounded border px-2 py-1 text-left text-xs transition-colors ${
                                                     e.change === 'added'
                                                         ? 'border-green-600/40 bg-green-600/10 text-green-200 hover:bg-green-600/20'
@@ -399,12 +392,12 @@ function ToolsPage() {
                                                 <span className="font-mono text-gray-500">
                                                     [{e.id}]
                                                 </span>{' '}
-                                                {e.name || '(unnamed)'}
+                                                {e.name || '（未命名）'}
                                             </button>
                                         ))}
                                         {g.added + g.changed > g.entries.length && (
                                             <span className="self-center text-xs text-gray-600">
-                                                … {g.added + g.changed - g.entries.length} more
+                                                … 另有 {g.added + g.changed - g.entries.length} 项
                                             </span>
                                         )}
                                     </div>

@@ -14,10 +14,10 @@ import { useFactions } from '../../../hooks/queries/factions'
 // Faction side colors
 const getSideInfo = (side) => {
     const sides = {
-        1: { label: 'A', color: '#0070DE', name: 'Alliance' },
-        2: { label: 'H', color: '#C41F3B', name: 'Horde' },
+        1: { label: 'A', color: '#0070DE', name: '联盟' },
+        2: { label: 'H', color: '#C41F3B', name: '部落' },
     }
-    return sides[side] || { label: 'N', color: '#FFD100', name: 'Neutral' }
+    return sides[side] || { label: 'N', color: '#FFD100', name: '中立' }
 }
 
 function FactionsTab({ onNavigate }) {
@@ -41,14 +41,14 @@ function FactionsTab({ onNavigate }) {
                 const parent = map.get(id)
                 return {
                     id: id,
-                    name: parent ? parent.name : `Group ${id}`,
+                    name: parent ? parent.name : `分组 ${id}`,
                 }
             })
             .sort((a, b) => a.name.localeCompare(b.name))
 
         const hasOrphans = factions.some((f) => f.categoryId === 0 && !parentIds.has(f.id))
         if (hasOrphans) {
-            g.push({ id: 0, name: 'Others' })
+            g.push({ id: 0, name: '其他' })
         }
 
         return g
@@ -75,8 +75,8 @@ function FactionsTab({ onNavigate }) {
             {/* Groups */}
             <SidebarPanel className="col-span-1">
                 <SectionHeader
-                    title={`Faction Groups (${filteredGroups.length})`}
-                    placeholder="Filter groups..."
+                    title={`阵营分组 (${filteredGroups.length})`}
+                    placeholder="筛选分组..."
                     onFilterChange={setGroupFilter}
                 />
                 <ScrollList>
@@ -101,16 +101,16 @@ function FactionsTab({ onNavigate }) {
                     title={
                         selectedGroup
                             ? `${selectedGroup.name} (${filteredFactions.length})`
-                            : 'Select a Group'
+                            : '请选择分组'
                     }
-                    placeholder="Filter factions..."
+                    placeholder="筛选阵营..."
                     onFilterChange={setFactionFilter}
                     titleColor="#FFD100"
                 />
 
                 {isLoading && selectedGroup && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading factions...
+                        加载阵营中...
                     </div>
                 )}
 
@@ -131,21 +131,21 @@ function FactionsTab({ onNavigate }) {
                                         {faction.side === 1 && (
                                             <img
                                                 src="/Alliance_15.webp"
-                                                alt="Alliance"
+                                                alt="联盟"
                                                 className="h-full w-full object-contain"
                                             />
                                         )}
                                         {faction.side === 2 && (
                                             <img
                                                 src="/Horde_15.webp"
-                                                alt="Horde"
+                                                alt="部落"
                                                 className="h-full w-full object-contain"
                                             />
                                         )}
                                         {faction.side !== 1 && faction.side !== 2 && (
                                             <img
                                                 src="/Neutral_15.webp"
-                                                alt="Neutral"
+                                                alt="中立"
                                                 className="h-full w-full object-contain"
                                             />
                                         )}
@@ -173,7 +173,7 @@ function FactionsTab({ onNavigate }) {
 
                 {!selectedGroup && !isLoading && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a faction group to view reputations
+                        选择一个阵营分组以查看声望
                     </div>
                 )}
             </ContentPanel>

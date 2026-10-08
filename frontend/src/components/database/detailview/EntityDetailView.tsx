@@ -18,6 +18,17 @@ import {
  * `onBack` should call router history back, and `onNavigate(type, entry)` should
  * push a sibling detail route, so the browser Back button walks the trail.
  */
+const TYPE_LABELS: Record<string, string> = {
+    npc: 'NPC',
+    quest: '任务',
+    item: '物品',
+    spell: '法术',
+    object: '物体',
+    zone: '区域',
+    faction: '阵营',
+    icon: '图标',
+}
+
 type Props = {
     type: string
     // Numeric entry for every entity except icons, which are keyed by name.
@@ -48,10 +59,10 @@ export function EntityDetailView({
                     onClick={onBack}
                     className="rounded border border-border-light bg-bg-panel px-4 py-1.5 text-sm text-gray-400 transition-colors hover:bg-bg-active hover:text-white"
                 >
-                    ← Back
+                    ← 返回
                 </button>
                 <span className="text-sm text-gray-500">
-                    Viewing: <b className="uppercase text-gray-300">{type}</b>
+                    查看：<b className="uppercase text-gray-300">{TYPE_LABELS[type] || type}</b>
                     <span className="ml-2 rounded bg-black/20 px-1.5 py-0.5 font-mono">
                         #{entry}
                     </span>

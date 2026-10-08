@@ -28,8 +28,10 @@ import {
 const reactionColor = (reaction) => {
     switch (reaction) {
         case 'friendly':
+        case '友好':
             return 'text-green-400'
         case 'hostile':
+        case '敌对':
             return 'text-red-400'
         default:
             return 'text-gray-500'
@@ -79,7 +81,7 @@ const ReagentIcon = ({ reagent, onNavigate, tooltipHook }) => {
     return (
         <div
             className="relative h-7 w-7 shrink-0 cursor-pointer"
-            title={reagent.name || `Item #${reagent.entry}`}
+            title={reagent.name || `物品 #${reagent.entry}`}
             onClick={(e) => {
                 e.stopPropagation()
                 onNavigate?.('item', reagent.entry)
@@ -124,11 +126,11 @@ const ItemIconHeader = ({
                 disabled={fixing}
                 className="flex h-full w-full flex-col items-center justify-center gap-1 bg-red-900/30 text-red-400 transition-colors hover:bg-red-800/50"
                 title={
-                    !name ? 'No icon data - Click to fetch' : 'Icon failed to load - Click to fix'
+                    !name ? '无图标数据 - 点击获取' : '图标加载失败 - 点击修复'
                 }
             >
                 <span className="text-2xl">{fixing ? '⏳' : '🔧'}</span>
-                <span className="text-[10px]">{fixing ? 'Fixing...' : 'Fix Icon'}</span>
+                <span className="text-[10px]">{fixing ? '修复中...' : '修复图标'}</span>
             </button>
         )
     }
@@ -207,13 +209,13 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                 await reloadData()
             } else {
                 alert(
-                    `Auto-fetch failed: ${result.message}\n\n` +
-                        `This item's icon data could not be automatically retrieved.\n` +
-                        `Visit ${DATABASE_BASE_URL}/?item=${entry} to check if the item exists.`,
+                    `自动获取失败：${result.message}\n\n` +
+                        `无法自动获取该物品的图标数据。\n` +
+                        `请访问 ${DATABASE_BASE_URL}/?item=${entry} 确认该物品是否存在。`,
                 )
             }
         } catch (error) {
-            alert(`Error: ${error}`)
+            alert(`错误：${error}`)
         } finally {
             setFixing(false)
         }
@@ -224,8 +226,8 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         if (!isFavorite) {
             // If adding, ask for category (optional)
             const userInput = window.prompt(
-                'Enter a category for this favorite (optional):',
-                'General',
+                '请输入该收藏的分类（可选）：',
+                '常规',
             )
             if (userInput === null) return // Cancelled
             category = userInput
@@ -236,7 +238,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
             if (result.success) {
                 queryClient.setQueryData(['itemFavorite', entry], !isFavorite)
             } else {
-                alert('Failed to toggle favorite: ' + result.message)
+                alert('切换收藏失败：' + result.message)
             }
         } catch (err) {
             console.error('Favorite error:', err)
@@ -252,10 +254,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                 setImgError(false)
                 await reloadData()
             } else {
-                alert(`Sync failed: ${result?.error || 'Unknown error'}`)
+                alert(`同步失败：${result?.error || '未知错误'}`)
             }
         } catch (error) {
-            alert(`Sync error: ${error}`)
+            alert(`同步错误：${error}`)
         } finally {
             setSyncing(false)
         }
@@ -294,7 +296,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             // width, which would stretch past the tooltip box.
                             className="w-0 min-w-full rounded border border-border-light bg-bg-main px-2 py-1.5 text-xs text-white outline-none focus:border-wow-gold"
                         >
-                            <option value={-1}>Random enchantment...</option>
+                            <option value={-1}>随机附魔...</option>
                             {randomSuffixes.map((s, i) => (
                                 <option key={i} value={i}>
                                     {s.suffix} — {s.effects.join(', ')} ({s.chance.toFixed(1)}%)
@@ -314,12 +316,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
             <DetailPageLayout onBack={onBack}>
                 <div className="flex flex-col items-center justify-center gap-6 p-20 text-gray-400">
                     <div className="text-xl">
-                        Item <span className="font-mono text-white">{entry}</span> not found in
-                        local database.
+                        物品 <span className="font-mono text-white">{entry}</span> 未在本地数据库中找到。
                     </div>
                     <p className="max-w-md text-center text-sm text-gray-500">
-                        This item exists in the remote database reference but hasn't been synced to
-                        your local database yet.
+                        该物品存在于远程数据库中，但尚未同步到本地数据库。
                     </p>
                     <button
                         onClick={handleSync}
@@ -328,10 +328,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                     >
                         {syncing ? (
                             <span className="flex items-center gap-2">
-                                <span className="animate-spin">↻</span> Syncing...
+                                <span className="animate-spin">↻</span> 同步中...
                             </span>
                         ) : (
-                            'Sync from Remote'
+                            '从远程同步'
                         )}
                     </button>
                 </div>
@@ -347,15 +347,15 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
     const relationTabs = [
         detail.createdBy?.length && {
             id: 'createdBy',
-            label: 'Created By',
+            label: '制造者',
             count: detail.createdBy.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Skill' },
-                        { label: 'Creates', align: 'right' },
-                        { label: 'Reagents' },
+                        { label: '名称' },
+                        { label: '技能' },
+                        { label: '制造', align: 'right' },
+                        { label: '材料' },
                     ]}
                 >
                     {detail.createdBy.map((source) => (
@@ -408,15 +408,15 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.reagentFor?.length && {
             id: 'reagentFor',
-            label: 'Reagent For',
+            label: '用作材料',
             count: detail.reagentFor.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Skill' },
-                        { label: 'Creates', align: 'right' },
-                        { label: 'Uses', align: 'right' },
+                        { label: '名称' },
+                        { label: '技能' },
+                        { label: '制造', align: 'right' },
+                        { label: '用量', align: 'right' },
                     ]}
                 >
                     {detail.reagentFor.map((use) => {
@@ -474,14 +474,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.gatheredFrom?.length && {
             id: 'gatheredFrom',
-            label: 'Gathered From',
+            label: '采集自',
             count: detail.gatheredFrom.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Skill' },
-                        { label: 'Chance', align: 'right' },
+                        { label: '名称' },
+                        { label: '技能' },
+                        { label: '几率', align: 'right' },
                     ]}
                 >
                     {detail.gatheredFrom.map((c) => (
@@ -489,7 +489,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             <td className="py-1.5 pr-2">
                                 <div className="flex min-w-0 items-center gap-2">
                                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[#00B4FF]/40 bg-[#00B4FF]/20 text-[9px] font-bold text-[#00B4FF]">
-                                        OBJ
+                                        物体
                                     </span>
                                     <span className="truncate font-bold text-[#00B4FF] hover:underline">
                                         {c.name}
@@ -511,14 +511,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.containedIn?.length && {
             id: 'containedIn',
-            label: 'Contained In',
+            label: '包含于',
             count: detail.containedIn.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Skill' },
-                        { label: 'Chance', align: 'right' },
+                        { label: '名称' },
+                        { label: '技能' },
+                        { label: '几率', align: 'right' },
                     ]}
                 >
                     {detail.containedIn.map((c) => (
@@ -526,7 +526,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             <td className="py-1.5 pr-2">
                                 <div className="flex min-w-0 items-center gap-2">
                                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[#00B4FF]/40 bg-[#00B4FF]/20 text-[9px] font-bold text-[#00B4FF]">
-                                        OBJ
+                                        物体
                                     </span>
                                     <span className="truncate font-bold text-[#00B4FF] hover:underline">
                                         {c.name}
@@ -548,10 +548,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.containedInItem?.length && {
             id: 'containedInItem',
-            label: 'Contained In Item',
+            label: '包含于物品',
             count: detail.containedInItem.length,
             content: (
-                <RelTable columns={[{ label: 'Name' }, { label: 'Chance', align: 'right' }]}>
+                <RelTable columns={[{ label: '名称' }, { label: '几率', align: 'right' }]}>
                     {detail.containedInItem.map((c) => (
                         <RelRow key={c.entry} onClick={() => onNavigate('item', c.entry)}>
                             <td className="py-1.5 pr-2">
@@ -578,14 +578,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.droppedBy?.length && {
             id: 'droppedBy',
-            label: 'Dropped By',
+            label: '掉落自',
             count: detail.droppedBy.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Level', align: 'right' },
-                        { label: 'Chance', align: 'right' },
+                        { label: '名称' },
+                        { label: '等级', align: 'right' },
+                        { label: '几率', align: 'right' },
                     ]}
                 >
                     {detail.droppedBy.map((npc) => (
@@ -605,18 +605,18 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.soldBy?.length && {
             id: 'soldBy',
-            label: 'Sold By',
+            label: '出售者',
             count: detail.soldBy.length,
             content: (
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="border-b border-white/10 text-left text-[11px] uppercase tracking-wider text-gray-500">
-                            <th className="py-1.5 pr-2 font-semibold">Name</th>
-                            <th className="px-2 py-1.5 font-semibold">Location</th>
-                            <th className="px-2 py-1.5 text-center font-semibold">React</th>
-                            <th className="px-2 py-1.5 text-right font-semibold">Stock</th>
-                            <th className="px-2 py-1.5 text-right font-semibold">Stack</th>
-                            <th className="py-1.5 pl-2 text-right font-semibold">Cost</th>
+                            <th className="py-1.5 pr-2 font-semibold">名称</th>
+                            <th className="px-2 py-1.5 font-semibold">位置</th>
+                            <th className="px-2 py-1.5 text-center font-semibold">态度</th>
+                            <th className="px-2 py-1.5 text-right font-semibold">库存</th>
+                            <th className="px-2 py-1.5 text-right font-semibold">堆叠</th>
+                            <th className="py-1.5 pl-2 text-right font-semibold">价格</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -630,7 +630,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                     <td className="py-1.5 pr-2">
                                         <div className="font-bold text-white">{npc.name}</div>
                                         <div className="text-xs text-gray-500">
-                                            Level {npc.levelMin}
+                                            等级 {npc.levelMin}
                                             {npc.levelMax > npc.levelMin ? `-${npc.levelMax}` : ''}
                                         </div>
                                     </td>
@@ -646,15 +646,15 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                             <span className="inline-flex gap-0.5 font-mono text-[11px] font-bold">
                                                 <span
                                                     className={reactionColor(npc.reactionA)}
-                                                    title={`Alliance: ${npc.reactionA}`}
+                                                    title={`联盟：${npc.reactionA}`}
                                                 >
-                                                    A
+                                                    联
                                                 </span>
                                                 <span
                                                     className={reactionColor(npc.reactionH)}
-                                                    title={`Horde: ${npc.reactionH}`}
+                                                    title={`部落：${npc.reactionH}`}
                                                 >
-                                                    H
+                                                    部
                                                 </span>
                                             </span>
                                         ) : (
@@ -683,14 +683,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.rewardFrom?.length && {
             id: 'rewardFrom',
-            label: 'Reward From',
+            label: '奖励自',
             count: detail.rewardFrom.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Quest' },
-                        { label: 'Level', align: 'right' },
-                        { label: 'Type', align: 'right' },
+                        { label: '任务' },
+                        { label: '等级', align: 'right' },
+                        { label: '类型', align: 'right' },
                     ]}
                 >
                     {detail.rewardFrom.map((q) => (
@@ -700,7 +700,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                 {q.level}
                             </td>
                             <td className="py-1.5 pl-2 text-right text-xs text-gray-400">
-                                {q.isChoice ? 'Choice' : 'Reward'}
+                                {q.isChoice ? '可选' : '必得'}
                             </td>
                         </RelRow>
                     ))}
@@ -709,10 +709,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.startsQuest && {
             id: 'startsQuest',
-            label: 'Starts Quest',
+            label: '开启任务',
             count: 1,
             content: (
-                <RelTable columns={[{ label: 'Quest' }, { label: 'Level', align: 'right' }]}>
+                <RelTable columns={[{ label: '任务' }, { label: '等级', align: 'right' }]}>
                     <RelRow onClick={() => onNavigate('quest', detail.startsQuest.entry)}>
                         <td className="py-1.5 pr-2 font-bold text-wow-gold">
                             {detail.startsQuest.title}
@@ -726,10 +726,10 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.objectiveOf?.length && {
             id: 'objectiveOf',
-            label: 'Objective Of',
+            label: '任务目标',
             count: detail.objectiveOf.length,
             content: (
-                <RelTable columns={[{ label: 'Quest' }, { label: 'Level', align: 'right' }]}>
+                <RelTable columns={[{ label: '任务' }, { label: '等级', align: 'right' }]}>
                     {detail.objectiveOf.map((q) => (
                         <RelRow key={q.entry} onClick={() => onNavigate('quest', q.entry)}>
                             <td className="py-1.5 pr-2 font-bold text-wow-gold">{q.title}</td>
@@ -743,14 +743,14 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
         },
         detail.contains?.length && {
             id: 'contains',
-            label: 'Contains',
+            label: '包含',
             count: detail.contains.length,
             content: (
                 <RelTable
                     columns={[
-                        { label: 'Name' },
-                        { label: 'Qty', align: 'right' },
-                        { label: 'Chance', align: 'right' },
+                        { label: '名称' },
+                        { label: '数量', align: 'right' },
+                        { label: '几率', align: 'right' },
                     ]}
                 >
                     {detail.contains.map((item) => (
@@ -802,7 +802,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                 iconBorderColor={qualityColor}
                 title={detail.name}
                 titleColor={qualityColor}
-                subtitle={`Item Level ${detail.itemLevel}`}
+                subtitle={`物品等级 ${detail.itemLevel}`}
                 action={
                     <div className="flex gap-2">
                         <a
@@ -810,7 +810,7 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                             target="_blank"
                             rel="noreferrer"
                             className="rounded bg-purple-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-purple-600"
-                            title="View on Turtle WoW Database"
+                            title="在 Turtle WoW 数据库中查看"
                         >
                             🔗 OctoHead
                         </a>
@@ -844,13 +844,13 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                     .writeText(itemLink)
                                     .then(() =>
                                         alert(
-                                            'In-game link copied to clipboard!\n\nPaste this in WoW chat to see the item link.',
+                                            '游戏内链接已复制到剪贴板！\n\n粘贴到 WoW 聊天框即可查看物品链接。',
                                         ),
                                     )
-                                    .catch((err) => alert('Failed to copy: ' + err))
+                                    .catch((err) => alert('复制失败：' + err))
                             }}
                             className="rounded bg-green-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-green-600"
-                            title="Copy in-game item link command to clipboard"
+                            title="复制游戏内物品链接命令到剪贴板"
                         >
                             🔗 In-Game Link
                         </button>
@@ -861,9 +861,9 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                     ? 'bg-red-600 text-white hover:bg-red-500'
                                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                             }`}
-                            title={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                            title={isFavorite ? '取消收藏' : '添加收藏'}
                         >
-                            {isFavorite ? '❤️ Favorited' : '🤍 Favorite'}
+                            {isFavorite ? '❤️ 已收藏' : '🤍 收藏'}
                         </button>
                         <button
                             onClick={handleSync}
@@ -873,9 +873,9 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                                     ? 'cursor-not-allowed bg-gray-600 text-gray-400'
                                     : 'bg-blue-600 text-white hover:bg-blue-500'
                             }`}
-                            title="Refresh item data from Turtle WoW Database"
+                            title="从 Turtle WoW 数据库刷新物品数据"
                         >
-                            {syncing ? '⏳ Syncing...' : '🔄 Sync'}
+                            {syncing ? '⏳ 同步中...' : '🔄 同步'}
                         </button>
                     </div>
                 }
@@ -890,11 +890,11 @@ const ItemDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onT
                 {detail.mountDisplayId > 0 && (mountModel.loading || mountModel.src) && (
                     <div className="w-56 flex-shrink-0">
                         <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                            Mount
+                            坐骑
                         </div>
                         {mountModel.loading ? (
                             <div className="flex aspect-[3/4] animate-pulse items-center justify-center rounded border border-white/10 bg-black/40 text-xs text-gray-500">
-                                Loading…
+                                加载中…
                             </div>
                         ) : (
                             <div className="overflow-hidden rounded border border-white/20 bg-black shadow-lg">

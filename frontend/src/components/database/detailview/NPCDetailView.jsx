@@ -55,7 +55,7 @@ const formatDropChance = (chance) => {
     else if (pct >= 1) text = `${pct.toFixed(1)}%`
     else if (pct >= 0.01) text = `${pct.toFixed(2)}%`
     else text = '<0.01%'
-    return chance < 0 ? `${text} quest` : text
+    return chance < 0 ? `${text} 任务` : text
 }
 
 // The quest list behind each of the three relation tabs (Starts / Ends /
@@ -196,7 +196,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
     }
 
     if (loading) return <DetailLoading />
-    if (!detail) return <DetailError message="NPC not found" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到 NPC" onBack={onBack} />
 
     const startsQuests = detail.quests?.filter((q) => q.type === 'starts') || []
     const endsQuests = detail.quests?.filter((q) => q.type === 'ends') || []
@@ -211,18 +211,18 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
     // relation — most creatures start nothing and end nothing, and three
     // permanently empty tabs would bury the ones that matter.
     const tabs = [
-        { id: 'overview', label: 'Overview' },
-        { id: 'loot', label: `Loot (${loot.length})` },
+        { id: 'overview', label: '概览' },
+        { id: 'loot', label: `掉落 (${loot.length})` },
         ...(startsQuests.length > 0
-            ? [{ id: 'starts', label: `Starts (${startsQuests.length})` }]
+            ? [{ id: 'starts', label: `开始 (${startsQuests.length})` }]
             : []),
-        ...(endsQuests.length > 0 ? [{ id: 'ends', label: `Ends (${endsQuests.length})` }] : []),
+        ...(endsQuests.length > 0 ? [{ id: 'ends', label: `结束 (${endsQuests.length})` }] : []),
         ...(objectiveQuests.length > 0
-            ? [{ id: 'objective', label: `Objective Of (${objectiveQuests.length})` }]
+            ? [{ id: 'objective', label: `任务目标 (${objectiveQuests.length})` }]
             : []),
-        { id: 'abilities', label: `Abilities (${abilities.length})` },
-        ...(sells.length > 0 ? [{ id: 'sells', label: `Sells (${sells.length})` }] : []),
-        ...(trains.length > 0 ? [{ id: 'trains', label: `Trains (${trains.length})` }] : []),
+        { id: 'abilities', label: `技能 (${abilities.length})` },
+        ...(sells.length > 0 ? [{ id: 'sells', label: `出售 (${sells.length})` }] : []),
+        ...(trains.length > 0 ? [{ id: 'trains', label: `训练 (${trains.length})` }] : []),
     ]
 
     // Effective tab: the URL/local value if it's a real tab, else the first.
@@ -262,16 +262,16 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         <button
                             onClick={handleSync}
                             className="flex items-center gap-1 rounded border border-blue-700 bg-blue-600 px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-blue-500"
-                            title="Re-download data from external sources"
+                            title="从外部数据源重新下载数据"
                         >
-                            <span className="text-sm">↻</span> Sync
+                            <span className="text-sm">↻</span> 同步
                         </button>
                         <a
                             href={`${DATABASE_BASE_URL}/?npc=${detail.entry}`}
                             target="_blank"
                             rel="noreferrer"
                             className="rounded border border-purple-800 bg-purple-700 px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-purple-600"
-                            title="View on Turtle WoW Database"
+                            title="在 Turtle WoW 数据库中查看"
                         >
                             🔗 OctoHead
                         </a>
@@ -292,7 +292,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         {/* Model Image (if available) - Centered or Top aligned */}
                         {modelImage.loading ? (
                             <div className="flex aspect-[3/4] animate-pulse items-center justify-center rounded border border-white/10 bg-black/40 text-xs text-gray-500">
-                                Loading...
+                                加载中...
                             </div>
                         ) : modelImage.src ? (
                             <div className="mb-4 overflow-hidden rounded border border-white/20 bg-black shadow-lg">
@@ -305,16 +305,16 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         ) : (
                             <div
                                 onClick={handleRefreshImages}
-                                title="Click to render model from client"
+                                title="点击从客户端渲染模型"
                                 className="flex aspect-[3/4] cursor-pointer flex-col items-center justify-center rounded border border-white/10 bg-black/40 text-xs text-gray-500 transition-colors hover:bg-black/60 hover:text-gray-300"
                             >
                                 {refreshingImages ? (
-                                    <span className="animate-pulse">Rendering…</span>
+                                    <span className="animate-pulse">渲染中…</span>
                                 ) : (
                                     <>
-                                        <span>No Model</span>
+                                        <span>无模型</span>
                                         <span className="mt-1 text-[10px] text-gray-600">
-                                            click to render
+                                            点击渲染
                                         </span>
                                     </>
                                 )}
@@ -330,14 +330,14 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                             <div className="h-fit">
                                 <div className="mb-2 flex items-baseline justify-between border-b border-white/10 pb-1">
                                     <h3 className="text-sm font-bold uppercase text-wow-gold">
-                                        Location
+                                        位置
                                     </h3>
                                     {mapSpawns.length > 0 && (
                                         <span className="font-mono text-xs text-gray-400">
                                             <ZoneName
                                                 name={mapSpawns[0].zoneName}
                                                 onNavigate={onNavigate}
-                                                fallback={`Map ${mapSpawns[0].mapId}`}
+                                                fallback={`地图 ${mapSpawns[0].mapId}`}
                                             />
                                             {(mapSpawns[0].x > 0 || mapSpawns[0].y > 0) && (
                                                 <span className="ml-1">
@@ -373,8 +373,8 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                 {terrainAvailable && (
                                     <div className="mb-2 inline-flex overflow-hidden rounded border border-white/10 text-[11px] font-semibold">
                                         {[
-                                            ['atlas', 'Atlas'],
-                                            ['terrain', 'Terrain'],
+                                            ['atlas', '图集'],
+                                            ['terrain', '地形'],
                                         ].map(([key, label]) => (
                                             <button
                                                 key={key}
@@ -405,12 +405,12 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                 >
                                     {!mapImage.src && !mapImage.loading && (
                                         <div className="flex h-full items-center justify-center text-sm text-gray-500">
-                                            No Map Data
+                                            无地图数据
                                         </div>
                                     )}
                                     {mapImage.loading && (
                                         <div className="flex h-full animate-pulse items-center justify-center text-sm text-gray-500">
-                                            Loading Map...
+                                            加载地图中...
                                         </div>
                                     )}
 
@@ -445,7 +445,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                         <div className="font-semibold text-wow-gold">
                                                             <ZoneName
                                                                 name={spawn.zoneName}
-                                                                fallback="Spawn Point"
+                                                                fallback="刷新点"
                                                             />
                                                         </div>
                                                         <div className="font-mono text-gray-300">
@@ -468,13 +468,13 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                     {/* Spawn Count Badge — count markers shown on THIS zone map */}
                                     {mapSpawns.length > 1 && (
                                         <div className="absolute left-2 top-2 rounded border border-white/10 bg-black/70 px-2 py-0.5 text-xs text-gray-300">
-                                            {mapSpawns.length} spawns
+                                            {mapSpawns.length} 个刷新点
                                         </div>
                                     )}
 
                                     {/* Zoom Tip */}
                                     <div className="absolute bottom-0 left-0 right-0 bg-black/80 py-1 text-center text-xs text-gray-300 opacity-0 transition-opacity group-hover:opacity-100">
-                                        Tip: Click map to zoom
+                                        提示：点击地图可放大
                                     </div>
                                 </div>
                             </div>
@@ -488,13 +488,13 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                 colSpan="2"
                                                 className="mb-2 border-b border-white/10 pb-1 text-left text-sm font-bold uppercase text-wow-gold"
                                             >
-                                                Quick Facts
+                                                基本信息
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th>Level:</th>
+                                            <th>等级：</th>
                                             <td>
                                                 {detail.levelMin !== detail.levelMax
                                                     ? `${detail.levelMin} - ${detail.levelMax}`
@@ -502,11 +502,11 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Classification:</th>
+                                            <th>分类：</th>
                                             <td>{detail.rankName || detail.rank}</td>
                                         </tr>
                                         <tr>
-                                            <th>React:</th>
+                                            <th>态度：</th>
                                             <td>
                                                 <span
                                                     className={
@@ -515,7 +515,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                             : 'text-wow-quality-7'
                                                     }
                                                 >
-                                                    A
+                                                    联
                                                 </span>{' '}
                                                 <span
                                                     className={
@@ -524,12 +524,12 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                             : 'text-wow-quality-7'
                                                     }
                                                 >
-                                                    H
+                                                    部
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Faction:</th>
+                                            <th>阵营：</th>
                                             <td>
                                                 {detail.factionName ? (
                                                     <>
@@ -554,7 +554,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Health:</th>
+                                            <th>生命：</th>
                                             <td>
                                                 {detail.healthMin !== detail.healthMax
                                                     ? `${detail.healthMin} - ${detail.healthMax}`
@@ -563,7 +563,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         </tr>
                                         {(detail.manaMin > 0 || detail.manaMax > 0) && (
                                             <tr>
-                                                <th>Mana:</th>
+                                                <th>法力：</th>
                                                 <td>
                                                     {detail.manaMin !== detail.manaMax
                                                         ? `${detail.manaMin} - ${detail.manaMax}`
@@ -573,7 +573,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         )}
                                         {(detail.goldMin > 0 || detail.goldMax > 0) && (
                                             <tr>
-                                                <th>Wealth:</th>
+                                                <th>财富：</th>
                                                 <td>
                                                     {detail.goldMin > 0 &&
                                                     detail.goldMin !== detail.goldMax ? (
@@ -594,7 +594,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         )}
                                         {(detail.minDmg > 0 || detail.maxDmg > 0) && (
                                             <tr>
-                                                <th>Damage:</th>
+                                                <th>伤害：</th>
                                                 <td>
                                                     {Math.floor(detail.minDmg)} -{' '}
                                                     {Math.floor(detail.maxDmg)}
@@ -603,12 +603,12 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         )}
                                         {detail.armor > 0 && (
                                             <tr>
-                                                <th>Armor:</th>
+                                                <th>护甲：</th>
                                                 <td>{detail.armor}</td>
                                             </tr>
                                         )}
                                         <tr>
-                                            <th>Display ID:</th>
+                                            <th>显示 ID：</th>
                                             <td>{detail.displayId1}</td>
                                         </tr>
                                     </tbody>
@@ -637,7 +637,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         <div className="animate-fade-in min-h-[200px]">
                             {currentTab === 'overview' && (
                                 <div className="text-sm text-gray-400">
-                                    <h4 className="mb-2 font-bold text-white">Abilities Summary</h4>
+                                    <h4 className="mb-2 font-bold text-white">技能概要</h4>
                                     {detail.abilities?.length > 0 ? (
                                         <ul className="list-disc space-y-1 pl-5">
                                             {detail.abilities.slice(0, 5).map((spell, i) => (
@@ -659,7 +659,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                             ))}
                                         </ul>
                                     ) : (
-                                        'No abilities found.'
+                                        '未找到技能。'
                                     )}
                                 </div>
                             )}
@@ -699,7 +699,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         </LootGrid>
                                     ) : (
                                         <div className="p-8 text-center italic text-gray-500">
-                                            No loot table available.
+                                            暂无掉落表。
                                         </div>
                                     )}
                                 </div>
@@ -716,7 +716,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                     key={item.itemId}
                                                     item={{
                                                         entry: item.itemId,
-                                                        name: item.name || `Item ${item.itemId}`,
+                                                        name: item.name || `物品 ${item.itemId}`,
                                                         quality: item.quality,
                                                         iconPath: item.iconPath || '',
                                                         dropChance:
@@ -748,7 +748,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         >
                                             <AbilityIcon iconName={sp.iconName} />
                                             <span className="flex-1 truncate text-sm font-medium text-wow-rare">
-                                                {sp.name || `Spell ${sp.spellId}`}
+                                                {sp.name || `法术 ${sp.spellId}`}
                                                 {sp.subtext && (
                                                     <span className="ml-1 text-gray-500">
                                                         ({sp.subtext})
@@ -757,7 +757,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                             </span>
                                             {sp.level > 0 && (
                                                 <span className="whitespace-nowrap text-xs text-gray-500">
-                                                    Req Lvl {sp.level}
+                                                    需要等级 {sp.level}
                                                 </span>
                                             )}
                                         </div>
@@ -804,7 +804,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                                             spell.description
                                                         ) : (
                                                             <span className="italic text-gray-600">
-                                                                No description available.
+                                                                暂无描述。
                                                             </span>
                                                         )}
                                                     </p>
@@ -813,7 +813,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                         </div>
                                     ) : (
                                         <div className="p-8 text-center italic text-gray-500">
-                                            No abilities data found.
+                                            未找到技能数据。
                                         </div>
                                     )}
                                 </div>
@@ -837,7 +837,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         <div className="relative">
                             <img
                                 src={mapImage.src}
-                                alt={activeZone || 'Location Map'}
+                                alt={activeZone || '位置地图'}
                                 className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
                             />
 
@@ -855,7 +855,7 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                                             left: `${spawn.x}%`,
                                             top: `${spawn.y}%`,
                                         }}
-                                        title={`${spawn.zoneName || 'Spawn'} (${spawn.x.toFixed(1)}, ${spawn.y.toFixed(1)})`}
+                                        title={`${spawn.zoneName || '刷新点'} (${spawn.x.toFixed(1)}, ${spawn.y.toFixed(1)})`}
                                     >
                                         {/* Outer pulsing ring */}
                                         <div className="absolute inset-0 animate-ping rounded-full bg-red-500/50" />
@@ -869,12 +869,12 @@ const NPCDetailView = ({ entry, onBack, onNavigate, tooltipHook, activeTab, onTa
                         {/* Zone Name Label */}
                         {(activeZone || mapSpawns.length > 0) && (
                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/80 px-4 py-2 font-bold text-white">
-                                {activeZone || mapSpawns[0]?.zoneName || 'Unknown Zone'}
+                                {activeZone || mapSpawns[0]?.zoneName || '未知区域'}
                                 {mapSpawns[0]?.x > 0 &&
                                     ` (${mapSpawns[0].x.toFixed(1)}, ${mapSpawns[0].y.toFixed(1)})`}
                                 {mapSpawns.length > 1 && (
                                     <span className="ml-2 text-sm text-gray-400">
-                                        +{mapSpawns.length - 1} more
+                                        另有 {mapSpawns.length - 1} 处
                                     </span>
                                 )}
                             </div>

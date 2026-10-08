@@ -112,8 +112,8 @@ function IconsTab({ onNavigate }) {
     return (
         <ContentPanel>
             <SectionHeader
-                title={`Icons (${filtered.length})`}
-                placeholder="Filter icons..."
+                title={`图标 (${filtered.length})`}
+                placeholder="筛选图标..."
                 onFilterChange={(v) => {
                     setFilter(v)
                     scrollRef.current?.scrollTo(0, 0)
@@ -128,23 +128,22 @@ function IconsTab({ onNavigate }) {
                                 scrollRef.current?.scrollTo(0, 0)
                             }}
                         />
-                        used only
+                        仅已使用
                     </label>
                 }
             />
 
             {isLoading && (
                 <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                    Scanning local icons...
+                    扫描本地图标中...
                 </div>
             )}
 
             {!isLoading && icons.length === 0 && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-1 italic text-gray-600">
-                    <span>No local icons found.</span>
+                    <span>未找到本地图标。</span>
                     <span className="text-xs">
-                        Run the Client Data import (Tools → Import) to extract them from your WoW
-                        client.
+                        运行客户端数据导入（工具 → 导入），从你的 WoW 客户端提取图标。
                     </span>
                 </div>
             )}

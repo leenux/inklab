@@ -12,9 +12,9 @@
     },
     "info": {
         "companyName": "InkLab",
-        "productName": "InkLab - WoW Toolkit",
-        "productVersion": "0.6.2",
+        "productName": "InkLab - 魔兽世界工具箱（中文）",
+        "productVersion": "0.7.42",
         "copyright": "Copyright © 2025",
-        "comments": "Comprehensive WoW toolset for Turtle WoW"
+        "comments": "InkLab 中文版 — 1.18.1 数据本地化"
     }
 }

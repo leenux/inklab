@@ -1,3 +1,9 @@
+# 汉化
+- **UI**: 改为中文
+- **内容**: 改为中文
+
+# 数据库支持
+- **tortoise-wow**: [tortoise-wow](https://github.com/tortoise-wow/tortoise-wow)（2026-10-08 快照）
 # InkLab - World of Warcraft Database Browser
 
 A comprehensive desktop application for browsing and exploring World of Warcraft (Octo WoW) game data, built with Wails, Go, and React.

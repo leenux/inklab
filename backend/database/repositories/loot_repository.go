@@ -46,7 +46,7 @@ func (r *LootRepository) GetCreatureLoot(creatureEntry int) ([]*models.LootItem,
 		var name, icon string
 		var quality int
 		err := r.db.QueryRow(`
-			SELECT i.name, i.quality, COALESCE(idi.icon, '') 
+			SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, '') 
 			FROM item_template i 
 			LEFT JOIN item_display_info idi ON i.display_id = idi.ID 
 			WHERE i.entry = ?

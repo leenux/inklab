@@ -85,7 +85,7 @@ func (r *ItemRepository) buildItemFilter(f models.SearchFilter) (string, []any) 
 		if id, err := strconv.Atoi(f.Query); err == nil {
 			b.raw("entry = ?", id)
 		} else {
-			b.raw("name LIKE ?", "%"+f.Query+"%")
+			b.raw("name_loc4 LIKE ?", "%"+f.Query+"%")
 		}
 	}
 

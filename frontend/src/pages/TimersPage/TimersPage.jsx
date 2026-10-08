@@ -58,12 +58,11 @@ export default function TimersPage() {
             <div className="flex-1 overflow-y-auto p-6">
                 <div className="mx-auto max-w-5xl">
                     <p className="mb-4 text-xs text-white/40">
-                        Octo WoW reset schedule, computed locally — raids reset at 04:00 UTC,
-                        the Darkmoon Faire moves at midnight UTC, and all times below are
-                        shown in your local timezone.
+                        Octo WoW 重置时间表（本地计算）— 团队副本在 UTC 04:00 重置，
+                        暗月马戏团在 UTC 午夜迁移，以下所有时间均显示为你的本地时区。
                     </p>
 
-                    <SectionTitle>Raid Resets</SectionTitle>
+                    <SectionTitle>团队副本重置</SectionTitle>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         {RAID_TIMERS.map((t) => {
                             const resetMs = nextOccurrence(t, now)
@@ -71,22 +70,22 @@ export default function TimersPage() {
                                 <TimerCard
                                     key={t.id}
                                     title={t.name}
-                                    subtitle={`${t.detail ? `${t.detail} — ` : ''}every ${t.periodDays} days`}
+                                    subtitle={`${t.detail ? `${t.detail} — ` : ''}每 ${t.periodDays} 天`}
                                     countdownMs={resetMs - now}
-                                    footer={`Resets ${formatLocal(resetMs)}`}
+                                    footer={`重置于 ${formatLocal(resetMs)}`}
                                 />
                             )
                         })}
                     </div>
 
-                    <SectionTitle>World Events</SectionTitle>
+                    <SectionTitle>世界事件</SectionTitle>
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                         <TimerCard
-                            title="Darkmoon Faire"
-                            subtitle="Moves every Wednesday · closed while it moves"
+                            title="暗月马戏团"
+                            subtitle="每周三迁移 · 迁移期间关闭"
                             value={
                                 dmf.current.setupDay
-                                    ? `Setup day — reopens in ${dmf.current.location}`
+                                    ? `搭建日 — 将在${dmf.current.location}重新开放`
                                     : `${dmf.current.location} (${dmf.current.town})`
                             }
                             valueClass={dmfFactionClass}
@@ -97,23 +96,23 @@ export default function TimersPage() {
                             }
                             footer={
                                 dmf.current.setupDay
-                                    ? `Reopens ${formatLocal(dmf.reopensMs)}`
-                                    : `Moves to ${dmf.moveState.location} ${formatLocal(dmf.moveMs)}`
+                                    ? `重新开放于 ${formatLocal(dmf.reopensMs)}`
+                                    : `迁往${dmf.moveState.location} ${formatLocal(dmf.moveMs)}`
                             }
                         />
                         <TimerCard
-                            title="Battleground of the Day"
-                            subtitle="Rotates daily"
+                            title="每日战场"
+                            subtitle="每日轮换"
                             value={bg.current}
                             countdownMs={bg.nextChangeMs - now}
-                            footer={`Next: ${bg.next}, ${formatLocal(bg.nextChangeMs)}`}
+                            footer={`下一个：${bg.next}，${formatLocal(bg.nextChangeMs)}`}
                         />
                         <TimerCard
-                            title="Edge of Madness"
-                            subtitle="Zul'Gurub — rotates every 14 days"
+                            title="疯狂之缘"
+                            subtitle="祖尔格拉布 — 每 14 天轮换"
                             value={eom.current}
                             countdownMs={eom.nextChangeMs - now}
-                            footer={`Next: ${eom.next}, ${formatLocal(eom.nextChangeMs)}`}
+                            footer={`下一个：${eom.next}，${formatLocal(eom.nextChangeMs)}`}
                         />
                         {MISC_TIMERS.map((t) => {
                             const resetMs = nextOccurrence(t, now)
@@ -121,9 +120,9 @@ export default function TimersPage() {
                                 <TimerCard
                                     key={t.id}
                                     title={t.name}
-                                    subtitle={`Every ${t.periodDays} days`}
+                                    subtitle={`每 ${t.periodDays} 天`}
                                     countdownMs={resetMs - now}
-                                    footer={`Resets ${formatLocal(resetMs)}`}
+                                    footer={`重置于 ${formatLocal(resetMs)}`}
                                     note={t.note}
                                 />
                             )

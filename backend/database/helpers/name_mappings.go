@@ -10,7 +10,7 @@ import "fmt"
 // until loaded (or when a client import hasn't run) → built-in fallback.
 var (
 	itemClassNames      map[int]string
-	itemSubclassShort   map[[2]int]string // (class,subclass) -> short name ("Axe")
+	itemSubclassShort   map[[2]int]string // (class,subclass) -> short name ("斧")
 	itemSubclassVerbose map[[2]int]string // (class,subclass) -> "One-Handed Axes"
 	inventoryTypeNames  map[int]string
 	creatureTypeNames   map[int]string    // CreatureType.dbc id -> name
@@ -57,32 +57,32 @@ func GetClassName(c int) string {
 		}
 	}
 	classNames := map[int]string{
-		0:  "Consumable",
-		1:  "Container",
-		2:  "Weapon",
-		3:  "Gem",
-		4:  "Armor",
-		5:  "Reagent",
-		6:  "Projectile",
-		7:  "Trade Goods",
-		8:  "Generic (OBSOLETE)",
-		9:  "Recipe",
-		10: "Money (OBSOLETE)",
-		11: "Quiver",
-		12: "Quest",
-		13: "Key",
-		14: "Permanent (OBSOLETE)",
-		15: "Miscellaneous",
+		0:  "消耗品",
+		1:  "容器",
+		2:  "武器",
+		3:  "宝石",
+		4:  "护甲",
+		5:  "材料",
+		6:  "弹药",
+		7:  "商品",
+		8:  "通用(已废弃)",
+		9:  "配方",
+		10: "金钱(已废弃)",
+		11: "箭袋",
+		12: "任务",
+		13: "钥匙",
+		14: "永久(已废弃)",
+		15: "杂项",
 	}
 	if name, ok := classNames[c]; ok {
 		return name
 	}
-	return "Unknown"
+	return "未知"
 }
 
 // GetSubClassName returns the item subclass name — the client's short form
-// ("Sword", "Mace"), matching how tooltips/lists pair it with the equip slot
-// ("Two-Hand" + "Sword"), like the game and Wowhead. The 1H/2H distinction
+// ("剑", "锤"), matching how tooltips/lists pair it with the equip slot
+// ("双手" + "剑"), like the game and Wowhead. The 1H/2H distinction
 // comes from the slot, not this name. (itemSubclassVerbose holds the long
 // "One-/Two-Handed Swords" form for a future standalone filter that lacks slot
 // context.) Falls back to built-in names.
@@ -95,27 +95,27 @@ func GetSubClassName(c, sc int) string {
 	// Weapon subclasses (short/family names; the slot carries One-/Two-Hand).
 	if c == 2 {
 		weaponSubclasses := map[int]string{
-			0:  "Axe",
-			1:  "Axe",
-			2:  "Bow",
-			3:  "Gun",
-			4:  "Mace",
-			5:  "Mace",
-			6:  "Polearm",
-			7:  "Sword",
-			8:  "Sword",
-			9:  "Obsolete",
-			10: "Staff",
-			11: "Exotic",
-			12: "Exotic",
-			13: "Fist Weapon",
-			14: "Miscellaneous",
-			15: "Dagger",
-			16: "Thrown",
-			17: "Spear",
-			18: "Crossbow",
-			19: "Wand",
-			20: "Fishing Pole",
+			0:  "斧",
+			1:  "斧",
+			2:  "弓",
+			3:  "枪械",
+			4:  "锤",
+			5:  "锤",
+			6:  "长柄武器",
+			7:  "剑",
+			8:  "剑",
+			9:  "已废弃",
+			10: "法杖",
+			11: "异域武器",
+			12: "异域武器",
+			13: "拳套",
+			14: "杂项",
+			15: "匕首",
+			16: "投掷武器",
+			17: "矛",
+			18: "弩",
+			19: "魔杖",
+			20: "鱼竿",
 		}
 		if name, ok := weaponSubclasses[sc]; ok {
 			return name
@@ -125,17 +125,17 @@ func GetSubClassName(c, sc int) string {
 	// Armor subclasses
 	if c == 4 {
 		armorSubclasses := map[int]string{
-			0:  "Miscellaneous",
-			1:  "Cloth",
-			2:  "Leather",
-			3:  "Mail",
-			4:  "Plate",
-			5:  "Buckler (OBSOLETE)",
-			6:  "Shield",
-			7:  "Libram",
-			8:  "Idol",
-			9:  "Totem",
-			10: "Sigil",
+			0:  "杂项",
+			1:  "布甲",
+			2:  "皮甲",
+			3:  "锁甲",
+			4:  "板甲",
+			5:  "小盾(已废弃)",
+			6:  "盾牌",
+			7:  "圣契",
+			8:  "神像",
+			9:  "图腾",
+			10: "魔印",
 		}
 		if name, ok := armorSubclasses[sc]; ok {
 			return name
@@ -144,15 +144,15 @@ func GetSubClassName(c, sc int) string {
 
 	// Miscellaneous subclasses: the 1.12 client DBC only names subclass 0 (Junk) —
 	// companion pets and mounts predate those item categories, so the client has
-	// no name and they'd collapse to "Miscellaneous". Provide them, matching the
+	// no name and they'd collapse to "杂项". Provide them, matching the
 	// data's layout (subclass 2 = companion pets, 4 = mounts).
 	if c == 15 {
 		miscSubclasses := map[int]string{
-			0: "Junk",
-			1: "Reagent",
-			2: "Companion",
-			3: "Holiday",
-			4: "Mount",
+			0: "垃圾",
+			1: "材料",
+			2: "小伙伴",
+			3: "节日",
+			4: "坐骑",
 		}
 		if name, ok := miscSubclasses[sc]; ok {
 			return name
@@ -165,8 +165,8 @@ func GetSubClassName(c, sc int) string {
 	return GetClassName(c)
 }
 
-// GetSubClassFamilyName returns the short, family-level subclass name ("Sword",
-// "Axe") rather than the verbose 1H/2H form — for the filter sidebar, which
+// GetSubClassFamilyName returns the short, family-level subclass name ("剑",
+// "斧") rather than the verbose 1H/2H form — for the filter sidebar, which
 // groups 1H/2H weapons under one family. Prefers the client's short name.
 func GetSubClassFamilyName(c, sc int) string {
 	if itemSubclassShort != nil {
@@ -185,40 +185,40 @@ func GetInventoryTypeName(invType int) string {
 		}
 	}
 	invTypeNames := map[int]string{
-		0:  "Non-equippable",
-		1:  "Head",
-		2:  "Neck",
-		3:  "Shoulder",
-		4:  "Shirt",
-		5:  "Chest",
-		6:  "Waist",
-		7:  "Legs",
-		8:  "Feet",
-		9:  "Wrists",
-		10: "Hands",
-		11: "Finger",
-		12: "Trinket",
-		13: "One-Hand",
-		14: "Shield",
-		15: "Ranged",
-		16: "Back",
-		17: "Two-Hand",
-		18: "Bag",
-		19: "Tabard",
-		20: "Robe",
-		21: "Main Hand",
-		22: "Off Hand",
-		23: "Holdable",
-		24: "Ammo",
-		25: "Thrown",
-		26: "Ranged Right",
-		27: "Quiver",
-		28: "Relic",
+		0:  "不可装备",
+		1:  "头部",
+		2:  "颈部",
+		3:  "肩部",
+		4:  "衬衣",
+		5:  "胸部",
+		6:  "腰部",
+		7:  "腿部",
+		8:  "脚",
+		9:  "手腕",
+		10: "手",
+		11: "手指",
+		12: "饰品",
+		13: "单手",
+		14: "盾牌",
+		15: "远程",
+		16: "背部",
+		17: "双手",
+		18: "背包",
+		19: "战袍",
+		20: "长袍",
+		21: "主手",
+		22: "副手",
+		23: "副手物品",
+		24: "弹药",
+		25: "投掷武器",
+		26: "远程",
+		27: "箭袋",
+		28: "圣物",
 	}
 	if name, ok := invTypeNames[invType]; ok {
 		return name
 	}
-	return "Unknown"
+	return "未知"
 }
 
 // bondingKey maps a bonding id to its GlobalStrings key.
@@ -231,13 +231,13 @@ func GetBondingName(bonding int) string {
 	}
 	switch bonding {
 	case 1:
-		return "Binds when picked up"
+		return "拾取后绑定"
 	case 2:
-		return "Binds when equipped"
+		return "装备后绑定"
 	case 3:
-		return "Binds when used"
+		return "使用后绑定"
 	case 4:
-		return "Quest Item"
+		return "任务物品"
 	default:
 		return ""
 	}
@@ -250,21 +250,21 @@ func GetQualityName(quality int) string {
 	}
 	switch quality {
 	case 0:
-		return "Poor"
+		return "粗糙"
 	case 1:
-		return "Common"
+		return "普通"
 	case 2:
-		return "Uncommon"
+		return "优秀"
 	case 3:
-		return "Rare"
+		return "精良"
 	case 4:
-		return "Epic"
+		return "史诗"
 	case 5:
-		return "Legendary"
+		return "传说"
 	case 6:
-		return "Artifact"
+		return "神器"
 	default:
-		return "Unknown"
+		return "未知"
 	}
 }
 
@@ -277,49 +277,49 @@ func GetCreatureTypeName(t int) string {
 		}
 	}
 	typeNames := map[int]string{
-		0:  "None",
-		1:  "Beast",
-		2:  "Dragonkin",
-		3:  "Demon",
-		4:  "Elemental",
-		5:  "Giant",
-		6:  "Undead",
-		7:  "Humanoid",
-		8:  "Critter",
-		9:  "Mechanical",
-		10: "Not Specified",
-		11: "Totem",
+		0:  "无",
+		1:  "野兽",
+		2:  "龙类",
+		3:  "恶魔",
+		4:  "元素",
+		5:  "巨人",
+		6:  "亡灵",
+		7:  "人型生物",
+		8:  "小动物",
+		9:  "机械",
+		10: "未指定",
+		11: "图腾",
 	}
 	if name, ok := typeNames[t]; ok {
 		return name
 	}
-	return "Unknown"
+	return "未知"
 }
 
 // GetCreatureRankName returns the creature rank name. "Elite"/"Boss" come from
 // the client (ELITE/BOSS GlobalStrings) when loaded; the composite ranks
-// ("Rare Elite") and "Normal"/"Rare" have no clean client string, so they keep
+// ("Rare Elite") and "Normal"/"精良" have no clean client string, so they keep
 // a minimal built-in fallback.
 func GetCreatureRankName(r int) string {
 	elite := clientString("ELITE")
 	if elite == "" {
-		elite = "Elite"
+		elite = "精英"
 	}
 	boss := clientString("BOSS")
 	if boss == "" {
-		boss = "Boss"
+		boss = "首领"
 	}
 	switch r {
 	case 1:
 		return elite
 	case 2:
-		return "Rare " + elite
+		return "稀有" + elite
 	case 3:
 		return boss
 	case 4:
-		return "Rare"
+		return "精良"
 	default:
-		return "Normal"
+		return "普通"
 	}
 }
 
@@ -335,17 +335,17 @@ func GetTriggerPrefix(trigger int) string {
 	}
 	switch trigger {
 	case 0:
-		return "Use: "
+		return "使用："
 	case 1:
-		return "Equip: "
+		return "装备："
 	case 2:
-		return "Chance on hit: "
+		return "击中时可能："
 	case 4:
-		return "Soulstone: "
+		return "灵魂石："
 	case 5:
-		return "Use: (no cooldown) "
+		return "使用：（无冷却）"
 	case 6:
-		return "Learn: "
+		return "学习："
 	default:
 		return ""
 	}
@@ -358,15 +358,15 @@ func GetTriggerPrefix(trigger int) string {
 // import time. The secondary/rating stats (12+) have no string in the 1.12
 // client, so their English names live here and stay built-in.
 var StatNames = map[int]string{
-	0: "Mana", 1: "Health", 3: "Agility", 4: "Strength",
-	5: "Intellect", 6: "Spirit", 7: "Stamina",
-	12: "Defense Rating", 13: "Dodge Rating", 14: "Parry Rating",
-	15: "Shield Block Rating", 16: "Melee Hit Rating", 17: "Ranged Hit Rating",
-	18: "Spell Hit Rating", 19: "Melee Critical Rating", 20: "Ranged Critical Rating",
-	21: "Spell Critical Rating", 35: "Resilience Rating", 36: "Haste Rating",
-	37: "Expertise Rating", 38: "Attack Power", 39: "Ranged Attack Power",
-	41: "Spell Healing", 42: "Spell Damage", 43: "Mana Regeneration",
-	44: "Armor Penetration Rating", 45: "Spell Power",
+	0: "法力", 1: "生命", 3: "敏捷", 4: "力量",
+	5: "智力", 6: "精神", 7: "耐力",
+	12: "防御等级", 13: "躲闪等级", 14: "招架等级",
+	15: "格挡等级", 16: "近战命中等级", 17: "远程命中等级",
+	18: "法术命中等级", 19: "近战暴击等级", 20: "远程暴击等级",
+	21: "法术暴击等级", 35: "韧性等级", 36: "急速等级",
+	37: "精准等级", 38: "攻击强度", 39: "远程攻击强度",
+	41: "法术治疗", 42: "法术伤害", 43: "法力恢复",
+	44: "护甲穿透等级", 45: "法术强度",
 }
 
 // GetStatName returns the canonical (built-in English) name for a stat_type id,
@@ -404,13 +404,13 @@ const (
 func GetFactionReaction(ourMask, friendMask, enemyMask, target int) string {
 	switch {
 	case enemyMask&target != 0:
-		return "hostile"
+		return "敌对"
 	case friendMask&target != 0:
-		return "friendly"
+		return "友好"
 	case ourMask&target != 0:
-		return "friendly"
+		return "友好"
 	default:
-		return "neutral"
+		return "中立"
 	}
 }
 
@@ -424,20 +424,20 @@ func GetSchoolName(school int) string {
 	}
 	switch school {
 	case 0:
-		return "Physical"
+		return "物理"
 	case 1:
-		return "Holy"
+		return "神圣"
 	case 2:
-		return "Fire"
+		return "火焰"
 	case 3:
-		return "Nature"
+		return "自然"
 	case 4:
-		return "Frost"
+		return "冰霜"
 	case 5:
-		return "Shadow"
+		return "暗影"
 	case 6:
-		return "Arcane"
+		return "奥术"
 	default:
-		return "Physical"
+		return "物理"
 	}
 }

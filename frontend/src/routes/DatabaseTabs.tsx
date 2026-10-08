@@ -16,18 +16,19 @@ import {
 } from '../components/database/tabs'
 import { useTooltipCtx } from '../hooks/useTooltipContext'
 
-const TABS = [
-    'Items',
-    'Sets',
-    'NPCs',
-    'Quests',
-    'Objects',
-    'Zones',
-    'Spells',
-    'Professions',
-    'Factions',
-    'Races',
-    'Icons',
+// [route key, Chinese label]
+const TABS: [string, string][] = [
+    ['items', '物品'],
+    ['sets', '套装'],
+    ['npcs', 'NPC'],
+    ['quests', '任务'],
+    ['objects', '物体'],
+    ['zones', '区域'],
+    ['spells', '法术'],
+    ['professions', '专业'],
+    ['factions', '阵营'],
+    ['races', '种族'],
+    ['icons', '图标'],
 ]
 
 const TAB_BASE =
@@ -71,8 +72,7 @@ export function DatabaseTabs() {
                 position and filters survive a detail visit; the detail covers it. */}
                 <div className="flex h-full flex-1 flex-col overflow-hidden">
                     <TabBar>
-                        {TABS.map((label) => {
-                            const key = label.toLowerCase()
+                        {TABS.map(([key, label]) => {
                             return (
                                 <Link
                                     key={key}

@@ -265,7 +265,7 @@ func (r *ZoneRepository) GetZoneDetail(id int) (*models.ZoneDetail, error) {
 
 		// NPCs spawning in this zone (deduped across spawn points / names).
 		npcRows, err := r.db.Query(`
-			SELECT DISTINCT ct.entry, ct.name, COALESCE(ct.subname, ''),
+			SELECT DISTINCT ct.entry, COALESCE(NULLIF(ct.name_loc4,''), ct.name), COALESCE(COALESCE(NULLIF(ct.subname_loc4,''), ct.subname), ''),
 				ct.level_min, ct.level_max, ct.rank, ct.type, COALESCE(ct.npc_flags, 0)
 			FROM creature_spawn cs
 			JOIN creature_template ct ON ct.entry = cs.creature_entry
@@ -344,7 +344,7 @@ func (r *ZoneRepository) GetZoneDetail(id int) (*models.ZoneDetail, error) {
 		}
 
 		objRows, err := r.db.Query(`
-			SELECT DISTINCT gt.entry, gt.name, gt.type
+			SELECT DISTINCT gt.entry, COALESCE(NULLIF(gt.name_loc4,''), gt.name), gt.type
 			FROM gameobject_spawn gs
 			JOIN gameobject_template gt ON gt.entry = gs.gameobject_entry
 			WHERE gs.zone_name IN (`+ph+`)
@@ -440,10 +440,10 @@ func (r *ZoneRepository) GetZoneLoot(id int) ([]*models.ZoneLoot, error) {
 	}
 	if len(creatureNames) > 0 {
 		parts = append(parts, `
-			SELECT cl.item AS item, 'npc' AS kind, ze.e AS sentry, c.name AS sname, cl.ChanceOrQuestChance AS chance
+			SELECT cl.item AS item, 'npc' AS kind, ze.e AS sentry, COALESCE(NULLIF(c.name_loc4,''), c.name) AS sname, cl.ChanceOrQuestChance AS chance
 			FROM `+creatureDist()+` AND cl.mincountOrRef >= 0`)
 		parts = append(parts, `
-			SELECT rl.item AS item, 'npc' AS kind, ze.e AS sentry, c.name AS sname,
+			SELECT rl.item AS item, 'npc' AS kind, ze.e AS sentry, COALESCE(NULLIF(c.name_loc4,''), c.name) AS sname,
 			       cl.ChanceOrQuestChance * COALESCE(NULLIF(rl.ChanceOrQuestChance, 0), 100.0 / NULLIF(g.cnt, 0)) / 100.0 AS chance
 			FROM `+creatureDist()+` AND cl.mincountOrRef < 0
 			JOIN narrow_refs nr ON nr.mref = cl.mincountOrRef
@@ -452,10 +452,10 @@ func (r *ZoneRepository) GetZoneLoot(id int) ([]*models.ZoneLoot, error) {
 	}
 	if len(objNames) > 0 {
 		parts = append(parts, `
-			SELECT gl.item AS item, 'object' AS kind, ze.e AS sentry, gt.name AS sname, gl.ChanceOrQuestChance AS chance
+			SELECT gl.item AS item, 'object' AS kind, ze.e AS sentry, COALESCE(NULLIF(gt.name_loc4,''), gt.name) AS sname, gl.ChanceOrQuestChance AS chance
 			FROM `+objDist()+` AND gl.mincountOrRef >= 0`)
 		parts = append(parts, `
-			SELECT rl.item AS item, 'object' AS kind, ze.e AS sentry, gt.name AS sname,
+			SELECT rl.item AS item, 'object' AS kind, ze.e AS sentry, COALESCE(NULLIF(gt.name_loc4,''), gt.name) AS sname,
 			       gl.ChanceOrQuestChance * COALESCE(NULLIF(rl.ChanceOrQuestChance, 0), 100.0 / NULLIF(g.cnt, 0)) / 100.0 AS chance
 			FROM `+objDist()+` AND gl.mincountOrRef < 0
 			JOIN narrow_refs nr ON nr.mref = gl.mincountOrRef
@@ -487,12 +487,12 @@ func (r *ZoneRepository) GetZoneLoot(id int) ([]*models.ZoneLoot, error) {
 			WHERE ChanceOrQuestChance = 0
 			GROUP BY entry, groupid
 		)
-		SELECT it.entry, it.name, it.quality, COALESCE(idi.icon, ''), it.item_level,
+		SELECT it.entry, COALESCE(NULLIF(it.name_loc4,''), it.name), it.quality, COALESCE(idi.icon, ''), it.item_level,
 		       t.kind, t.sentry, t.sname, t.chance
 		FROM (` + strings.Join(parts, "\n\t\t\tUNION ALL\n") + `) t
 		JOIN item_template it ON it.entry = t.item
 		LEFT JOIN item_display_info idi ON it.display_id = idi.ID
-		ORDER BY it.quality DESC, it.item_level DESC, it.name, it.entry`
+		ORDER BY it.quality DESC, it.item_level DESC, COALESCE(NULLIF(it.name_loc4,''), it.name), it.entry`
 
 	rows, err := r.db.Query(q, append([]interface{}{maxSharedRefSources}, args...)...)
 	if err != nil {

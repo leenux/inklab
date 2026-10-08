@@ -5,15 +5,15 @@ import { useEntityNavigate } from '../../utils/entityNav'
 import { useDebouncedValue } from '../../hooks/useDebouncedValue'
 import { useGlobalSearch } from '../../hooks/queries/search'
 
-const TYPE_BADGE = { npc: 'NPC', quest: 'Q', spell: 'S', object: 'OBJ', item: '' }
+const TYPE_BADGE = { npc: 'NPC', quest: '任务', spell: '法术', object: '物体', item: '' }
 const TYPE_COLOR = { npc: '#FFD100', spell: '#a855f7', object: '#00B4FF', quest: '#fff' }
 // category tabs in display order; `key` matches the result item's `type`
 const CATEGORIES = [
-    { key: 'item', label: 'Items' },
-    { key: 'npc', label: 'NPCs' },
-    { key: 'quest', label: 'Quests' },
-    { key: 'spell', label: 'Spells' },
-    { key: 'object', label: 'Objects' },
+    { key: 'item', label: '物品' },
+    { key: 'npc', label: 'NPC' },
+    { key: 'quest', label: '任务' },
+    { key: 'spell', label: '法术' },
+    { key: 'object', label: '物体' },
 ]
 
 const ResultIcon = ({ iconName, type, displayId, activeCategory }) => {
@@ -40,17 +40,17 @@ const ResultIcon = ({ iconName, type, displayId, activeCategory }) => {
 const subtitle = (item) => {
     switch (item.type) {
         case 'item':
-            return `Item Lv ${item.itemLevel} (Req ${item.requiredLevel})`
+            return `物品等级 ${item.itemLevel}（需要 ${item.requiredLevel}）`
         case 'npc':
-            return `Level ${item.levelMin}${item.levelMin !== item.levelMax ? '-' + item.levelMax : ''}`
+            return `等级 ${item.levelMin}${item.levelMin !== item.levelMax ? '-' + item.levelMax : ''}`
         case 'quest':
-            return `Level ${item.questLevel} (Req ${item.minLevel})`
+            return `等级 ${item.questLevel}（需要 ${item.minLevel}）`
         case 'spell':
             return item.description
                 ? item.description.slice(0, 60) + (item.description.length > 60 ? '…' : '')
-                : 'Spell'
+                : '法术'
         case 'object':
-            return item.typeName || 'Object'
+            return item.typeName || '物体'
         default:
             return ''
     }
@@ -144,7 +144,7 @@ function GlobalSearch() {
                     onKeyDown={(e) => {
                         if (e.key === 'Escape') setOpen(false)
                     }}
-                    placeholder="Search items, NPCs, quests…"
+                    placeholder="搜索物品、NPC、任务…"
                     className="w-full rounded border border-border-dark bg-bg-main py-1.5 pl-7 pr-3 text-sm text-white outline-none transition-colors focus:border-wow-rare"
                 />
             </div>
@@ -153,11 +153,11 @@ function GlobalSearch() {
                 <div className="absolute right-0 z-[9999] mt-1 max-h-[70vh] w-[26rem] overflow-y-auto rounded-lg border border-border-dark bg-bg-panel shadow-2xl">
                     {loading && results.length === 0 ? (
                         <div className="animate-pulse px-4 py-3 text-sm text-wow-gold">
-                            Searching…
+                            搜索中…
                         </div>
                     ) : results.length === 0 ? (
                         <div className="px-4 py-3 text-sm text-gray-500">
-                            No results for “{query.trim()}”
+                            未找到“{query.trim()}”的结果
                         </div>
                     ) : (
                         <>
@@ -167,7 +167,7 @@ function GlobalSearch() {
                                     onClick={() => setCategory('all')}
                                     className={`rounded px-2 py-0.5 text-[11px] font-bold transition-colors ${category === 'all' ? 'bg-wow-rare text-white' : 'text-gray-400 hover:bg-bg-hover'}`}
                                 >
-                                    All <span className="opacity-60">{results.length}</span>
+                                    全部 <span className="opacity-60">{results.length}</span>
                                 </button>
                                 {CATEGORIES.filter((c) => counts[c.key]).map((c) => (
                                     <button

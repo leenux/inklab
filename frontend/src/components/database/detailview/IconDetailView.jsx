@@ -22,8 +22,8 @@ function IconDetailView({ name, onNavigate, tooltipHook, activeTab, onTabChange 
     const spells = usage?.spells || []
 
     const tabs = [
-        items.length > 0 && { id: 'items', label: `Items (${items.length})` },
-        spells.length > 0 && { id: 'spells', label: `Spells (${spells.length})` },
+        items.length > 0 && { id: 'items', label: `物品 (${items.length})` },
+        spells.length > 0 && { id: 'spells', label: `法术 (${spells.length})` },
     ].filter(Boolean)
     const currentTab = tabs.some((t) => t.id === rawTab) ? rawTab : tabs[0]?.id
 
@@ -42,8 +42,8 @@ function IconDetailView({ name, onNavigate, tooltipHook, activeTab, onTabChange 
                     <h2 className="font-mono text-xl font-bold text-white">{name}</h2>
                     <div className="text-xs text-gray-500">
                         {isLoading
-                            ? 'Loading usage...'
-                            : `Used by ${items.length} item${items.length !== 1 ? 's' : ''} and ${spells.length} spell${spells.length !== 1 ? 's' : ''}`}
+                            ? '加载使用情况中...'
+                            : `被 ${items.length} 个物品和 ${spells.length} 个法术使用`}
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@ function IconDetailView({ name, onNavigate, tooltipHook, activeTab, onTabChange 
             <ScrollList className="p-4">
                 {!isLoading && tabs.length === 0 && (
                     <div className="py-8 text-center text-sm italic text-gray-600">
-                        Nothing in the database uses this icon.
+                        数据库中没有使用该图标的内容。
                     </div>
                 )}
 

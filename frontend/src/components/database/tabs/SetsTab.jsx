@@ -83,14 +83,14 @@ function SetsTab({ tooltipHook, onNavigate }) {
             {/* Classes (1st column) */}
             <SidebarPanel>
                 <SectionHeader
-                    title="Classes"
-                    placeholder="Filter classes..."
+                    title="职业"
+                    placeholder="筛选职业..."
                     onFilterChange={setClassFilter}
                 />
                 <ScrollList>
                     <ListItem active={classBit === 0} onClick={() => selectClass(0)}>
                         <span className="flex w-full justify-between">
-                            <span>All Classes</span>
+                            <span>全部职业</span>
                             <span className="text-xs text-gray-600">({countForBit(0)})</span>
                         </span>
                     </ListItem>
@@ -114,14 +114,14 @@ function SetsTab({ tooltipHook, onNavigate }) {
             {/* Item Sets (2nd column) */}
             <SidebarPanel>
                 <SectionHeader
-                    title={`Item Sets (${filteredItemSets.length})`}
-                    placeholder="Filter sets..."
+                    title={`套装 (${filteredItemSets.length})`}
+                    placeholder="筛选套装..."
                     onFilterChange={setSetFilter}
                 />
                 <ScrollList>
                     {itemSetsQuery.isLoading && (
                         <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                            Loading sets...
+                            加载套装中...
                         </div>
                     )}
                     {filteredItemSets.map((set) => (
@@ -152,15 +152,15 @@ function SetsTab({ tooltipHook, onNavigate }) {
                     title={
                         effectiveSet
                             ? `${effectiveSet.name} (${filteredSetItems.length})`
-                            : 'Select a Set'
+                            : '请选择套装'
                     }
-                    placeholder="Filter items..."
+                    placeholder="筛选物品..."
                     onFilterChange={setItemFilter}
                 />
 
                 {setDetailQuery.isLoading && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading set details...
+                        加载套装详情中...
                     </div>
                 )}
 
@@ -190,7 +190,7 @@ function SetsTab({ tooltipHook, onNavigate }) {
                         {setDetail.bonuses?.length > 0 && (
                             <div className="mt-4 rounded-lg border border-border-dark bg-bg-main p-4">
                                 <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-wow-gold">
-                                    Set Bonuses
+                                    套装效果
                                 </h3>
                                 <div className="space-y-2">
                                     {setDetail.bonuses.map((bonus, idx) => (
@@ -199,10 +199,10 @@ function SetsTab({ tooltipHook, onNavigate }) {
                                             className="flex items-center gap-2 text-sm text-wow-uncommon"
                                         >
                                             <span className="rounded bg-wow-uncommon/10 px-2 py-0.5 font-mono text-xs text-wow-uncommon">
-                                                {bonus.threshold}pc
+                                                {bonus.threshold} 件
                                             </span>
                                             <span>
-                                                {bonus.description || `Spell ID: ${bonus.spellId}`}
+                                                {bonus.description || `法术 ID：${bonus.spellId}`}
                                             </span>
                                         </div>
                                     ))}
@@ -214,7 +214,7 @@ function SetsTab({ tooltipHook, onNavigate }) {
 
                 {!effectiveSet && !itemSetsQuery.isLoading && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select an item set to view its items
+                        选择一个套装以查看其物品
                     </div>
                 )}
             </ContentPanel>

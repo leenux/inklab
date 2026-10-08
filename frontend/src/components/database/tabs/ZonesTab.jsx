@@ -28,7 +28,7 @@ function ZonesTab({ onNavigate }) {
         const byId = new Map()
         for (const z of zones) {
             if (!byId.has(z.groupId)) {
-                byId.set(z.groupId, { id: z.groupId, name: z.groupName || 'Other', count: 0 })
+                byId.set(z.groupId, { id: z.groupId, name: z.groupName || '其他', count: 0 })
             }
             byId.get(z.groupId).count++
         }
@@ -53,14 +53,14 @@ function ZonesTab({ onNavigate }) {
             {/* Continents / Types */}
             <SidebarPanel className="col-span-1">
                 <SectionHeader
-                    title={`Regions (${filteredGroups.length})`}
-                    placeholder="Filter regions..."
+                    title={`地区 (${filteredGroups.length})`}
+                    placeholder="筛选地区..."
                     onFilterChange={setGroupFilter}
                 />
                 <ScrollList>
                     {zonesQuery.isLoading && (
                         <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                            Loading zones...
+                            加载区域中...
                         </div>
                     )}
                     {filteredGroups.map((group) => (
@@ -87,9 +87,9 @@ function ZonesTab({ onNavigate }) {
                     title={
                         effectiveGroup
                             ? `${effectiveGroup.name} (${filteredZones.length})`
-                            : 'Select a Region'
+                            : '请选择地区'
                     }
-                    placeholder="Filter zones..."
+                    placeholder="筛选区域..."
                     onFilterChange={setZoneFilter}
                 />
 
@@ -102,7 +102,7 @@ function ZonesTab({ onNavigate }) {
                                 style={{ borderLeftColor: ZONE_COLOR }}
                                 onClick={() => onNavigate?.('zone', zone.id)}
                             >
-                                <EntityIcon label="MAP" color={ZONE_COLOR} size="md" />
+                                <EntityIcon label="地图" color={ZONE_COLOR} size="md" />
 
                                 <span className="min-w-[50px] font-mono text-[11px] text-gray-600">
                                     [{zone.id}]
@@ -116,7 +116,7 @@ function ZonesTab({ onNavigate }) {
                                 </span>
 
                                 <span className="ml-auto whitespace-nowrap text-xs text-gray-500">
-                                    {zone.npcCount} NPCs · {zone.questCount} quests
+                                    {zone.npcCount} 个 NPC · {zone.questCount} 个任务
                                 </span>
                             </div>
                         ))}
@@ -125,13 +125,13 @@ function ZonesTab({ onNavigate }) {
 
                 {!zonesQuery.isLoading && effectiveGroup && filteredZones.length === 0 && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        No zones match.
+                        没有匹配的区域。
                     </div>
                 )}
 
                 {!effectiveGroup && !zonesQuery.isLoading && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a region to browse its zones
+                        选择一个地区以浏览其区域
                     </div>
                 )}
             </ContentPanel>

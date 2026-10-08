@@ -1,7 +1,7 @@
 import React from 'react'
 import { getSchoolName, getSchoolColor } from '../../utils/wow'
 
-const POWER_TYPES = { 0: 'Mana', 1: 'Rage', 2: 'Focus', 3: 'Energy', 4: 'Happiness' }
+const POWER_TYPES = { 0: '法力', 1: '怒气', 2: '集中值', 3: '能量', 4: '快乐值' }
 
 /**
  * WoW-style spell tooltip. Renders a compact view of a SpellDetail (the same
@@ -14,7 +14,7 @@ const SpellTooltip = ({ spell, style }) => {
                 className="pointer-events-none flex min-w-[220px] flex-col gap-1 rounded border border-border-light bg-[#070707] p-2.5 shadow-xl"
                 style={style}
             >
-                <div className="text-sm font-bold text-wow-gold">Loading…</div>
+                <div className="text-sm font-bold text-wow-gold">加载中…</div>
             </div>
         )
     }
@@ -22,7 +22,7 @@ const SpellTooltip = ({ spell, style }) => {
     const schoolName = spell.schoolName || getSchoolName(spell.school)
     const schoolColor = getSchoolColor(spell.school)
     const cost =
-        spell.manaCost > 0 ? `${spell.manaCost} ${POWER_TYPES[spell.powerType] || 'Power'}` : ''
+        spell.manaCost > 0 ? `${spell.manaCost} ${POWER_TYPES[spell.powerType] || '能量'}` : ''
     // A line with an optional left/right pair; renders only if either side exists.
     const Row = ({ left, right }) =>
         left || right ? (

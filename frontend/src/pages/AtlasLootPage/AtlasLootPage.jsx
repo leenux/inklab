@@ -144,7 +144,7 @@ function AtlasLootPage() {
             <>
                 {showLoading && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading loot...
+                        加载掉落中...
                     </div>
                 )}
 
@@ -189,15 +189,15 @@ function AtlasLootPage() {
 
                 {!showPrompt && !showLoading && filteredItems.length === 0 && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        No loot data found
+                        未找到掉落数据
                     </div>
                 )}
 
                 {showPrompt && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
                         {isThreeLevelCategory
-                            ? 'Select a boss to view loot'
-                            : 'Select a module to view items'}
+                            ? '选择一个首领以查看掉落'
+                            : '选择一个模块以查看物品'}
                     </div>
                 )}
             </>
@@ -216,7 +216,7 @@ function AtlasLootPage() {
                     {categoriesQuery.isError && (
                         <div className="mx-3 mt-3 flex items-center gap-3 rounded border border-red-500/30 bg-red-900/30 p-3 text-red-400">
                             <span>❌</span>
-                            <span>Error loading categories</span>
+                            <span>加载分类出错</span>
                         </div>
                     )}
 
@@ -224,14 +224,14 @@ function AtlasLootPage() {
                         {/* Column 1: Categories */}
                         <SidebarPanel>
                             <SectionHeader
-                                title={`Categories (${filteredCategories.length})`}
-                                placeholder="Filter categories..."
+                                title={`分类 (${filteredCategories.length})`}
+                                placeholder="筛选分类..."
                                 onFilterChange={setCategoryFilter}
                             />
                             <ScrollList>
                                 {categoriesQuery.isLoading && (
                                     <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                                        Loading...
+                                        加载中...
                                     </div>
                                 )}
                                 {filteredCategories.map((cat) => (
@@ -252,19 +252,19 @@ function AtlasLootPage() {
                                 title={
                                     selectedCategory
                                         ? `${selectedCategory} (${filteredModules.length})`
-                                        : 'Select Category'
+                                        : '请选择分类'
                                 }
                                 placeholder={
                                     isThreeLevelCategory
-                                        ? 'Filter instances...'
-                                        : 'Filter modules...'
+                                        ? '筛选副本...'
+                                        : '筛选模块...'
                                 }
                                 onFilterChange={setModuleFilter}
                             />
                             <ScrollList>
                                 {modulesQuery.isLoading && (
                                     <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                                        Loading...
+                                        加载中...
                                     </div>
                                 )}
                                 {filteredModules.map((mod) => (
@@ -286,15 +286,15 @@ function AtlasLootPage() {
                                     title={
                                         selectedModule
                                             ? `${selectedModule} (${filteredTables.length})`
-                                            : 'Select Instance'
+                                            : '请选择副本'
                                     }
-                                    placeholder="Filter bosses..."
+                                    placeholder="筛选首领..."
                                     onFilterChange={setTableFilter}
                                 />
                                 <ScrollList>
                                     {tablesQuery.isLoading && (
                                         <div className="animate-pulse p-4 text-center italic text-wow-gold">
-                                            Loading...
+                                            加载中...
                                         </div>
                                     )}
                                     {filteredTables.map((tbl, idx) => {
@@ -323,9 +323,9 @@ function AtlasLootPage() {
                                 title={
                                     loot
                                         ? `${loot.bossName} (${filteredItems.length})`
-                                        : 'Loot Table'
+                                        : '掉落表'
                                 }
-                                placeholder="Filter items..."
+                                placeholder="筛选物品..."
                                 onFilterChange={setItemFilter}
                             />
                             {renderLootContent()}

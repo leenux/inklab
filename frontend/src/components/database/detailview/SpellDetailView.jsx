@@ -57,7 +57,7 @@ const ItemIcon = ({ iconName }) => {
 const PropRow = ({ label, value, color, capitalize }) =>
     value === 0 || value ? (
         <>
-            <span className="text-gray-500">{label}:</span>
+            <span className="text-gray-500">{label}：</span>
             <span
                 className={`text-right text-gray-300 ${capitalize ? 'capitalize' : ''}`}
                 style={color ? { color, fontWeight: 500 } : undefined}
@@ -93,7 +93,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
     if (loading) return <DetailLoading />
     if (isError) return <DetailError message={String(error)} onBack={onBack} />
-    if (!detail) return <DetailError message="Spell not found" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到法术" onBack={onBack} />
 
     // Localized school name from the client (spell_schools), English fallback.
     // Color is a client UI constant keyed by school index (Physical has none).
@@ -102,13 +102,13 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
     // Format power type
     const powerTypes = {
-        0: 'Mana',
-        1: 'Rage',
-        2: 'Focus',
-        3: 'Energy',
-        4: 'Happiness',
+        0: '法力',
+        1: '怒气',
+        2: '集中值',
+        3: '能量',
+        4: '快乐值',
     }
-    const powerType = powerTypes[detail.powerType] || 'Power'
+    const powerType = powerTypes[detail.powerType] || '能量'
 
     return (
         <DetailPageLayout onBack={onBack}>
@@ -126,7 +126,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                 titleColor="#FFD100"
                 subtitle={
                     <>
-                        {[detail.nameSubtext, `Level ${detail.spellLevel}`]
+                        {[detail.nameSubtext, `等级 ${detail.spellLevel}`]
                             .filter(Boolean)
                             .join(' • ')}
                         {' • '}
@@ -143,16 +143,16 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                     ? 'cursor-not-allowed bg-gray-600 text-gray-400'
                                     : 'bg-green-700 text-white hover:bg-green-600'
                             }`}
-                            title="Resolve this spell's description from local DBC data"
+                            title="从本地 DBC 数据解析此法术的描述"
                         >
-                            {syncing ? '⏳ Resolving...' : '🔄 Resolve'}
+                            {syncing ? '⏳ 解析中...' : '🔄 解析'}
                         </button>
                         <a
                             href={`${DATABASE_BASE_URL}/?spell=${entry}`}
                             target="_blank"
                             rel="noreferrer"
                             className="rounded bg-purple-700 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-purple-600"
-                            title="View on Turtle WoW Database"
+                            title="在 Turtle WoW 数据库中查看"
                         >
                             🔗 OctoHead
                         </a>
@@ -165,11 +165,11 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                 <div className="space-y-8">
                     {/* Mount model (Mounted aura -> creature display id) */}
                     {detail.mountDisplayId > 0 && (mountModel.loading || mountModel.src) && (
-                        <DetailSection title="Mount">
+                        <DetailSection title="坐骑">
                             <div className="w-56">
                                 {mountModel.loading ? (
                                     <div className="flex aspect-[3/4] animate-pulse items-center justify-center rounded border border-white/10 bg-black/40 text-xs text-gray-500">
-                                        Loading…
+                                        加载中…
                                     </div>
                                 ) : (
                                     <div className="overflow-hidden rounded border border-white/20 bg-black shadow-lg">
@@ -184,14 +184,14 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                         </DetailSection>
                     )}
 
-                    <DetailSection title="Description">
+                    <DetailSection title="描述">
                         <p className="whitespace-pre-wrap leading-relaxed text-gray-300">
-                            {detail.description || 'No description available.'}
+                            {detail.description || '暂无描述。'}
                         </p>
                     </DetailSection>
 
                     {detail.toolTip && detail.toolTip !== detail.description && (
-                        <DetailSection title="Tooltip">
+                        <DetailSection title="提示">
                             <p className="whitespace-pre-wrap leading-relaxed text-gray-300">
                                 {detail.toolTip}
                             </p>
@@ -200,7 +200,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                     {/* Spell effects */}
                     {detail.effects?.length > 0 && (
-                        <DetailSection title="Effects">
+                        <DetailSection title="效果">
                             <div className="space-y-2">
                                 {detail.effects.map((e) => (
                                     <div
@@ -208,20 +208,20 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         className="rounded border border-border-dark/50 bg-white/[0.02] p-2.5"
                                     >
                                         <div className="text-sm font-semibold text-gray-200">
-                                            Effect #{e.index}: {e.effect}
+                                            效果 #{e.index}： {e.effect}
                                             {e.auraName ? `: ${e.auraName}` : ''}
                                         </div>
                                         {e.value && (
                                             <div className="mt-0.5 text-xs text-gray-400">
-                                                Value: {e.value}
+                                                数值：{e.value}
                                             </div>
                                         )}
                                         {(e.radius || e.mechanic || e.triggerSpell > 0) && (
                                             <div className="mt-0.5 flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-gray-500">
-                                                {e.radius && <span>Radius: {e.radius}</span>}
+                                                {e.radius && <span>范围：{e.radius}</span>}
                                                 {e.mechanic && (
                                                     <span className="capitalize">
-                                                        Mechanic: {e.mechanic}
+                                                        机制：{e.mechanic}
                                                     </span>
                                                 )}
                                                 {e.triggerSpell > 0 && (
@@ -234,7 +234,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                                             e.triggerSpell,
                                                         ) || {})}
                                                     >
-                                                        Triggers spell #{e.triggerSpell}
+                                                        触发法术 #{e.triggerSpell}
                                                     </span>
                                                 )}
                                             </div>
@@ -251,7 +251,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                                 onMouseLeave={() => tooltipHook?.onLeave?.()}
                                             >
                                                 <span className="text-[11px] text-gray-500">
-                                                    Creates
+                                                    制造
                                                 </span>
                                                 <div className="h-6 w-6 flex-shrink-0 overflow-hidden rounded bg-black">
                                                     <ItemIcon iconName={e.createdItem.iconPath} />
@@ -276,7 +276,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                     {/* Used By Items */}
                     {detail.usedByItems && detail.usedByItems.length > 0 && (
-                        <DetailSection title={`Used By (${detail.usedByItems.length})`}>
+                        <DetailSection title={`使用者 (${detail.usedByItems.length})`}>
                             <div className="space-y-1">
                                 {detail.usedByItems.map((item) => (
                                     <div
@@ -297,13 +297,13 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         </span>
                                         <span className="ml-auto text-xs text-gray-500">
                                             {item.triggerType === 0
-                                                ? 'Use'
+                                                ? '使用'
                                                 : item.triggerType === 1
-                                                  ? 'Equip'
+                                                  ? '装备'
                                                   : item.triggerType === 2
-                                                    ? 'Chance on Hit'
+                                                    ? '击中几率'
                                                     : item.triggerType === 5
-                                                      ? 'Learn'
+                                                      ? '学习'
                                                       : ''}
                                         </span>
                                     </div>
@@ -316,7 +316,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     {((detail.taughtByNpcs && detail.taughtByNpcs.length > 0) ||
                         (detail.taughtByItems && detail.taughtByItems.length > 0) ||
                         (detail.taughtByQuests && detail.taughtByQuests.length > 0)) && (
-                        <DetailSection title="Taught By">
+                        <DetailSection title="教授者">
                             <div className="space-y-1">
                                 {detail.taughtByItems?.map((item) => (
                                     <div
@@ -333,7 +333,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         >
                                             {item.name}
                                         </span>
-                                        <span className="ml-auto text-xs text-gray-500">Item</span>
+                                        <span className="ml-auto text-xs text-gray-500">物品</span>
                                     </div>
                                 ))}
                                 {detail.taughtByNpcs?.map((npc) => (
@@ -350,7 +350,7 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         </span>
                                         {npc.levelMax > 0 && (
                                             <span className="ml-auto text-xs text-gray-500">
-                                                Lvl {npc.levelMin}
+                                                等级 {npc.levelMin}
                                                 {npc.levelMax > npc.levelMin
                                                     ? `-${npc.levelMax}`
                                                     : ''}
@@ -364,10 +364,10 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                         className="flex cursor-pointer items-center gap-2 rounded p-1.5 transition-colors hover:bg-white/5"
                                         onClick={() => onNavigate?.('quest', q.entry)}
                                     >
-                                        {q.side === 'Horde' || q.side === 'Alliance' ? (
+                                        {q.side === 'Horde' || q.side === 'Alliance' || q.side === '部落' || q.side === '联盟' ? (
                                             <img
                                                 src={
-                                                    q.side === 'Horde'
+                                                    (q.side === 'Horde' || q.side === '部落')
                                                         ? '/Horde_15.webp'
                                                         : '/Alliance_15.webp'
                                                 }
@@ -377,15 +377,15 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                             />
                                         ) : (
                                             <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded border border-emerald-400/40 bg-emerald-400/20 text-[8px] font-bold text-emerald-300">
-                                                Q
+                                                任务
                                             </span>
                                         )}
                                         <span className="truncate text-sm font-medium text-wow-gold">
-                                            {q.title || `Quest #${q.entry}`}
+                                            {q.title || `任务 #${q.entry}`}
                                         </span>
                                         {q.level > 0 && (
                                             <span className="ml-auto text-xs text-gray-500">
-                                                Lvl {q.level}
+                                                等级 {q.level}
                                             </span>
                                         )}
                                     </div>
@@ -397,40 +397,40 @@ const SpellDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                 {/* Side Panel */}
                 <div className="space-y-6">
-                    <DetailSection title="Properties">
+                    <DetailSection title="属性">
                         <div className="grid grid-cols-2 gap-y-2 text-sm">
                             <PropRow
-                                label="Cost"
+                                label="消耗"
                                 value={
-                                    detail.manaCost > 0 ? `${detail.manaCost} ${powerType}` : 'None'
+                                    detail.manaCost > 0 ? `${detail.manaCost} ${powerType}` : '无'
                                 }
                             />
-                            <PropRow label="Cast Time" value={detail.castTime} />
-                            <PropRow label="Cooldown" value={detail.cooldown} />
-                            <PropRow label="GCD" value={detail.gcd} />
-                            <PropRow label="Range" value={detail.range} />
-                            <PropRow label="Duration" value={detail.duration} />
-                            <PropRow label="School" value={schoolName} color={schoolColor} />
-                            <PropRow label="Mechanic" value={detail.mechanicName} capitalize />
+                            <PropRow label="施法时间" value={detail.castTime} />
+                            <PropRow label="冷却" value={detail.cooldown} />
+                            <PropRow label="公共冷却" value={detail.gcd} />
+                            <PropRow label="范围" value={detail.range} />
+                            <PropRow label="持续时间" value={detail.duration} />
+                            <PropRow label="法术系" value={schoolName} color={schoolColor} />
+                            <PropRow label="机制" value={detail.mechanicName} capitalize />
                             <PropRow
-                                label="Dispel type"
+                                label="驱散类型"
                                 value={detail.dispelType}
                                 color={getDispelColor(detail.dispelType)}
                             />
                             {/* Real proc rate (PPM / %) from the world DB proc tables; "" when none. */}
-                            <PropRow label="Proc" value={detail.proc} />
+                            <PropRow label="触发" value={detail.proc} />
                             <PropRow
-                                label="Max targets"
+                                label="最大目标数"
                                 value={
                                     detail.maxAffectedTargets > 0 ? detail.maxAffectedTargets : ''
                                 }
                             />
-                            <PropRow label="Level" value={detail.spellLevel} />
+                            <PropRow label="等级" value={detail.spellLevel} />
                         </div>
                     </DetailSection>
 
                     {detail.flags?.length > 0 && (
-                        <DetailSection title="Flags">
+                        <DetailSection title="标志">
                             <ul className="list-inside list-disc space-y-1 text-xs text-amber-300/80">
                                 {detail.flags.map((f, i) => (
                                     <li key={i}>{f}</li>

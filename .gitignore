@@ -46,6 +46,10 @@ data/.dbversion
 *.bak
 tmp/
 .agent/
+.cursor/
+
+# Local patch notes / task docs (not for push or release packages)
+patch-docs/
 
 # Locally-generated zone maps (from client art; not shipped)
 data/maps/

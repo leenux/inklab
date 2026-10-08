@@ -27,6 +27,7 @@ export const LootItem = ({
         !localName ||
         localName === '' ||
         localName.startsWith('Unknown Item') ||
+        localName.startsWith('未知物品') ||
         localName.startsWith('Item ')
 
     const quality = item.quality || 0
@@ -86,7 +87,7 @@ export const LootItem = ({
                     className={`truncate pr-2 text-[13px] font-bold ${isUnknown ? 'italic text-gray-400' : ''} `}
                     style={!isUnknown ? { color: qualityColor } : {}}
                 >
-                    {localName || `Unknown Item #${itemId}`}
+                    {localName || `未知物品 #${itemId}`}
                 </span>
 
                 {isUnknown && (
@@ -98,9 +99,9 @@ export const LootItem = ({
                         } `}
                         onClick={handleSync}
                         disabled={syncing}
-                        title="Sync item data from Turtle WoW Database"
+                        title="从 Turtle WoW 数据库同步物品数据"
                     >
-                        {syncing ? 'Syncing...' : 'Sync'}
+                        {syncing ? '同步中...' : '同步'}
                     </button>
                 )}
             </div>

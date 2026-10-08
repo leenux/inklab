@@ -24,6 +24,8 @@ function difficulty(skill, req) {
     return 'grey'
 }
 
+const DIFF_LABELS = { red: '红', orange: '橙', yellow: '黄', green: '绿', grey: '灰' }
+
 const DIFF_COLORS = {
     red: '#e33',
     orange: '#ff8040',
@@ -145,7 +147,7 @@ function GatheringView() {
         <ContentGrid columns="260px 260px 1fr">
             {/* Profession + skill */}
             <SidebarPanel>
-                <SectionHeader title="Gathering" noSearch />
+                <SectionHeader title="采集" noSearch />
                 <div className="space-y-1 p-2">
                     {professions.map((p) => (
                         <ListItem
@@ -155,7 +157,7 @@ function GatheringView() {
                         >
                             <span className="flex w-full items-center justify-between">
                                 <span>{p.name}</span>
-                                <span className="text-[10px] text-gray-500">{p.spawns} spawns</span>
+                                <span className="text-[10px] text-gray-500">{p.spawns} 个刷新点</span>
                             </span>
                         </ListItem>
                     ))}
@@ -163,7 +165,7 @@ function GatheringView() {
 
                 <div className="space-y-2 border-t border-border-dark p-3">
                     <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold uppercase text-gray-500">Skill</span>
+                        <span className="font-bold uppercase text-gray-500">技能</span>
                         <input
                             type="number"
                             min={1}
@@ -191,7 +193,7 @@ function GatheringView() {
                             checked={onlyGatherable}
                             onChange={(e) => setOnlyGatherable(e.target.checked)}
                         />
-                        hide nodes above my skill
+                        隐藏高于我技能的资源点
                     </label>
                     {/* Difficulty ramp legend */}
                     <div className="flex items-center gap-2 pt-1 text-[10px] text-gray-500">
@@ -201,7 +203,7 @@ function GatheringView() {
                                     className="h-2 w-2 rounded-full"
                                     style={{ backgroundColor: c }}
                                 />
-                                {k}
+                                {DIFF_LABELS[k] || k}
                             </span>
                         ))}
                     </div>
@@ -210,11 +212,11 @@ function GatheringView() {
 
             {/* Zones */}
             <SidebarPanel>
-                <SectionHeader title={profId ? `Zones (${zones.length})` : 'Zones'} noSearch />
+                <SectionHeader title={profId ? `区域 (${zones.length})` : '区域'} noSearch />
                 <ScrollList>
                     {isLoading && (
                         <div className="animate-pulse p-3 text-xs italic text-gray-500">
-                            Loading nodes...
+                            加载资源点中...
                         </div>
                     )}
                     {zones.map((z) => (
@@ -245,10 +247,10 @@ function GatheringView() {
                                     }}
                                     title={
                                         z.gatherable === 0
-                                            ? 'Nothing gatherable at this skill'
+                                            ? '当前技能无可采集资源'
                                             : z.best
-                                              ? `Best skill-up here: ${z.best}`
-                                              : 'Gatherable, but no skill-ups at this skill'
+                                              ? `此处最佳升级点：${DIFF_LABELS[z.best] || z.best}`
+                                              : '可采集，但当前技能无法提升熟练度'
                                     }
                                 >
                                     {z.gatherable}/{z.total}
@@ -258,7 +260,7 @@ function GatheringView() {
                     ))}
                     {profId && !isLoading && zones.length === 0 && (
                         <div className="p-3 text-xs italic text-gray-600">
-                            No spawn data. Run the object sync to fetch spawns.
+                            暂无刷新点数据。请运行物体同步以获取刷新点。
                         </div>
                     )}
                 </ScrollList>
@@ -270,22 +272,22 @@ function GatheringView() {
                     title={
                         zone ? (
                             <>
-                                <ZoneName name={zone} fallback={zone} /> — {pins.length} nodes
+                                <ZoneName name={zone} fallback={zone} /> — {pins.length} 个资源点
                             </>
                         ) : (
-                            'Select a zone'
+                            '请选择区域'
                         )
                     }
                     noSearch
                 />
                 {!profId && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Pick a gathering skill to see its nodes
+                        选择一个采集技能以查看其资源点
                     </div>
                 )}
                 {profId && !zone && !isLoading && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Pick a zone to see its node map
+                        选择一个区域以查看资源点地图
                     </div>
                 )}
                 {zone && (
@@ -304,7 +306,7 @@ function GatheringView() {
                                                 ? 'border-gray-800 text-gray-600 opacity-60'
                                                 : 'border-gray-600 text-gray-200'
                                         }`}
-                                        title={off ? 'Show on map' : 'Hide from map'}
+                                        title={off ? '在地图上显示' : '在地图上隐藏'}
                                     >
                                         <span
                                             className="h-2 w-2 rounded-full"
@@ -327,7 +329,7 @@ function GatheringView() {
                         >
                             {!mapImage.src && (
                                 <div className="flex h-full items-center justify-center text-sm text-gray-500">
-                                    {mapImage.loading ? 'Loading map...' : 'No map for this zone'}
+                                    {mapImage.loading ? '加载地图中...' : '该区域暂无地图'}
                                 </div>
                             )}
                             {mapImage.src &&

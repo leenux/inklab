@@ -1,12 +1,12 @@
 // Spell school index (mangos spell_template.school) -> display name.
 export const SPELL_SCHOOLS: Record<number, string> = {
-    0: 'Physical',
-    1: 'Holy',
-    2: 'Fire',
-    3: 'Nature',
-    4: 'Frost',
-    5: 'Shadow',
-    6: 'Arcane',
+    0: '物理',
+    1: '神圣',
+    2: '火焰',
+    3: '自然',
+    4: '冰霜',
+    5: '暗影',
+    6: '奥术',
 }
 
 // School text colors, from the client's damageTypeFontColors (CreateSpellColor
@@ -21,7 +21,7 @@ export const SPELL_SCHOOL_COLORS: Record<number, string> = {
     6: '#f4a8e4', // Arcane
 }
 
-export const getSchoolName = (school: number): string => SPELL_SCHOOLS[school] || 'Unknown'
+export const getSchoolName = (school: number): string => SPELL_SCHOOLS[school] || '未知'
 export const getSchoolColor = (school: number): string | undefined => SPELL_SCHOOL_COLORS[school]
 
 // Debuff dispel-type colors — the client's DebuffTypeColor (FrameXML), used for

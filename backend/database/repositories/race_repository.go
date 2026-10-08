@@ -84,12 +84,12 @@ func (r *RaceRepository) classes(raceID int) []models.RaceClass {
 
 func (r *RaceRepository) racials(raceID int) []models.RacialSpell {
 	rows, err := r.db.Query(`
-		SELECT sp.entry, sp.name, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, '')
+		SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(si.icon_name, ''), sp.iconName, '')
 		FROM race_spells rs
 		JOIN spell_template sp ON sp.entry = rs.spell_id
 		LEFT JOIN spell_icons si ON sp.spellIconId = si.id
 		WHERE rs.race_id = ?
-		ORDER BY sp.name`, raceID)
+		ORDER BY COALESCE(NULLIF(sp.name_loc4,''), sp.name)`, raceID)
 	if err != nil {
 		return nil
 	}

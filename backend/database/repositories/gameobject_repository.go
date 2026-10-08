@@ -11,15 +11,15 @@ import (
 // objectTypeNames maps GameObject type ids to display labels. Covers the full
 // 1.12 set so every type present in the data can be browsed.
 var objectTypeNames = map[int]string{
-	0: "Doors", 1: "Buttons", 2: "Quest Givers", 3: "Chests", 4: "Binders",
-	5: "Generic / Doodads", 6: "Traps", 7: "Chairs", 8: "Spell Focus",
-	9: "Books & Texts", 10: "Interactive", 11: "Elevators & Lifts",
-	12: "Area Damage", 13: "Cameras", 14: "Map Objects", 15: "Boats & Zeppelins",
-	16: "Duel Flags", 17: "Fishing Nodes", 18: "Summoning Rituals", 19: "Mailboxes",
-	20: "Auction Houses", 21: "Guard Posts", 22: "Spell Casters", 23: "Meeting Stones",
-	24: "Flag Stands", 25: "Fishing Pools", 26: "Flag Drops", 27: "Mini Games",
-	28: "Lottery Kiosks", 29: "Capture Points", 30: "Aura Generators",
-	33: "Destructible Buildings",
+	0: "门", 1: "按钮", 2: "任务给予者", 3: "箱子", 4: "绑定器",
+	5: "通用/装饰物", 6: "陷阱", 7: "椅子", 8: "法术焦点",
+	9: "书籍与文本", 10: "可交互", 11: "电梯",
+	12: "区域伤害", 13: "镜头", 14: "地图物件", 15: "船只与飞艇",
+	16: "决斗旗", 17: "钓鱼点", 18: "召唤仪式", 19: "邮箱",
+	20: "拍卖行", 21: "哨岗", 22: "施法者", 23: "集合石",
+	24: "旗杆", 25: "渔点", 26: "旗帜掉落", 27: "小游戏",
+	28: "抽奖亭", 29: "占领点", 30: "光环发生器",
+	33: "可破坏建筑",
 }
 
 // objectTypePriority lists the player-relevant types first; remaining types
@@ -125,7 +125,7 @@ func (r *GameObjectRepository) GetObjectsByType(typeID int, nameFilter string) (
 	var query string
 	var args []interface{}
 
-	baseSelect := "SELECT entry, name, type, displayId as display_id, size FROM gameobject_template o"
+	baseSelect := "SELECT entry, COALESCE(NULLIF(o.name_loc4,''), o.name), type, displayId as display_id, size FROM gameobject_template o"
 
 	if typeID < 0 {
 		// Derived lock category: id is -(1000 + lockTypeID). Match key-skill slots.
@@ -144,10 +144,10 @@ func (r *GameObjectRepository) GetObjectsByType(typeID int, nameFilter string) (
 	}
 
 	if nameFilter != "" {
-		query += " AND o.name LIKE ?"
+		query += " AND COALESCE(NULLIF(o.name_loc4,''), o.name) LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
-	query += " ORDER BY o.name LIMIT 10000"
+	query += " ORDER BY COALESCE(NULLIF(o.name_loc4,''), o.name) LIMIT 10000"
 
 	rows, err := r.db.Query(query, args...)
 	if err != nil {
@@ -169,8 +169,8 @@ func (r *GameObjectRepository) GetObjectsByType(typeID int, nameFilter string) (
 // SearchObjects searches for objects by name
 func (r *GameObjectRepository) SearchObjects(query string) ([]*models.GameObject, error) {
 	rows, err := r.db.Query(`
-		SELECT entry, name, type, displayId as display_id, size FROM gameobject_template
-		WHERE name LIKE ? ORDER BY length(name), name LIMIT 50
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), type, displayId as display_id, size FROM gameobject_template
+		WHERE name_loc4 LIKE ? ORDER BY length(COALESCE(NULLIF(name_loc4,''), name)), COALESCE(NULLIF(name_loc4,''), name) LIMIT 50
 	`, "%"+query+"%")
 	if err != nil {
 		return nil, err
@@ -201,7 +201,7 @@ func (r *GameObjectRepository) GetObjectDetail(entry int) (*models.GameObjectDet
 	obj := &models.GameObjectDetail{}
 
 	err := r.db.QueryRow(`
-		SELECT entry, name, type, displayId, faction, flags, size, data0, data1
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), type, displayId, faction, flags, size, data0, data1
 		FROM gameobject_template WHERE entry = ?
 	`, entry).Scan(&obj.Entry, &obj.Name, &obj.Type, &obj.DisplayID, &obj.Faction, &obj.Flags, &obj.Size, &obj.Data0, &obj.Data1)
 	if err != nil {
@@ -222,7 +222,7 @@ func (r *GameObjectRepository) GetObjectDetail(entry int) (*models.GameObjectDet
 
 	// Get quests started by this object
 	startsRows, _ := r.db.Query(`
-		SELECT q.entry, q.Title, q.QuestLevel
+		SELECT q.entry, COALESCE(NULLIF(q.Title_loc4,''), q.Title), q.QuestLevel
 		FROM gameobject_questrelation gq
 		JOIN quest_template q ON gq.quest = q.entry
 		WHERE gq.id = ?
@@ -240,7 +240,7 @@ func (r *GameObjectRepository) GetObjectDetail(entry int) (*models.GameObjectDet
 
 	// Get quests ended by this object
 	endsRows, _ := r.db.Query(`
-		SELECT q.entry, q.Title, q.QuestLevel
+		SELECT q.entry, COALESCE(NULLIF(q.Title_loc4,''), q.Title), q.QuestLevel
 		FROM gameobject_involvedrelation gi
 		JOIN quest_template q ON gi.quest = q.entry
 		WHERE gi.id = ?
@@ -281,7 +281,7 @@ func (r *GameObjectRepository) GetObjectDetail(entry int) (*models.GameObjectDet
 	// Get loot (if type is Chest - type 3)
 	if obj.Type == 3 && obj.Data1 > 0 {
 		lootRows, _ := r.db.Query(`
-			SELECT gl.item, i.name, i.quality, gl.ChanceOrQuestChance, COALESCE(idi.icon, '')
+			SELECT gl.item, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, gl.ChanceOrQuestChance, COALESCE(idi.icon, '')
 			FROM gameobject_loot_template gl
 			JOIN item_template i ON gl.item = i.entry
 			LEFT JOIN item_display_info idi ON i.display_id = idi.ID

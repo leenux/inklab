@@ -27,12 +27,12 @@ func NewItemRepository(db *sql.DB) *ItemRepository {
 // SearchItems searches for items by name
 func (r *ItemRepository) SearchItems(query string, limit int) ([]*models.Item, error) {
 	rows, err := r.db.Query(`
-		SELECT t.entry, t.name, t.quality, t.item_level, t.required_level, 
+		SELECT t.entry, COALESCE(NULLIF(t.name_loc4,''), t.name), t.quality, t.item_level, t.required_level, 
 			t.class, t.subclass, t.inventory_type, COALESCE(d.icon, '')
 		FROM item_template t
 		LEFT JOIN item_display_info d ON t.display_id = d.ID
-		WHERE t.name LIKE ?
-		ORDER BY length(t.name), t.name
+		WHERE COALESCE(NULLIF(t.name_loc4,''), t.name) LIKE ?
+		ORDER BY length(COALESCE(NULLIF(t.name_loc4,''), t.name)), COALESCE(NULLIF(t.name_loc4,''), t.name)
 		LIMIT ?
 	`, "%"+query+"%", limit)
 	if err != nil {
@@ -59,7 +59,7 @@ func (r *ItemRepository) SearchItems(query string, limit int) ([]*models.Item, e
 func (r *ItemRepository) GetItemByID(id int) (*models.Item, error) {
 	item := &models.Item{}
 	err := r.db.QueryRow(`
-		SELECT t.entry, t.name, COALESCE(t.description, ''), t.quality, t.item_level, t.required_level,
+		SELECT t.entry, COALESCE(NULLIF(t.name_loc4,''), t.name), COALESCE(COALESCE(NULLIF(t.description_loc4,''), t.description), ''), t.quality, t.item_level, t.required_level,
 			t.class, t.subclass, t.inventory_type, COALESCE(d.icon, ''), t.sell_price,
 			t.allowable_class, t.allowable_race, t.bonding, t.max_durability, t.max_count, t.armor,
 			t.stat_type1, t.stat_value1, t.stat_type2, t.stat_value2, t.stat_type3, t.stat_value3,
@@ -276,7 +276,7 @@ func (r *ItemRepository) GetItemsByClass(class, subClass int, nameFilter string,
 	}
 
 	if nameFilter != "" {
-		whereClause += " AND name LIKE ?"
+		whereClause += " AND name_loc4 LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
 
@@ -291,7 +291,7 @@ func (r *ItemRepository) GetItemsByClass(class, subClass int, nameFilter string,
 	// Data
 	dataArgs := append(args, limit, offset)
 	dataQuery := fmt.Sprintf(`
-		SELECT entry, name, quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''),
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''),
 			armor,
 			stat_type1, stat_value1, stat_type2, stat_value2, stat_type3, stat_value3, stat_type4, stat_value4, stat_type5, stat_value5,
 			stat_type6, stat_value6, stat_type7, stat_value7, stat_type8, stat_value8, stat_type9, stat_value9, stat_type10, stat_value10,
@@ -361,7 +361,7 @@ func (r *ItemRepository) GetItemsByClassAndSlot(class, subClass, inventoryType i
 	}
 
 	if nameFilter != "" {
-		whereClause += " AND name LIKE ?"
+		whereClause += " AND name_loc4 LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
 
@@ -376,7 +376,7 @@ func (r *ItemRepository) GetItemsByClassAndSlot(class, subClass, inventoryType i
 	// Data
 	dataArgs := append(args, limit, offset)
 	dataQuery := fmt.Sprintf(`
-		SELECT entry, name, quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''),
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''),
 			armor,
 			stat_type1, stat_value1, stat_type2, stat_value2, stat_type3, stat_value3, stat_type4, stat_value4, stat_type5, stat_value5,
 			stat_type6, stat_value6, stat_type7, stat_value7, stat_type8, stat_value8, stat_type9, stat_value9, stat_type10, stat_value10,
@@ -438,7 +438,7 @@ func (r *ItemRepository) AdvancedSearch(filter models.SearchFilter) (*models.Sea
 
 	// Data query
 	dataQuery := fmt.Sprintf(`
-		SELECT entry, name, quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''), container_slots
+		SELECT entry, COALESCE(NULLIF(name_loc4,''), name), quality, item_level, required_level, class, subclass, inventory_type, COALESCE(d.icon, ''), container_slots
 		FROM item_template t
 		LEFT JOIN item_display_info d ON t.display_id = d.ID
 		%s
@@ -778,7 +778,7 @@ func (r *ItemRepository) buildTooltip(itemID int, withCrafts bool) (*models.Tool
 	).Scan(&repFaction, &repRank)
 	if repFaction > 0 {
 		var fname string
-		r.db.QueryRow("SELECT name FROM factions WHERE id = ?", repFaction).Scan(&fname)
+		r.db.QueryRow("SELECT COALESCE(NULLIF(name_loc4,''), name) FROM factions WHERE id = ?", repFaction).Scan(&fname)
 		if fname != "" {
 			tooltip.ReqRepFaction = fname
 			tooltip.ReqRepStanding = reputationRankName(repRank)
@@ -797,13 +797,13 @@ func (r *ItemRepository) buildTooltip(itemID int, withCrafts bool) (*models.Tool
 		var sname string
 		r.db.QueryRow("SELECT name FROM spell_skills WHERE id = ?", reqSkill).Scan(&sname)
 		if sname != "" {
-			tooltip.ReqSkill = sname
+			tooltip.ReqSkill = helpers.LocalizeSkillName(reqSkill, sname)
 			tooltip.ReqSkillRank = reqSkillRank
 		}
 	}
 	if reqSpell > 0 {
 		var spname string
-		r.db.QueryRow("SELECT COALESCE(name, '') FROM spell_template WHERE entry = ?", reqSpell).Scan(&spname)
+		r.db.QueryRow("SELECT COALESCE(NULLIF(name_loc4,''), name, '') FROM spell_template WHERE entry = ?", reqSpell).Scan(&spname)
 		tooltip.ReqSpell = spname
 	}
 
@@ -987,12 +987,43 @@ type SpellData struct {
 	ChainTarget        [3]int
 	MiscValue          [3]int
 	RadiusIndex        [3]int
+	MultipleValue      [3]float64 // effectMultipleValue stored as float32 bit patterns
 	ProcChance         int
 	ProcCharges        int
 	DurationIndex      int
 	RangeID            int
 	DmgMultiplier1     float64
 	MaxAffectedTargets int
+	StackAmount        int
+	MaxTargetLevel     int
+	PointsPerCombo     [3]float64
+}
+
+// multipleValueFloat decodes MaNGOS effectMultipleValue (float32 bits stored in a
+// float/double column) into the real coefficient used by $e / $e1.
+func multipleValueFloat(raw float64) float64 {
+	if raw == 0 {
+		return 0
+	}
+	return float64(math.Float32frombits(uint32(raw)))
+}
+
+// formatMultipleValue formats a decoded $e coefficient for display.
+func formatMultipleValue(raw float64) string {
+	v := multipleValueFloat(raw)
+	if v == 0 {
+		return ""
+	}
+	if v == math.Trunc(v) {
+		return fmt.Sprintf("%.0f", v)
+	}
+	return fmt.Sprintf("%g", v)
+}
+
+// ResolveSpellText fetches and formats a spell description with all WoW
+// $variables substituted (used by item tooltips, spell detail, and talents).
+func (r *ItemRepository) ResolveSpellText(spellID int) string {
+	return r.resolveSpellText(spellID)
 }
 
 // resolveSpellText fetches and formats spell description with parameters
@@ -1004,15 +1035,18 @@ func (r *ItemRepository) resolveSpellText(spellID int) string {
 	// Query all needed spell data
 	err := r.db.QueryRow(`
 		SELECT 
-			COALESCE(name, ''), COALESCE(description, ''),
+			COALESCE(NULLIF(name_loc4,''), name, ''), COALESCE(NULLIF(description_loc4,''), description, ''),
 			effectBasePoints1, effectBasePoints2, effectBasePoints3,
 			effectDieSides1, effectDieSides2, effectDieSides3,
 			effectAmplitude1, effectAmplitude2, effectAmplitude3,
 			effectChainTarget1, effectChainTarget2, effectChainTarget3,
 			effectMiscValue1, effectMiscValue2, effectMiscValue3,
 			effectRadiusIndex1, effectRadiusIndex2, effectRadiusIndex3,
+			COALESCE(effectMultipleValue1, 0), COALESCE(effectMultipleValue2, 0), COALESCE(effectMultipleValue3, 0),
 			procChance, procCharges, durationIndex, rangeIndex,
-			COALESCE(dmgMultiplier1, 0), COALESCE(maxAffectedTargets, 0)
+			COALESCE(dmgMultiplier1, 0), COALESCE(maxAffectedTargets, 0), COALESCE(stackAmount, 0),
+			COALESCE(maxTargetLevel, 0),
+			COALESCE(effectPointsPerComboPoint1, 0), COALESCE(effectPointsPerComboPoint2, 0), COALESCE(effectPointsPerComboPoint3, 0)
 		FROM spell_template WHERE entry = ?
 	`, spellID).Scan(
 		&name, &description,
@@ -1022,8 +1056,11 @@ func (r *ItemRepository) resolveSpellText(spellID int) string {
 		&data.ChainTarget[0], &data.ChainTarget[1], &data.ChainTarget[2],
 		&data.MiscValue[0], &data.MiscValue[1], &data.MiscValue[2],
 		&data.RadiusIndex[0], &data.RadiusIndex[1], &data.RadiusIndex[2],
+		&data.MultipleValue[0], &data.MultipleValue[1], &data.MultipleValue[2],
 		&data.ProcChance, &data.ProcCharges, &data.DurationIndex, &data.RangeID,
-		&data.DmgMultiplier1, &data.MaxAffectedTargets,
+		&data.DmgMultiplier1, &data.MaxAffectedTargets, &data.StackAmount,
+		&data.MaxTargetLevel,
+		&data.PointsPerCombo[0], &data.PointsPerCombo[1], &data.PointsPerCombo[2],
 	)
 
 	if err != nil {
@@ -1061,7 +1098,8 @@ func (r *ItemRepository) replaceSpellVariables(text string, spellID int, data *S
 	durationText := r.getSpellDuration(data.DurationIndex)
 
 	// --- Math Expression Handling (e.g. $/1000;s1) ---
-	reMath := regexp.MustCompile(`\$([/*+-])([\d\.]+);([a-z]\d?)`)
+	// Locale strings may use uppercase tokens ($S1 / $/10;S1).
+	reMath := regexp.MustCompile(`\$([/*+-])([\d\.]+);([a-zA-Z]\d?)`)
 	if reMath.MatchString(text) {
 		// Create variable map for lookups
 		vars := make(map[string]float64)
@@ -1085,7 +1123,7 @@ func (r *ItemRepository) replaceSpellVariables(text string, spellID int, data *S
 			parts := reMath.FindStringSubmatch(match)
 			op := parts[1]
 			valStr := parts[2]
-			varName := parts[3]
+			varName := strings.ToLower(parts[3])
 
 			operand, err := strconv.ParseFloat(valStr, 64)
 			if err != nil {
@@ -1119,86 +1157,125 @@ func (r *ItemRepository) replaceSpellVariables(text string, spellID int, data *S
 		})
 	}
 
-	// Simple variable replacements (no cross-spell references)
+	// Simple variable replacements (no cross-spell references).
+	// zhCN locales_* often ship uppercase tokens ($S1/$D); English DBC uses $s1/$d.
+	repl := func(key, val string) {
+		text = strings.ReplaceAll(text, "$"+key, val)
+		text = strings.ReplaceAll(text, "$"+strings.ToUpper(key), val)
+	}
+
 	// $s1, $s2, $s3 - spell values
-	text = strings.ReplaceAll(text, "$s1", fmt.Sprintf("%d", v[0]))
-	text = strings.ReplaceAll(text, "$s2", fmt.Sprintf("%d", v[1]))
-	text = strings.ReplaceAll(text, "$s3", fmt.Sprintf("%d", v[2]))
-	text = strings.ReplaceAll(text, "$s", fmt.Sprintf("%d", v[0])) // $s = $s1
+	repl("s1", fmt.Sprintf("%d", v[0]))
+	repl("s2", fmt.Sprintf("%d", v[1]))
+	repl("s3", fmt.Sprintf("%d", v[2]))
+	repl("s", fmt.Sprintf("%d", v[0])) // $s = $s1
 
 	// $o1, $o2, $o3 - over-time values
 	text = r.replaceOvertimeValues(text, data)
 
 	// $d - duration
-	text = strings.ReplaceAll(text, "$d", durationText)
+	repl("d", durationText)
 
-	// $h - proc chance
-	text = strings.ReplaceAll(text, "$h", fmt.Sprintf("%d", data.ProcChance))
+	// $h / $h1 - proc chance (locale strings use either form)
+	repl("h", fmt.Sprintf("%d", data.ProcChance))
+	repl("h1", fmt.Sprintf("%d", data.ProcChance))
 
 	// $n - proc charges
-	text = strings.ReplaceAll(text, "$n", fmt.Sprintf("%d", data.ProcCharges))
+	repl("n", fmt.Sprintf("%d", data.ProcCharges))
+
+	// $e / $e1 - effect multiple value (mana-per-damage, heal multiplier, …)
+	if e0 := formatMultipleValue(data.MultipleValue[0]); e0 != "" {
+		repl("e", e0)
+		repl("e1", e0)
+	}
+	if e1 := formatMultipleValue(data.MultipleValue[1]); e1 != "" {
+		repl("e2", e1)
+	}
+	if e2 := formatMultipleValue(data.MultipleValue[2]); e2 != "" {
+		repl("e3", e2)
+	}
 
 	// $i - max affected targets
 	if data.MaxAffectedTargets > 0 {
-		text = strings.ReplaceAll(text, "$i", fmt.Sprintf("%d", data.MaxAffectedTargets))
+		repl("i", fmt.Sprintf("%d", data.MaxAffectedTargets))
+	}
+
+	// $v - max target level (e.g. Mind Soothe)
+	if data.MaxTargetLevel > 0 {
+		repl("v", fmt.Sprintf("%d", data.MaxTargetLevel))
 	}
 
 	// $t1, $t2, $t3 - ticks/amplitude
 	for i := 0; i < 3; i++ {
 		if data.Amplitude[i] > 0 {
 			ticks := data.Amplitude[i] / 1000
-			text = strings.ReplaceAll(text, fmt.Sprintf("$t%d", i+1), fmt.Sprintf("%d", ticks))
+			repl(fmt.Sprintf("t%d", i+1), fmt.Sprintf("%d", ticks))
 		}
 	}
 
 	// $x1, $x2, $x3 - chain targets
 	for i := 0; i < 3; i++ {
-		text = strings.ReplaceAll(text, fmt.Sprintf("$x%d", i+1), fmt.Sprintf("%d", data.ChainTarget[i]))
+		repl(fmt.Sprintf("x%d", i+1), fmt.Sprintf("%d", data.ChainTarget[i]))
 	}
 
 	// $q1, $q2, $q3 and $u1, $u2, $u3 - misc values
 	for i := 0; i < 3; i++ {
-		text = strings.ReplaceAll(text, fmt.Sprintf("$q%d", i+1), fmt.Sprintf("%d", data.MiscValue[i]))
-		text = strings.ReplaceAll(text, fmt.Sprintf("$u%d", i+1), fmt.Sprintf("%d", data.MiscValue[i]))
+		repl(fmt.Sprintf("q%d", i+1), fmt.Sprintf("%d", data.MiscValue[i]))
+		repl(fmt.Sprintf("u%d", i+1), fmt.Sprintf("%d", data.MiscValue[i]))
 	}
-	text = strings.ReplaceAll(text, "$q", fmt.Sprintf("%d", data.MiscValue[0]))
-	text = strings.ReplaceAll(text, "$u", fmt.Sprintf("%d", data.MiscValue[0]))
+	repl("q", fmt.Sprintf("%d", data.MiscValue[0]))
+	repl("u", fmt.Sprintf("%d", data.MiscValue[0]))
 
 	// $m1, $m2, $m3 - multiplier/max values (using base points as fallback)
 	for i := 0; i < 3; i++ {
-		text = strings.ReplaceAll(text, fmt.Sprintf("$m%d", i+1), fmt.Sprintf("%d", v[i]))
+		repl(fmt.Sprintf("m%d", i+1), fmt.Sprintf("%d", v[i]))
 	}
 
 	// $a1, $a2, $a3 - area/radius
 	for i := 0; i < 3; i++ {
 		if data.RadiusIndex[i] > 0 {
-			var radius int
-			r.db.QueryRow("SELECT radiusBase FROM spell_radius WHERE id = ?", data.RadiusIndex[i]).Scan(&radius)
-			text = strings.ReplaceAll(text, fmt.Sprintf("$a%d", i+1), fmt.Sprintf("%d", radius))
+			var radius float64
+			r.db.QueryRow("SELECT radius_base FROM spell_radius WHERE id = ?", data.RadiusIndex[i]).Scan(&radius)
+			repl(fmt.Sprintf("a%d", i+1), fmt.Sprintf("%.0f", radius))
 		}
 	}
 
 	// $r - range
 	if data.RangeID > 0 {
-		var rangeMax int
-		r.db.QueryRow("SELECT rangeMax FROM spell_range WHERE id = ?", data.RangeID).Scan(&rangeMax)
-		text = strings.ReplaceAll(text, "$r", fmt.Sprintf("%d", rangeMax))
+		var rangeMax float64
+		r.db.QueryRow("SELECT range_max FROM spell_range WHERE id = ?", data.RangeID).Scan(&rangeMax)
+		repl("r", fmt.Sprintf("%.0f", rangeMax))
+	}
+
+	// $b1 / $b2 - points-per-combo (rogue finishing-move procs, etc.)
+	for i := 0; i < 3; i++ {
+		if data.PointsPerCombo[i] != 0 {
+			repl(fmt.Sprintf("b%d", i+1), fmt.Sprintf("%.0f", data.PointsPerCombo[i]))
+		}
+	}
+
+	// $z - hearthstone home zone (player-specific; generic label for CN)
+	if strings.Contains(strings.ToLower(text), "$z") {
+		repl("z", "家")
 	}
 
 	// $f1 - damage multiplier
 	if data.DmgMultiplier1 > 0 {
-		text = strings.ReplaceAll(text, "$f1", fmt.Sprintf("%.1f", data.DmgMultiplier1))
+		repl("f1", fmt.Sprintf("%.1f", data.DmgMultiplier1))
 	}
 
 	// Handle ${} bracket format for all variables
 	text = r.replaceBracketVariables(text, v, data, durationText)
 
-	// Handle cross-spell references (must be last)
+	// Handle cross-spell references (must be last among numeric tokens)
 	text = r.replaceCrossSpellReferences(text)
 
 	// Handle $l variables for pluralization (e.g., $leffect:effects;)
 	// This chooses singular or plural form based on preceding number
 	text = r.replacePluralVariables(text)
+
+	// $g / $G gender forms (e.g. $g他:她; / $ghis:her;)
+	text = cleanGenderEscapes(text)
 
 	return text
 }
@@ -1228,7 +1305,10 @@ func (r *ItemRepository) replaceOvertimeValues(text string, data *SpellData) str
 			otValue = baseVal
 		}
 
-		text = strings.ReplaceAll(text, fmt.Sprintf("$o%d", i+1), fmt.Sprintf("%d", otValue))
+		key := fmt.Sprintf("o%d", i+1)
+		val := fmt.Sprintf("%d", otValue)
+		text = strings.ReplaceAll(text, "$"+key, val)
+		text = strings.ReplaceAll(text, "$"+strings.ToUpper(key), val)
 	}
 
 	return text
@@ -1236,19 +1316,23 @@ func (r *ItemRepository) replaceOvertimeValues(text string, data *SpellData) str
 
 // replaceBracketVariables handles ${variable} format
 func (r *ItemRepository) replaceBracketVariables(text string, v [3]int, data *SpellData, durationText string) string {
-	text = strings.ReplaceAll(text, "${s1}", fmt.Sprintf("%d", v[0]))
-	text = strings.ReplaceAll(text, "${s2}", fmt.Sprintf("%d", v[1]))
-	text = strings.ReplaceAll(text, "${s3}", fmt.Sprintf("%d", v[2]))
-	text = strings.ReplaceAll(text, "${d}", durationText)
-	text = strings.ReplaceAll(text, "${h}", fmt.Sprintf("%d", data.ProcChance))
-	text = strings.ReplaceAll(text, "${n}", fmt.Sprintf("%d", data.ProcCharges))
+	repl := func(key, val string) {
+		text = strings.ReplaceAll(text, "${"+key+"}", val)
+		text = strings.ReplaceAll(text, "${"+strings.ToUpper(key)+"}", val)
+	}
+	repl("s1", fmt.Sprintf("%d", v[0]))
+	repl("s2", fmt.Sprintf("%d", v[1]))
+	repl("s3", fmt.Sprintf("%d", v[2]))
+	repl("d", durationText)
+	repl("h", fmt.Sprintf("%d", data.ProcChance))
+	repl("n", fmt.Sprintf("%d", data.ProcCharges))
 	return text
 }
 
 // replaceCrossSpellReferences handles $XXXXXd, $XXXXXs1, etc.
 func (r *ItemRepository) replaceCrossSpellReferences(text string) string {
-	// $XXXXXd - duration of spell XXXXX
-	re := regexp.MustCompile(`\$(\d+)d`)
+	// $XXXXXd / $XXXXXD - duration of spell XXXXX
+	re := regexp.MustCompile(`\$(\d+)[dD]`)
 	text = re.ReplaceAllStringFunc(text, func(match string) string {
 		spellIDStr := match[1 : len(match)-1]
 		refSpellID, err := strconv.Atoi(spellIDStr)
@@ -1265,8 +1349,8 @@ func (r *ItemRepository) replaceCrossSpellReferences(text string) string {
 		return r.getSpellDuration(refDurIndex)
 	})
 
-	// $XXXXXs1, $XXXXXs2, $XXXXXs3 - spell values from other spells
-	re = regexp.MustCompile(`\$(\d+)s(\d)`)
+	// $XXXXXs1 / $XXXXXS1 - spell values from other spells
+	re = regexp.MustCompile(`\$(\d+)[sS](\d)`)
 	text = re.ReplaceAllStringFunc(text, func(match string) string {
 		parts := re.FindStringSubmatch(match)
 		if len(parts) < 3 {
@@ -1294,8 +1378,8 @@ func (r *ItemRepository) replaceCrossSpellReferences(text string) string {
 		return fmt.Sprintf("%d", value)
 	})
 
-	// $XXXXXo1, $XXXXXo2, $XXXXXo3 - over-time values from other spells
-	re = regexp.MustCompile(`\$(\d+)o(\d)`)
+	// $XXXXXo1 / $XXXXXO1 - over-time values from other spells
+	re = regexp.MustCompile(`\$(\d+)[oO](\d)`)
 	text = re.ReplaceAllStringFunc(text, func(match string) string {
 		parts := re.FindStringSubmatch(match)
 		if len(parts) < 3 {
@@ -1313,6 +1397,104 @@ func (r *ItemRepository) replaceCrossSpellReferences(text string) string {
 		r.db.QueryRow(query, refSpellID).Scan(&basePoints)
 
 		return fmt.Sprintf("%d", basePoints+1)
+	})
+
+	// $XXXXXm1 / $XXXXXM1 - base points from other spells
+	re = regexp.MustCompile(`\$(\d+)[mM](\d)`)
+	text = re.ReplaceAllStringFunc(text, func(match string) string {
+		parts := re.FindStringSubmatch(match)
+		if len(parts) < 3 {
+			return match
+		}
+		refSpellID, _ := strconv.Atoi(parts[1])
+		effectNum, _ := strconv.Atoi(parts[2])
+		if effectNum < 1 || effectNum > 3 {
+			return match
+		}
+		var basePoints, dieSides int
+		query := fmt.Sprintf("SELECT effectBasePoints%d, effectDieSides%d FROM spell_template WHERE entry = ?", effectNum, effectNum)
+		if r.db.QueryRow(query, refSpellID).Scan(&basePoints, &dieSides) != nil {
+			return match
+		}
+		value := basePoints + 1
+		if dieSides > 1 {
+			value = basePoints + dieSides
+		}
+		return fmt.Sprintf("%d", value)
+	})
+
+	// $XXXXXu / $XXXXXU - stack amount of other spell
+	re = regexp.MustCompile(`\$(\d+)[uU]`)
+	text = re.ReplaceAllStringFunc(text, func(match string) string {
+		spellIDStr := match[1 : len(match)-1]
+		refSpellID, err := strconv.Atoi(spellIDStr)
+		if err != nil {
+			return match
+		}
+		var stacks int
+		if r.db.QueryRow("SELECT COALESCE(stackAmount, 0) FROM spell_template WHERE entry = ?", refSpellID).Scan(&stacks) != nil {
+			return match
+		}
+		return fmt.Sprintf("%d", stacks)
+	})
+
+	// $XXXXXa1 / $XXXXXn / $XXXXXt1 / $XXXXXq1 — cross-spell radius/charges/ticks/misc
+	re = regexp.MustCompile(`\$(\d+)([aAnNtTqQ])(\d?)`)
+	text = re.ReplaceAllStringFunc(text, func(match string) string {
+		parts := re.FindStringSubmatch(match)
+		if len(parts) < 3 {
+			return match
+		}
+		refSpellID, _ := strconv.Atoi(parts[1])
+		kind := strings.ToLower(parts[2])
+		idx := 1
+		if parts[3] != "" {
+			idx, _ = strconv.Atoi(parts[3])
+		}
+		if idx < 1 {
+			idx = 1
+		}
+		switch kind {
+		case "a":
+			if idx > 3 {
+				return match
+			}
+			var radIdx int
+			q := fmt.Sprintf("SELECT effectRadiusIndex%d FROM spell_template WHERE entry = ?", idx)
+			if r.db.QueryRow(q, refSpellID).Scan(&radIdx) != nil || radIdx == 0 {
+				return match
+			}
+			var radius float64
+			r.db.QueryRow("SELECT radius_base FROM spell_radius WHERE id = ?", radIdx).Scan(&radius)
+			return fmt.Sprintf("%.0f", radius)
+		case "n":
+			var charges int
+			if r.db.QueryRow("SELECT COALESCE(procCharges, 0) FROM spell_template WHERE entry = ?", refSpellID).Scan(&charges) != nil {
+				return match
+			}
+			return fmt.Sprintf("%d", charges)
+		case "t":
+			if idx > 3 {
+				return match
+			}
+			var amp int
+			q := fmt.Sprintf("SELECT effectAmplitude%d FROM spell_template WHERE entry = ?", idx)
+			if r.db.QueryRow(q, refSpellID).Scan(&amp) != nil || amp <= 0 {
+				return match
+			}
+			return fmt.Sprintf("%d", amp/1000)
+		case "q":
+			if idx > 3 {
+				return match
+			}
+			var misc int
+			q := fmt.Sprintf("SELECT effectMiscValue%d FROM spell_template WHERE entry = ?", idx)
+			if r.db.QueryRow(q, refSpellID).Scan(&misc) != nil {
+				return match
+			}
+			return fmt.Sprintf("%d", misc)
+		}
+		return match
 	})
 
 	return text
@@ -1504,14 +1686,14 @@ func (r *ItemRepository) GetItemDetail(entry int) (*models.ItemDetail, error) {
 	// Get dropped by creatures (including reference loot)
 	// Note: We assume c.loot_id matches creature_loot_template.entry.
 	rows, err := r.db.Query(`
-		SELECT c.entry, c.name, c.level_min, c.level_max, cl.ChanceOrQuestChance
+		SELECT c.entry, COALESCE(NULLIF(c.name_loc4,''), c.name), c.level_min, c.level_max, cl.ChanceOrQuestChance
 		FROM creature_loot_template cl
 		JOIN creature_template c ON cl.entry = c.loot_id
 		WHERE cl.item = ?
 		
 		UNION
 		
-		SELECT c.entry, c.name, c.level_min, c.level_max, cl.ChanceOrQuestChance
+		SELECT c.entry, COALESCE(NULLIF(c.name_loc4,''), c.name), c.level_min, c.level_max, cl.ChanceOrQuestChance
 		FROM reference_loot_template rl
 		JOIN creature_loot_template cl ON cl.mincountOrRef = -rl.entry
 		JOIN creature_template c ON cl.entry = c.loot_id
@@ -1531,11 +1713,11 @@ func (r *ItemRepository) GetItemDetail(entry int) (*models.ItemDetail, error) {
 
 	// Get quest rewards
 	rows2, err := r.db.Query(`
-		SELECT entry, Title, QuestLevel, 0 as is_choice
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel, 0 as is_choice
 		FROM quest_template
 		WHERE RewItemId1 = ? OR RewItemId2 = ? OR RewItemId3 = ? OR RewItemId4 = ?
 		UNION
-		SELECT entry, Title, QuestLevel, 1 as is_choice
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel, 1 as is_choice
 		FROM quest_template
 		WHERE RewChoiceItemId1 = ? OR RewChoiceItemId2 = ? OR RewChoiceItemId3 = ? 
 		   OR RewChoiceItemId4 = ? OR RewChoiceItemId5 = ? OR RewChoiceItemId6 = ?
@@ -1554,7 +1736,7 @@ func (r *ItemRepository) GetItemDetail(entry int) (*models.ItemDetail, error) {
 
 	// Get contains (if item is a container)
 	rows3, err := r.db.Query(`
-		SELECT i.entry, i.name, i.quality, COALESCE(idi.icon, ''), il.ChanceOrQuestChance, il.mincountOrRef, il.maxcount
+		SELECT i.entry, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, ''), il.ChanceOrQuestChance, il.mincountOrRef, il.maxcount
 		FROM item_loot_template il
 		JOIN item_template i ON il.item = i.entry
 		LEFT JOIN item_display_info idi ON i.display_id = idi.ID
@@ -1622,7 +1804,7 @@ func (r *ItemRepository) GetItemDetail(entry int) (*models.ItemDetail, error) {
 
 	// Quests this item is an objective of (a required turn-in item).
 	objRows, err := r.db.Query(`
-		SELECT entry, Title, QuestLevel
+		SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel
 		FROM quest_template
 		WHERE ReqItemId1 = ? OR ReqItemId2 = ? OR ReqItemId3 = ? OR ReqItemId4 = ?
 		LIMIT 20
@@ -1642,7 +1824,7 @@ func (r *ItemRepository) GetItemDetail(entry int) (*models.ItemDetail, error) {
 	r.db.QueryRow("SELECT start_quest FROM item_template WHERE entry = ?", entry).Scan(&startQuestID)
 	if startQuestID > 0 {
 		sq := &models.QuestReward{}
-		if r.db.QueryRow("SELECT entry, Title, QuestLevel FROM quest_template WHERE entry = ?", startQuestID).
+		if r.db.QueryRow("SELECT entry, COALESCE(NULLIF(Title_loc4,''), Title), QuestLevel FROM quest_template WHERE entry = ?", startQuestID).
 			Scan(&sq.Entry, &sq.Title, &sq.Level) == nil {
 			detail.StartsQuest = sq
 		}
@@ -1741,7 +1923,7 @@ func (r *ItemRepository) getContainedIn(entry int) (objects, items, gathered []*
 	// "Gathered From", anything else (Lockpicking, Disarm Trap, no lock) stays
 	// "Contained In".
 	goRows, err := r.db.Query(`
-		SELECT DISTINCT o.entry, o.name, gl.ChanceOrQuestChance,
+		SELECT DISTINCT o.entry, COALESCE(NULLIF(o.name_loc4,''), o.name), gl.ChanceOrQuestChance,
 		       l.type1, l.type2, l.type3, l.type4, l.type5,
 		       l.prop1, l.prop2, l.prop3, l.prop4, l.prop5,
 		       l.req1, l.req2, l.req3, l.req4, l.req5
@@ -1783,7 +1965,7 @@ func (r *ItemRepository) getContainedIn(entry int) (objects, items, gathered []*
 
 	// Container items: item_loot_template.entry is the container item's entry.
 	itRows, err := r.db.Query(`
-		SELECT i.entry, i.name, i.quality, COALESCE(idi.icon, ''), il.ChanceOrQuestChance
+		SELECT i.entry, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, ''), il.ChanceOrQuestChance
 		FROM item_loot_template il
 		JOIN item_template i ON il.entry = i.entry
 		LEFT JOIN item_display_info idi ON i.display_id = idi.ID
@@ -1810,7 +1992,7 @@ func (r *ItemRepository) getContainedIn(entry int) (objects, items, gathered []*
 func (r *ItemRepository) getCreatedBy(entry int) []*models.ItemCraftSource {
 	const createItemEffect = 24 // SPELL_EFFECT_CREATE_ITEM
 	rows, err := r.db.Query(`
-		SELECT st.entry, st.name, COALESCE(NULLIF(si.icon_name, ''), st.iconName, ''),
+		SELECT st.entry, COALESCE(NULLIF(st.name_loc4,''), st.name), COALESCE(NULLIF(si.icon_name, ''), st.iconName, ''),
 		       st.effect1, st.effect2, st.effect3,
 		       st.effectItemType1, st.effectItemType2, st.effectItemType3,
 		       st.effectBasePoints1, st.effectBasePoints2, st.effectBasePoints3,
@@ -1898,7 +2080,7 @@ func (r *ItemRepository) craftSkillRequirement(spellID int) (string, int) {
 	if err == nil && skillID > 0 {
 		var name string
 		r.db.QueryRow("SELECT name FROM spell_skills WHERE id = ?", skillID).Scan(&name)
-		return name, rank
+		return helpers.LocalizeSkillName(skillID, name), rank
 	}
 
 	// Trainer-taught crafts: the craft spell (e.g. 13628 Runed Golden Rod) is
@@ -1923,21 +2105,21 @@ func (r *ItemRepository) craftSkillRequirement(spellID int) (string, int) {
 	if terr == nil && tSkill > 0 {
 		var name string
 		r.db.QueryRow("SELECT name FROM spell_skills WHERE id = ?", tSkill).Scan(&name)
-		return name, tRank
+		return helpers.LocalizeSkillName(tSkill, name), tRank
 	}
 
 	// Fallback: trainer-taught crafts — skill line + min rank from SkillLineAbility.
 	var name string
-	var req int
+	var lineID, req int
 	r.db.QueryRow(`
-		SELECT ss.name, sss.req_skill_value
+		SELECT ss.id, ss.name, sss.req_skill_value
 		FROM spell_skill_spells sss
 		JOIN spell_skills ss ON sss.skill_id = ss.id
 		WHERE sss.spell_id = ?
 		ORDER BY sss.req_skill_value DESC
 		LIMIT 1
-	`, spellID).Scan(&name, &req)
-	return name, req
+	`, spellID).Scan(&lineID, &name, &req)
+	return helpers.LocalizeSkillName(lineID, name), req
 }
 
 // getReagentFor returns the crafting spells that consume this item as a reagent
@@ -1946,7 +2128,7 @@ func (r *ItemRepository) craftSkillRequirement(spellID int) (string, int) {
 func (r *ItemRepository) getReagentFor(entry int) []*models.ItemReagentUse {
 	const createItemEffect = 24 // SPELL_EFFECT_CREATE_ITEM
 	rows, err := r.db.Query(`
-		SELECT st.entry, st.name, COALESCE(NULLIF(si.icon_name, ''), st.iconName, ''),
+		SELECT st.entry, COALESCE(NULLIF(st.name_loc4,''), st.name), COALESCE(NULLIF(si.icon_name, ''), st.iconName, ''),
 		       st.effect1, st.effect2, st.effect3,
 		       st.effectItemType1, st.effectItemType2, st.effectItemType3,
 		       st.effectBasePoints1, st.effectBasePoints2, st.effectBasePoints3,
@@ -1998,7 +2180,7 @@ func (r *ItemRepository) getReagentFor(entry int) []*models.ItemReagentUse {
 		}
 		if use.ProducedItem > 0 {
 			r.db.QueryRow(`
-				SELECT i.name, i.quality, COALESCE(idi.icon, '')
+				SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, '')
 				FROM item_template i
 				LEFT JOIN item_display_info idi ON i.display_id = idi.ID
 				WHERE i.entry = ?
@@ -2014,7 +2196,7 @@ func (r *ItemRepository) getReagentFor(entry int) []*models.ItemReagentUse {
 func (r *ItemRepository) fillReagentInfo(reagents []*models.CraftReagent) {
 	for _, rg := range reagents {
 		r.db.QueryRow(`
-			SELECT i.name, i.quality, COALESCE(idi.icon, '')
+			SELECT COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(idi.icon, '')
 			FROM item_template i
 			LEFT JOIN item_display_info idi ON i.display_id = idi.ID
 			WHERE i.entry = ?

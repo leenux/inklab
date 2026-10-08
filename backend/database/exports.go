@@ -218,3 +218,10 @@ type MySQLImporter = importers.MySQLImporter
 func NewMySQLImporter(sqliteDB *sql.DB, mysqlDB *sql.DB) *MySQLImporter {
 	return importers.NewMySQLImporter(sqliteDB, mysqlDB)
 }
+
+// Loc4Importer fills SQLite *_loc4 columns from MariaDB locales_* tables.
+type Loc4Importer = importers.Loc4Importer
+
+func NewLoc4Importer(sqliteDB *sql.DB, mysqlDB *sql.DB) *Loc4Importer {
+	return importers.NewLoc4Importer(sqliteDB, mysqlDB)
+}

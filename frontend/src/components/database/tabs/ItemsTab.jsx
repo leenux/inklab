@@ -181,7 +181,7 @@ function ItemsTab({ tooltipHook, onNavigate }) {
                 {/* Result summary */}
                 <div className="flex items-center justify-between border-b border-white/10 px-3 py-2 text-xs text-gray-400">
                     <span>
-                        {total.toLocaleString()} item{total === 1 ? '' : 's'}
+                        {total.toLocaleString()} 件物品
                         {isFetching && <span className="ml-2 animate-pulse text-wow-gold">…</span>}
                     </span>
                     <span>
@@ -203,14 +203,14 @@ function ItemsTab({ tooltipHook, onNavigate }) {
                         <thead className="sticky top-0 z-10 bg-bg-dark text-[11px]">
                             <tr className="border-b border-white/10">
                                 <SortHeader
-                                    label="Name"
+                                    label="名称"
                                     field="name"
                                     filter={filter}
                                     onSort={onSort}
                                     defaultDir="asc"
                                 />
                                 <SortHeader
-                                    label="iLvl"
+                                    label="物等"
                                     field="itemLevel"
                                     filter={filter}
                                     onSort={onSort}
@@ -218,7 +218,7 @@ function ItemsTab({ tooltipHook, onNavigate }) {
                                     defaultDir="desc"
                                 />
                                 <SortHeader
-                                    label="Req"
+                                    label="需求"
                                     field="requiredLevel"
                                     filter={filter}
                                     onSort={onSort}
@@ -226,14 +226,14 @@ function ItemsTab({ tooltipHook, onNavigate }) {
                                     defaultDir="desc"
                                 />
                                 <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-gray-500">
-                                    Slot
+                                    部位
                                 </th>
                                 <th className="px-3 py-2 text-left font-semibold uppercase tracking-wide text-gray-500">
-                                    Type
+                                    类型
                                 </th>
                                 {showSlots && (
                                     <SortHeader
-                                        label="Slots"
+                                        label="格数"
                                         field="containerSlots"
                                         filter={filter}
                                         onSort={onSort}
@@ -263,7 +263,7 @@ function ItemsTab({ tooltipHook, onNavigate }) {
 
                     {items.length === 0 && !isFetching && (
                         <div className="flex h-40 items-center justify-center italic text-gray-600">
-                            No items match these filters
+                            没有符合筛选条件的物品
                         </div>
                     )}
                 </div>
@@ -275,22 +275,22 @@ function ItemsTab({ tooltipHook, onNavigate }) {
                         disabled={page <= 1}
                         className="rounded border border-gray-700 px-3 py-1 text-gray-300 hover:border-gray-500 disabled:cursor-not-allowed disabled:opacity-40"
                     >
-                        ◀ Prev
+                        ◀ 上一页
                     </button>
                     <span className="text-gray-400">
-                        Page {page.toLocaleString()} / {totalPages.toLocaleString()}
+                        第 {page.toLocaleString()} / {totalPages.toLocaleString()} 页
                     </span>
                     <button
                         onClick={() => goTo(page + 1)}
                         disabled={page >= totalPages}
                         className="rounded border border-gray-700 px-3 py-1 text-gray-300 hover:border-gray-500 disabled:cursor-not-allowed disabled:opacity-40"
                     >
-                        Next ▶
+                        下一页 ▶
                     </button>
 
                     {/* Page size — absolute so it doesn't shift the centered controls */}
                     <label className="absolute right-3 flex items-center gap-1 text-gray-500">
-                        Per page
+                        每页
                         <select
                             value={pageSize}
                             onChange={(e) => update({ limit: Number(e.target.value) })}

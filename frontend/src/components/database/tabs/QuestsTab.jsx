@@ -18,10 +18,10 @@ import {
 // Quest type badge colors
 const getQuestTypeInfo = (type) => {
     const types = {
-        1: { label: 'Group', color: '#1eff00' },
+        1: { label: '小队', color: '#1eff00' },
         41: { label: 'PvP', color: '#ff8000' },
-        62: { label: 'Raid', color: '#a335ee' },
-        81: { label: 'Dungeon', color: '#a335ee' },
+        62: { label: '团队', color: '#a335ee' },
+        81: { label: '地下城', color: '#a335ee' },
     }
     return types[type] || null
 }
@@ -66,8 +66,8 @@ function QuestsTab({ onNavigate }) {
             {/* 1. Groups */}
             <SidebarPanel>
                 <SectionHeader
-                    title={`Quest Types (${filteredGroups.length})`}
-                    placeholder="Filter groups..."
+                    title={`任务类型 (${filteredGroups.length})`}
+                    placeholder="筛选分组..."
                     onFilterChange={setGroupFilter}
                 />
                 <ScrollList>
@@ -89,9 +89,9 @@ function QuestsTab({ onNavigate }) {
                     title={
                         selectedGroup
                             ? `${selectedGroup.name} (${filteredCategories.length})`
-                            : 'Select Type'
+                            : '请选择类型'
                     }
-                    placeholder="Filter zones..."
+                    placeholder="筛选区域..."
                     onFilterChange={setCategoryFilter}
                 />
                 <ScrollList>
@@ -116,22 +116,22 @@ function QuestsTab({ onNavigate }) {
                     title={
                         selectedCategory
                             ? `${selectedCategory.name} (${filteredQuests.length})`
-                            : 'Select Category'
+                            : '请选择分类'
                     }
-                    placeholder="Filter quests..."
+                    placeholder="筛选任务..."
                     onFilterChange={setQuestFilter}
                     titleColor="#FFD100"
                 />
 
                 {questsQuery.isLoading && (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading quests...
+                        加载任务中...
                     </div>
                 )}
 
                 {!selectedCategory && (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        Select a category to browse quests.
+                        选择一个分类以浏览任务。
                     </div>
                 )}
 
@@ -166,7 +166,7 @@ function QuestsTab({ onNavigate }) {
                                     {/* Min Level */}
                                     {quest.minLevel > 0 && (
                                         <span className="text-xs text-gray-500">
-                                            Req Lvl {quest.minLevel}
+                                            需要等级 {quest.minLevel}
                                         </span>
                                     )}
 
@@ -185,7 +185,7 @@ function QuestsTab({ onNavigate }) {
 
                                     {/* XP */}
                                     <span className="font-mono text-xs text-gray-500">
-                                        XP:{' '}
+                                        经验：{' '}
                                         <b className="text-gray-400">
                                             {quest.rewardXp > 0 ? quest.rewardXp : '-'}
                                         </b>

@@ -31,27 +31,26 @@ export function DataStatusBanner({ onGoToTools }) {
     const labels = missing.map((d) => d.label)
     const summary =
         labels.length <= 3
-            ? labels.join(', ')
-            : `${labels.slice(0, 3).join(', ')} and ${labels.length - 3} more`
+            ? labels.join('、')
+            : `${labels.slice(0, 3).join('、')} 等共 ${labels.length} 项`
 
     return (
         <div className="flex items-center justify-between gap-4 border-b border-amber-500/40 bg-amber-500/15 px-5 py-2 text-sm text-amber-300">
             <span>
-                ⚠️ Missing data: <strong title={labels.join(', ')}>{summary}</strong> — InkLab
-                builds these from your WoW client. Affected pages will show placeholders until you
-                import them.
+                ⚠️ 缺少数据：<strong title={labels.join(', ')}>{summary}</strong> — InkLab
+                需要从你的 WoW 客户端构建这些数据。在导入之前，相关页面将显示占位内容。
             </span>
             <div className="flex items-center gap-4">
                 <button
                     onClick={() => onGoToTools?.()}
                     className="font-semibold underline hover:no-underline"
                 >
-                    Open Import
+                    打开导入
                 </button>
                 <button
                     onClick={() => setDismissed(true)}
-                    aria-label="Dismiss"
-                    title="Dismiss for this session"
+                    aria-label="关闭"
+                    title="本次会话不再提示"
                     className="text-base leading-none text-amber-300/70 hover:text-amber-300"
                 >
                     ✕

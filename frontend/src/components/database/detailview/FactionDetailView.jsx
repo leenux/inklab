@@ -39,7 +39,7 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
     const { data: detail, isLoading: loading } = useFactionDetail(id)
 
     if (loading) return <DetailLoading />
-    if (!detail) return <DetailError message="Faction not found" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到阵营" onBack={onBack} />
 
     const quests = detail.quests || []
     const questGivers = detail.questGivers || []
@@ -48,10 +48,10 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
 
     // Tabs for the relationship tables (only those with data).
     const tabs = [
-        quests.length > 0 && { id: 'quests', label: `Reputation Quests (${quests.length})` },
-        repItems.length > 0 && { id: 'items', label: `Required for Items (${repItems.length})` },
-        questGivers.length > 0 && { id: 'givers', label: `Quest Givers (${questGivers.length})` },
-        members.length > 0 && { id: 'members', label: `Faction Members (${members.length})` },
+        quests.length > 0 && { id: 'quests', label: `声望任务 (${quests.length})` },
+        repItems.length > 0 && { id: 'items', label: `物品声望需求 (${repItems.length})` },
+        questGivers.length > 0 && { id: 'givers', label: `任务发布者 (${questGivers.length})` },
+        members.length > 0 && { id: 'members', label: `阵营成员 (${members.length})` },
     ].filter(Boolean)
     const currentTab = tabs.some((t) => t.id === rawTab) ? rawTab : tabs[0]?.id
 
@@ -72,7 +72,7 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
                         )}
                     </span>
                     <span className="whitespace-nowrap text-xs text-gray-500">
-                        Lvl {n.levelMin}
+                        等级 {n.levelMin}
                         {n.levelMax > n.levelMin ? `-${n.levelMax}` : ''}
                     </span>
                 </div>
@@ -88,16 +88,16 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
                     color: 'text-blue-400',
                     icon: '🔵',
                     img: '/Alliance_15.webp',
-                    name: 'Alliance',
+                    name: '联盟',
                 }
             case 2:
-                return { color: 'text-red-400', icon: '🔴', img: '/Horde_15.webp', name: 'Horde' }
+                return { color: 'text-red-400', icon: '🔴', img: '/Horde_15.webp', name: '部落' }
             default:
                 return {
                     color: 'text-yellow-400',
                     icon: '🟡',
                     img: '/Neutral_15.webp',
-                    name: 'Neutral',
+                    name: '中立',
                 }
         }
     }
@@ -135,7 +135,7 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                 {/* Description */}
                 {detail.description && (
-                    <DetailSection title="Description">
+                    <DetailSection title="描述">
                         <p className="text-sm leading-relaxed text-gray-300">
                             {detail.description}
                         </p>
@@ -143,19 +143,19 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
                 )}
 
                 {/* Quick Facts */}
-                <DetailSection title="Quick Facts">
+                <DetailSection title="基本信息">
                     <table className="infobox-table w-full text-sm">
                         <tbody>
                             <tr>
-                                <th className="py-1 pr-4 text-gray-400">Faction ID:</th>
+                                <th className="py-1 pr-4 text-gray-400">阵营 ID：</th>
                                 <td className="text-white">{detail.id}</td>
                             </tr>
                             <tr>
-                                <th className="py-1 pr-4 text-gray-400">Side:</th>
+                                <th className="py-1 pr-4 text-gray-400">阵营方：</th>
                                 <td className={sideStyle.color}>{sideStyle.name}</td>
                             </tr>
                             <tr>
-                                <th className="py-1 pr-4 text-gray-400">Related Quests:</th>
+                                <th className="py-1 pr-4 text-gray-400">相关任务：</th>
                                 <td className="text-white">{quests.length}</td>
                             </tr>
                         </tbody>
@@ -191,10 +191,10 @@ const FactionDetailView = ({ id, onBack, onNavigate, activeTab, onTabChange }) =
                                         onClick={() => onNavigate('quest', q.entry)}
                                         className="flex cursor-pointer items-center gap-2 rounded border border-white/5 bg-white/[0.02] p-3 transition-colors hover:bg-white/5"
                                     >
-                                        {(q.side === 'Horde' || q.side === 'Alliance') && (
+                                        {(q.side === 'Horde' || q.side === 'Alliance' || q.side === '部落' || q.side === '联盟') && (
                                             <img
                                                 src={
-                                                    q.side === 'Horde'
+                                                    (q.side === 'Horde' || q.side === '部落')
                                                         ? '/Horde_15.webp'
                                                         : '/Alliance_15.webp'
                                                 }

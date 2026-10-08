@@ -6,7 +6,8 @@ import { useRaces } from '../../../hooks/queries/races'
 import { useIcon, useImage } from '../../../services/useImage'
 import { QUESTION_MARK_ICON } from '../../../utils/wow.ts'
 
-const FACTION_COLOR = { Alliance: '#3b82f6', Horde: '#e0294a' }
+const FACTION_COLOR = { Alliance: '#3b82f6', Horde: '#e0294a', 联盟: '#3b82f6', 部落: '#e0294a' }
+const FACTION_LABEL = { Alliance: '联盟', Horde: '部落', Neutral: '中立' }
 const factionColor = (f) => FACTION_COLOR[f] || '#FFD100'
 
 const iconKey = (fileString, gender) => `${(fileString || '').toLowerCase()}_${gender}`
@@ -67,8 +68,8 @@ function RacesTab({ onNavigate, tooltipHook }) {
             {/* Race list */}
             <SidebarPanel className="col-span-1">
                 <SectionHeader
-                    title={`Races (${filtered.length})`}
-                    placeholder="Filter races..."
+                    title={`种族 (${filtered.length})`}
+                    placeholder="筛选种族..."
                     onFilterChange={setFilter}
                 />
                 <ScrollList>
@@ -99,11 +100,11 @@ function RacesTab({ onNavigate, tooltipHook }) {
             <ContentPanel className="col-span-3">
                 {isLoading ? (
                     <div className="flex flex-1 animate-pulse items-center justify-center italic text-wow-gold">
-                        Loading races...
+                        加载种族中...
                     </div>
                 ) : !selected ? (
                     <div className="flex flex-1 items-center justify-center italic text-gray-600">
-                        No race data. Run a Client Data import to populate races.
+                        暂无种族数据。请运行客户端数据导入以填充种族。
                     </div>
                 ) : (
                     <ScrollList className="space-y-7 p-4">
@@ -124,7 +125,7 @@ function RacesTab({ onNavigate, tooltipHook }) {
                                             color: factionColor(selected.faction),
                                         }}
                                     >
-                                        {selected.faction}
+                                        {FACTION_LABEL[selected.faction] || selected.faction}
                                     </span>
                                 )}
                             </div>
@@ -145,7 +146,7 @@ function RacesTab({ onNavigate, tooltipHook }) {
                         {selected.classes?.length > 0 && (
                             <div>
                                 <div className="mb-2 text-xs font-bold uppercase text-wow-gold">
-                                    Available Classes
+                                    可选职业
                                 </div>
                                 <div className="flex flex-wrap gap-1.5">
                                     {selected.classes.map((c) => (
@@ -157,7 +158,7 @@ function RacesTab({ onNavigate, tooltipHook }) {
                                                 borderColor: c.color ? `${c.color}66` : undefined,
                                             }}
                                         >
-                                            {c.name || `Class ${c.id}`}
+                                            {c.name || `职业 ${c.id}`}
                                         </span>
                                     ))}
                                 </div>
@@ -168,7 +169,7 @@ function RacesTab({ onNavigate, tooltipHook }) {
                         {selected.abilities?.length > 0 && (
                             <div>
                                 <div className="mb-2 text-xs font-bold uppercase text-wow-gold">
-                                    Racial Traits
+                                    种族特性
                                 </div>
                                 <ul className="space-y-1 text-sm text-gray-300">
                                     {selected.abilities.map((a, i) => (
@@ -183,7 +184,7 @@ function RacesTab({ onNavigate, tooltipHook }) {
                         {/* Racial abilities (linked spells) */}
                         <div>
                             <div className="mb-2 text-xs font-bold uppercase text-wow-gold">
-                                Racial Abilities
+                                种族技能
                             </div>
                             {selected.racials?.length > 0 ? (
                                 <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
@@ -198,11 +199,9 @@ function RacesTab({ onNavigate, tooltipHook }) {
                                 </div>
                             ) : (
                                 <p className="text-xs italic leading-relaxed text-gray-500">
-                                    No racial spells are linked for this race — the Turtle devs
-                                    never wired its racial skill line to any spells in the client
-                                    data, so there's nothing to point to. The traits above are the
-                                    character-create blurbs. If the Octo/Capy devs ever fix it, a
-                                    new client import will repopulate them here.
+                                    该种族没有关联的种族法术 — Turtle 开发者从未在客户端数据中把该种族的技能线关联到任何法术，
+                                    因此无处可指。上方的特性是创建角色时的介绍文字。如果 Octo/Capy
+                                    开发者日后修复，重新导入客户端数据即可在此处显示。
                                 </p>
                             )}
                         </div>

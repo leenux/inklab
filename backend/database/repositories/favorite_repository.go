@@ -70,7 +70,7 @@ func (r *FavoriteRepository) IsFavorite(itemEntry int) (bool, error) {
 func (r *FavoriteRepository) GetFavorite(itemEntry int) (*models.FavoriteItem, error) {
 	row := r.db.QueryRow(`
 		SELECT f.id, f.item_entry, f.category, f.added_at,
-		       COALESCE(i.name, ''), COALESCE(i.quality, 0), 
+		       COALESCE(COALESCE(NULLIF(i.name_loc4,''), i.name), ''), COALESCE(i.quality, 0), 
 		       COALESCE(di.icon, ''), COALESCE(i.item_level, 0),
 		       COALESCE(f.status, 0)
 		FROM favorites f
@@ -95,7 +95,7 @@ func (r *FavoriteRepository) GetFavorite(itemEntry int) (*models.FavoriteItem, e
 func (r *FavoriteRepository) GetAllFavorites() ([]*models.FavoriteItem, error) {
 	rows, err := r.db.Query(`
 		SELECT f.id, f.item_entry, f.category, f.added_at,
-		       COALESCE(i.name, ''), COALESCE(i.quality, 0), 
+		       COALESCE(COALESCE(NULLIF(i.name_loc4,''), i.name), ''), COALESCE(i.quality, 0), 
 		       COALESCE(di.icon, ''), COALESCE(i.item_level, 0),
 		       COALESCE(f.status, 0)
 		FROM favorites f
@@ -128,7 +128,7 @@ func (r *FavoriteRepository) GetAllFavorites() ([]*models.FavoriteItem, error) {
 func (r *FavoriteRepository) GetFavoritesByCategory(category string) ([]*models.FavoriteItem, error) {
 	rows, err := r.db.Query(`
 		SELECT f.id, f.item_entry, f.category, f.added_at,
-		       COALESCE(i.name, ''), COALESCE(i.quality, 0), 
+		       COALESCE(COALESCE(NULLIF(i.name_loc4,''), i.name), ''), COALESCE(i.quality, 0), 
 		       COALESCE(di.icon, ''), COALESCE(i.item_level, 0),
 		       COALESCE(f.status, 0)
 		FROM favorites f

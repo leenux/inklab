@@ -23,18 +23,10 @@ func NewSpellRepository(db *sql.DB) *SpellRepository {
 	return &SpellRepository{db: db}
 }
 
-// parseSpellDescription replaces $s1, $s2, $s3 variables in spell description
-func parseSpellDescription(desc string, bp1, bp2, bp3 int) string {
-	if desc == "" {
-		return ""
-	}
-	desc = strings.ReplaceAll(desc, "$s1", fmt.Sprintf("%d", bp1+1))
-	desc = strings.ReplaceAll(desc, "$S1", fmt.Sprintf("%d", bp1+1))
-	desc = strings.ReplaceAll(desc, "$s2", fmt.Sprintf("%d", bp2+1))
-	desc = strings.ReplaceAll(desc, "$S2", fmt.Sprintf("%d", bp2+1))
-	desc = strings.ReplaceAll(desc, "$s3", fmt.Sprintf("%d", bp3+1))
-	desc = strings.ReplaceAll(desc, "$S3", fmt.Sprintf("%d", bp3+1))
-	return desc
+// resolveSpellDescription formats a spell's locale description through the full
+// WoW variable replacer (shared with item tooltips).
+func (r *SpellRepository) resolveSpellDescription(spellID int) string {
+	return (&ItemRepository{db: r.db}).resolveSpellText(spellID)
 }
 
 // SearchSpells searches for spells by ID or name
@@ -45,9 +37,8 @@ func (r *SpellRepository) SearchSpells(query string) ([]*models.Spell, error) {
 	// Check if query is a number (ID search)
 	if id, parseErr := strconv.Atoi(query); parseErr == nil && id > 0 {
 		rows, err = r.db.Query(`
-			SELECT sp.entry, sp.name, sp.description, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
-			       sp.effectBasePoints1, sp.effectBasePoints2, sp.effectBasePoints3,
-			       COALESCE(sp.nameSubtext, '')
+			SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
+			       COALESCE(COALESCE(NULLIF(sp.nameSubtext_loc4,''), sp.nameSubtext), '')
 			FROM spell_template sp
 			LEFT JOIN spell_icons si ON sp.spellIconId = si.id
 			WHERE sp.entry = ?
@@ -55,13 +46,12 @@ func (r *SpellRepository) SearchSpells(query string) ([]*models.Spell, error) {
 	} else {
 		// Text search by name
 		rows, err = r.db.Query(`
-			SELECT sp.entry, sp.name, sp.description, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
-			       sp.effectBasePoints1, sp.effectBasePoints2, sp.effectBasePoints3,
-			       COALESCE(sp.nameSubtext, '')
+			SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
+			       COALESCE(COALESCE(NULLIF(sp.nameSubtext_loc4,''), sp.nameSubtext), '')
 			FROM spell_template sp
 			LEFT JOIN spell_icons si ON sp.spellIconId = si.id
-			WHERE sp.name LIKE ?
-			ORDER BY length(sp.name), sp.name
+			WHERE COALESCE(NULLIF(sp.name_loc4,''), sp.name) LIKE ?
+			ORDER BY length(COALESCE(NULLIF(sp.name_loc4,''), sp.name)), COALESCE(NULLIF(sp.name_loc4,''), sp.name)
 			LIMIT 100
 		`, "%"+query+"%")
 	}
@@ -74,15 +64,11 @@ func (r *SpellRepository) SearchSpells(query string) ([]*models.Spell, error) {
 	var spells []*models.Spell
 	for rows.Next() {
 		s := &models.Spell{}
-		var desc *string
-		var bp1, bp2, bp3 int
-		if err := rows.Scan(&s.Entry, &s.Name, &desc, &s.Icon, &bp1, &bp2, &bp3, &s.SubName); err != nil {
+		if err := rows.Scan(&s.Entry, &s.Name, &s.Icon, &s.SubName); err != nil {
 			fmt.Printf("Scan error: %v\n", err)
 			continue
 		}
-		if desc != nil {
-			s.Description = parseSpellDescription(*desc, bp1, bp2, bp3)
-		}
+		s.Description = r.resolveSpellDescription(s.Entry)
 		spells = append(spells, s)
 	}
 	return spells, nil
@@ -104,6 +90,7 @@ func (r *SpellRepository) GetSpellSkillCategories() ([]*models.SpellSkillCategor
 		if err := rows.Scan(&c.ID, &c.Name); err != nil {
 			continue
 		}
+		c.Name = helpers.LocalizeSkillCategoryName(c.ID, c.Name)
 		categories = append(categories, c)
 	}
 	return categories, nil
@@ -130,6 +117,7 @@ func (r *SpellRepository) GetSpellSkillsByCategory(categoryID int) ([]*models.Sp
 		if err := rows.Scan(&s.ID, &s.CategoryID, &s.Name, &s.SpellCount); err != nil {
 			continue
 		}
+		s.Name = helpers.LocalizeSkillName(s.ID, s.Name)
 		skills = append(skills, s)
 	}
 	return skills, nil
@@ -214,6 +202,7 @@ func (r *SpellRepository) GetSpellSkillsByClass(classID int) ([]*models.SpellSki
 		if err := rows.Scan(&s.ID, &s.CategoryID, &s.Name, &s.SpellCount); err != nil {
 			continue
 		}
+		s.Name = helpers.LocalizeSkillName(s.ID, s.Name)
 		skills = append(skills, s)
 	}
 	return skills, nil
@@ -225,19 +214,18 @@ func (r *SpellRepository) GetSpellsBySkill(skillID int, nameFilter string) ([]*m
 	args := []interface{}{skillID}
 
 	if nameFilter != "" {
-		whereClause += " AND sp.name LIKE ?"
+		whereClause += " AND COALESCE(NULLIF(sp.name_loc4,''), sp.name) LIKE ?"
 		args = append(args, "%"+nameFilter+"%")
 	}
 
 	query := fmt.Sprintf(`
-		SELECT sp.entry, sp.name, sp.description, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
-		       sp.effectBasePoints1, sp.effectBasePoints2, sp.effectBasePoints3,
-		       COALESCE(sp.nameSubtext, '')
+		SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
+		       COALESCE(COALESCE(NULLIF(sp.nameSubtext_loc4,''), sp.nameSubtext), '')
 		FROM spell_template sp
 		INNER JOIN spell_skill_spells ss ON ss.spell_id = sp.entry
 		LEFT JOIN spell_icons si ON sp.spellIconId = si.id
 		%s
-		ORDER BY sp.name
+		ORDER BY COALESCE(NULLIF(sp.name_loc4,''), sp.name)
 		LIMIT 10000
 	`, whereClause)
 
@@ -250,14 +238,10 @@ func (r *SpellRepository) GetSpellsBySkill(skillID int, nameFilter string) ([]*m
 	var spells []*models.Spell
 	for rows.Next() {
 		s := &models.Spell{}
-		var desc *string
-		var bp1, bp2, bp3 int
-		if err := rows.Scan(&s.Entry, &s.Name, &desc, &s.Icon, &bp1, &bp2, &bp3, &s.SubName); err != nil {
+		if err := rows.Scan(&s.Entry, &s.Name, &s.Icon, &s.SubName); err != nil {
 			continue
 		}
-		if desc != nil {
-			s.Description = parseSpellDescription(*desc, bp1, bp2, bp3)
-		}
+		s.Description = r.resolveSpellDescription(s.Entry)
 		spells = append(spells, s)
 	}
 	return spells, nil
@@ -266,35 +250,31 @@ func (r *SpellRepository) GetSpellsBySkill(skillID int, nameFilter string) ([]*m
 // GetSpellByID retrieves a single spell by ID
 func (r *SpellRepository) GetSpellByID(entry int) (*models.Spell, error) {
 	s := &models.Spell{}
-	var desc *string
 	err := r.db.QueryRow(`
-		SELECT sp.entry, sp.name, sp.description, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
-		       COALESCE(sp.nameSubtext, '')
+		SELECT sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
+		       COALESCE(COALESCE(NULLIF(sp.nameSubtext_loc4,''), sp.nameSubtext), '')
 		FROM spell_template sp
 		LEFT JOIN spell_icons si ON sp.spellIconId = si.id
 		WHERE sp.entry = ?
-	`, entry).Scan(&s.Entry, &s.Name, &desc, &s.Icon, &s.SubName)
+	`, entry).Scan(&s.Entry, &s.Name, &s.Icon, &s.SubName)
 	if err != nil {
 		return nil, err
 	}
-	if desc != nil {
-		s.Description = *desc
-	}
+	s.Description = r.resolveSpellDescription(entry)
 	return s, nil
 }
 
 // GetSpellDescription retrieves spell description and base points
 func (r *SpellRepository) GetSpellDescription(spellID int) (string, []int) {
-	var desc string
 	var bp1, bp2, bp3 int
 	err := r.db.QueryRow(`
-		SELECT description, effectBasePoints1, effectBasePoints2, effectBasePoints3
+		SELECT effectBasePoints1, effectBasePoints2, effectBasePoints3
 		FROM spell_template WHERE entry = ?
-	`, spellID).Scan(&desc, &bp1, &bp2, &bp3)
+	`, spellID).Scan(&bp1, &bp2, &bp3)
 	if err != nil {
 		return "", nil
 	}
-	return desc, []int{bp1, bp2, bp3}
+	return r.resolveSpellDescription(spellID), []int{bp1, bp2, bp3}
 }
 
 // GetSpellDetail returns detailed information about a spell
@@ -306,12 +286,12 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 	// Use spell_icons table to get icon name via spellIconId
 	query := `
 		SELECT
-			sp.entry, sp.name, sp.description, sp.durationIndex, sp.rangeIndex,
+			sp.entry, COALESCE(NULLIF(sp.name_loc4,''), sp.name), COALESCE(NULLIF(sp.description_loc4,''), sp.description), sp.durationIndex, sp.rangeIndex,
 			sp.manaCost, sp.castingTimeIndex, sp.school, sp.spellLevel, COALESCE(NULLIF(si.icon_name, ''), sp.iconName, ''),
             sp.effectBasePoints1, sp.effectBasePoints2, sp.effectBasePoints3,
             sp.effectDieSides1, sp.effectDieSides2, sp.effectDieSides3,
             sp.effectBaseDice1, sp.effectBaseDice2, sp.effectBaseDice3,
-            COALESCE(sp.nameSubtext, ''),
+            COALESCE(COALESCE(NULLIF(sp.nameSubtext_loc4,''), sp.nameSubtext), ''),
             sp.mechanic, sp.dispel, sp.recoveryTime, sp.categoryRecoveryTime, sp.startRecoveryTime,
             sp.procChance, sp.procCharges, sp.maxAffectedTargets,
             sp.attributes, sp.attributesEx, sp.attributesEx2, sp.attributesEx3, sp.attributesEx4, sp.customFlags,
@@ -508,7 +488,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 		// item page's "Created By".
 		if eff[i] == 24 && effItem[i] > 0 {
 			ci := &models.SpellUsedByItem{Entry: effItem[i]}
-			r.db.QueryRow(`SELECT t.name, t.quality, COALESCE(d.icon, '')
+			r.db.QueryRow(`SELECT COALESCE(NULLIF(t.name_loc4,''), t.name), t.quality, COALESCE(d.icon, '')
 				FROM item_template t LEFT JOIN item_display_info d ON t.display_id = d.ID
 				WHERE t.entry = ?`, effItem[i]).Scan(&ci.Name, &ci.Quality, &ci.IconPath)
 			e.CreatedItem = ci
@@ -528,42 +508,17 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 		uint32(attr[3]), uint32(attr[4]), uint32(attr[5]),
 	})
 
-	detail.ToolTip = s.Description
-
-	// Parse Description Variables
-	parser := func(text string) string {
-		if text == "" {
-			return ""
-		}
-		// $d - Duration
-		text = strings.ReplaceAll(text, "$d", durationStr)
-		text = strings.ReplaceAll(text, "$D", durationStr)
-
-		// $s1, $s2, $s3 -> (bp + 1)
-		text = strings.ReplaceAll(text, "$s1", fmt.Sprintf("%d", bp1+1))
-		text = strings.ReplaceAll(text, "$S1", fmt.Sprintf("%d", bp1+1))
-
-		text = strings.ReplaceAll(text, "$s2", fmt.Sprintf("%d", bp2+1))
-		text = strings.ReplaceAll(text, "$S2", fmt.Sprintf("%d", bp2+1))
-
-		text = strings.ReplaceAll(text, "$s3", fmt.Sprintf("%d", bp3+1))
-		text = strings.ReplaceAll(text, "$S3", fmt.Sprintf("%d", bp3+1))
-
-		return text
+	// Full WoW variable replacement (same path as item spell effects / tooltips).
+	resolved := r.resolveSpellDescription(entry)
+	if resolved != "" {
+		detail.Description = resolved
+		s.Description = resolved
 	}
-
-	// Apply parser to both description and tooltip
-	if s.Description != "" {
-		detail.Description = parser(s.Description)
-	}
-	// Note: s.Description was assigned to detail.ToolTip above, but we re-parse it.
-	// Ideally ToolTip might be different, but in our query we only fetched 'description'.
-	// If there is a 'tooltip' column in DB, we should fetch it. currently using description as tooltip.
 	detail.ToolTip = detail.Description
 
 	// Query items that use this spell
 	usedByQuery := `
-		SELECT t.entry, t.name, t.quality, COALESCE(d.icon, ''),
+		SELECT t.entry, COALESCE(NULLIF(t.name_loc4,''), t.name), t.quality, COALESCE(d.icon, ''),
 			CASE 
 				WHEN t.spellid_1 = ? THEN t.spelltrigger_1
 				WHEN t.spellid_2 = ? THEN t.spelltrigger_2
@@ -575,7 +530,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 		FROM item_template t
 		LEFT JOIN item_display_info d ON t.display_id = d.ID
 		WHERE t.spellid_1 = ? OR t.spellid_2 = ? OR t.spellid_3 = ? OR t.spellid_4 = ? OR t.spellid_5 = ?
-		ORDER BY t.quality DESC, t.name
+		ORDER BY t.quality DESC, COALESCE(NULLIF(t.name_loc4,''), t.name)
 		LIMIT 50
 	`
 	usedByRows, err := r.db.Query(usedByQuery, entry, entry, entry, entry, entry, entry, entry, entry, entry, entry)
@@ -591,11 +546,11 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 
 	// Trainers that teach this spell (reverse of the scraped npc_trainer_spell).
 	npcRows, err := r.db.Query(`
-		SELECT ts.npc_entry, COALESCE(c.name, ''), COALESCE(c.level_min, 0), COALESCE(c.level_max, 0)
+		SELECT ts.npc_entry, COALESCE(COALESCE(NULLIF(c.name_loc4,''), c.name), ''), COALESCE(c.level_min, 0), COALESCE(c.level_max, 0)
 		FROM npc_trainer_spell ts
 		LEFT JOIN creature_template c ON c.entry = ts.npc_entry
 		WHERE ts.spell_id = ?
-		ORDER BY c.name
+		ORDER BY COALESCE(NULLIF(c.name_loc4,''), c.name)
 		LIMIT 100
 	`, entry)
 	if err == nil {
@@ -611,7 +566,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 	// Recipe items that teach this spell: an item whose on-use spell is a
 	// learn-spell (effect 36) whose triggered spell is this one.
 	itemRows, err := r.db.Query(`
-		SELECT DISTINCT i.entry, i.name, i.quality, COALESCE(d.icon, '')
+		SELECT DISTINCT i.entry, COALESCE(NULLIF(i.name_loc4,''), i.name), i.quality, COALESCE(d.icon, '')
 		FROM item_template i
 		JOIN spell_template ls ON ls.entry IN
 			(i.spellid_1, i.spellid_2, i.spellid_3, i.spellid_4, i.spellid_5)
@@ -619,7 +574,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 		WHERE (ls.effect1 = 36 AND ls.effectTriggerSpell1 = ?)
 		   OR (ls.effect2 = 36 AND ls.effectTriggerSpell2 = ?)
 		   OR (ls.effect3 = 36 AND ls.effectTriggerSpell3 = ?)
-		ORDER BY i.quality DESC, i.name
+		ORDER BY i.quality DESC, COALESCE(NULLIF(i.name_loc4,''), i.name)
 		LIMIT 50
 	`, entry, entry, entry)
 	if err == nil {
@@ -636,7 +591,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 	// learn-spell reward (RewSpell or RewSpellCast) whose triggered spell is this
 	// one. Plain RewSpellCast (completion buffs/summons) is intentionally excluded.
 	questRows, err := r.db.Query(`
-		SELECT DISTINCT q.entry, q.Title, q.QuestLevel, IFNULL(q.RequiredRaces,0)
+		SELECT DISTINCT q.entry, COALESCE(NULLIF(q.Title_loc4,''), q.Title), q.QuestLevel, IFNULL(q.RequiredRaces,0)
 		FROM quest_template q
 		WHERE q.RewSpell = ?
 		   OR EXISTS (
@@ -645,7 +600,7 @@ func (r *SpellRepository) GetSpellDetail(entry int) *models.SpellDetail {
 		         AND ((ls.effect1 = 36 AND ls.effectTriggerSpell1 = ?)
 		           OR (ls.effect2 = 36 AND ls.effectTriggerSpell2 = ?)
 		           OR (ls.effect3 = 36 AND ls.effectTriggerSpell3 = ?)))
-		ORDER BY q.QuestLevel, q.Title
+		ORDER BY q.QuestLevel, COALESCE(NULLIF(q.Title_loc4,''), q.Title)
 		LIMIT 50
 	`, entry, entry, entry, entry)
 	if err == nil {

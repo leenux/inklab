@@ -2,6 +2,7 @@ import { formatMoney } from '../../utils/wow'
 import { useImage } from '../../services/useImage'
 
 // Coin colors for the fallback (match the sell-price colors used elsewhere).
+const COIN_LABEL = { gold: '金', silver: '银', copper: '铜' }
 const COIN_COLOR = { gold: '#FFD700', silver: '#C0C0C0', copper: '#B87333' }
 
 // One coin denomination: the icon is cropped from the client's UI-MoneyIcons
@@ -14,10 +15,10 @@ const Coin = ({ denom, amount }) => {
         <span className="inline-flex items-center gap-0.5 text-white">
             {amount}
             {src ? (
-                <img src={src} alt={denom} className="inline-block h-3.5 w-3.5" />
+                <img src={src} alt={COIN_LABEL[denom]} className="inline-block h-3.5 w-3.5" />
             ) : (
                 <span
-                    title={denom}
+                    title={COIN_LABEL[denom]}
                     className="inline-block h-3 w-3 rounded-full border border-black/40"
                     style={{ backgroundColor: COIN_COLOR[denom] }}
                 />

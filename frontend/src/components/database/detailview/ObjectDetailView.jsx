@@ -39,7 +39,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
     const zones = useMemo(() => {
         const m = new Map()
         for (const s of spawns) {
-            const name = s.zoneName || `Map ${s.mapId}`
+            const name = s.zoneName || `地图 ${s.mapId}`
             if (!m.has(name)) m.set(name, [])
             m.get(name).push(s)
         }
@@ -73,7 +73,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
     }
 
     if (loading) return <DetailLoading />
-    if (!detail) return <DetailError message="Object not found" onBack={onBack} />
+    if (!detail) return <DetailError message="未找到物体" onBack={onBack} />
 
     const startsQuests = detail.startsQuests || []
     const endsQuests = detail.endsQuests || []
@@ -106,16 +106,16 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                     iconBorderColor="text-gray-400"
                     title={detail.name}
                     titleColor="text-white"
-                    subtitle={`${detail.typeName || 'Object'} • ID: ${detail.entry}`}
+                    subtitle={`${detail.typeName || '物体'} • ID： ${detail.entry}`}
                     action={
                         <div className="flex gap-2">
                             <button
                                 onClick={handleSync}
                                 disabled={syncing}
-                                title="Fetch spawns and loot from octowow.st"
+                                title="从 octowow.st 获取刷新点和掉落"
                                 className="flex items-center gap-1 rounded bg-blue-600 px-3 py-1.5 text-xs font-bold uppercase text-white transition-colors hover:bg-blue-500 disabled:opacity-50"
                             >
-                                <span className="text-sm">↻</span> {syncing ? 'Syncing…' : 'Sync'}
+                                <span className="text-sm">↻</span> {syncing ? '同步中…' : '同步'}
                             </button>
                             <a
                                 href={`${DATABASE_BASE_URL}/?object=${detail.entry}`}
@@ -131,20 +131,20 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                 <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                     {/* Quick Facts */}
-                    <DetailSection title="Quick Facts">
+                    <DetailSection title="基本信息">
                         <table className="infobox-table w-full text-sm">
                             <tbody>
                                 <tr>
-                                    <th className="py-1 pr-4 text-gray-400">Type:</th>
+                                    <th className="py-1 pr-4 text-gray-400">类型：</th>
                                     <td className="text-white">{detail.typeName || detail.type}</td>
                                 </tr>
                                 <tr>
-                                    <th className="py-1 pr-4 text-gray-400">Display ID:</th>
+                                    <th className="py-1 pr-4 text-gray-400">显示 ID：</th>
                                     <td className="text-white">{detail.displayId}</td>
                                 </tr>
                                 {detail.reqSkill && (
                                     <tr>
-                                        <th className="py-1 pr-4 text-gray-400">Requires:</th>
+                                        <th className="py-1 pr-4 text-gray-400">需要：</th>
                                         <td className="text-white">
                                             {detail.reqSkill}
                                             {detail.reqSkillLevel > 0
@@ -155,22 +155,21 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                                 )}
                                 {detail.faction > 0 && (
                                     <tr>
-                                        <th className="py-1 pr-4 text-gray-400">Faction:</th>
+                                        <th className="py-1 pr-4 text-gray-400">阵营：</th>
                                         <td className="text-white">{detail.faction}</td>
                                     </tr>
                                 )}
                                 {detail.size > 0 && detail.size !== 1 && (
                                     <tr>
-                                        <th className="py-1 pr-4 text-gray-400">Size:</th>
+                                        <th className="py-1 pr-4 text-gray-400">大小：</th>
                                         <td className="text-white">{detail.size.toFixed(2)}</td>
                                     </tr>
                                 )}
                                 {spawns.length > 0 && (
                                     <tr>
-                                        <th className="py-1 pr-4 text-gray-400">Spawns:</th>
+                                        <th className="py-1 pr-4 text-gray-400">刷新点：</th>
                                         <td className="text-white">
-                                            {spawns.length} across {zones.length}{' '}
-                                            {zones.length === 1 ? 'zone' : 'zones'}
+                                            {spawns.length} 个，分布于 {zones.length} 个区域
                                         </td>
                                     </tr>
                                 )}
@@ -180,7 +179,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                     {/* Location map with spawn markers, per selected zone */}
                     {zones.length > 0 && (
-                        <DetailSection title="Location">
+                        <DetailSection title="位置">
                             {/* Zone selector */}
                             {zones.length > 1 && (
                                 <div className="mb-2 flex flex-wrap gap-1.5">
@@ -205,8 +204,8 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             {terrainAvailable && (
                                 <div className="mb-2 inline-flex overflow-hidden rounded border border-white/10 text-[11px] font-semibold">
                                     {[
-                                        ['atlas', 'Atlas'],
-                                        ['terrain', 'Terrain'],
+                                        ['atlas', '图集'],
+                                        ['terrain', '地形'],
                                     ].map(([key, label]) => (
                                         <button
                                             key={key}
@@ -233,19 +232,18 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             >
                                 {!mapImage.src && !mapImage.loading && (
                                     <div className="flex h-full items-center justify-center text-sm text-gray-500">
-                                        No map for <ZoneName name={activeZone?.name} />
+                                        <ZoneName name={activeZone?.name} /> 暂无地图
                                     </div>
                                 )}
                                 {mapImage.loading && (
                                     <div className="flex h-full animate-pulse items-center justify-center text-sm text-gray-500">
-                                        Loading Map...
+                                        加载地图中...
                                     </div>
                                 )}
                                 {mapImage.src && renderMarkers(16)}
                                 {mapImage.src && (
                                     <div className="absolute left-2 top-2 rounded border border-white/10 bg-black/70 px-2 py-0.5 text-xs text-gray-300">
-                                        <ZoneName name={activeZone?.name} /> • {markers.length}{' '}
-                                        {markers.length === 1 ? 'spawn' : 'spawns'}
+                                        <ZoneName name={activeZone?.name} /> • {markers.length} 个刷新点
                                     </div>
                                 )}
                                 <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded bg-black/50 text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
@@ -257,10 +255,10 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                     {/* Related Quests */}
                     {(startsQuests.length > 0 || endsQuests.length > 0) && (
-                        <DetailSection title="Related Quests">
+                        <DetailSection title="相关任务">
                             {startsQuests.length > 0 && (
                                 <div className="mb-4">
-                                    <h4 className="mb-2 text-xs uppercase text-gray-500">Starts</h4>
+                                    <h4 className="mb-2 text-xs uppercase text-gray-500">开始</h4>
                                     <div className="space-y-1">
                                         {startsQuests.map((q) => (
                                             <div
@@ -278,7 +276,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                             )}
                             {endsQuests.length > 0 && (
                                 <div>
-                                    <h4 className="mb-2 text-xs uppercase text-gray-500">Ends</h4>
+                                    <h4 className="mb-2 text-xs uppercase text-gray-500">结束</h4>
                                     <div className="space-y-1">
                                         {endsQuests.map((q) => (
                                             <div
@@ -300,7 +298,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
 
                 {/* Contains (Loot) */}
                 {contains.length > 0 && (
-                    <DetailSection title={`Contains (${contains.length})`}>
+                    <DetailSection title={`包含 (${contains.length})`}>
                         <LootGrid>
                             {contains.map((item) => {
                                 const handlers = tooltipHook?.getItemHandlers?.(item.itemId) || {}
@@ -338,7 +336,7 @@ const ObjectDetailView = ({ entry, onBack, onNavigate, tooltipHook }) => {
                         <div className="relative inline-block">
                             <img
                                 src={mapImage.src}
-                                alt={activeZone?.name || 'Location Map'}
+                                alt={activeZone?.name || '位置地图'}
                                 className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
                             />
                             {renderMarkers(20)}

@@ -160,7 +160,8 @@ func (a *App) GetTalentTrees(class string) *TalentClassData {
 		talRows.Close()
 	}
 
-	// Resolve all rank spells in one pass.
+	// Resolve all rank spells in one pass (Chinese loc4 names/icons), then run
+	// each description through the shared $variable replacer.
 	type spellInfo struct{ name, desc, icon string }
 	info := make(map[int]spellInfo, len(idSet))
 	if len(idSet) > 0 {
@@ -170,16 +171,32 @@ func (a *App) GetTalentTrees(class string) *TalentClassData {
 			ph = append(ph, "?")
 			args = append(args, id)
 		}
-		q := "SELECT entry, COALESCE(name,''), COALESCE(description,''), COALESCE(iconName,'') FROM spell_template WHERE entry IN (" + strings.Join(ph, ",") + ")"
+		q := `SELECT sp.entry,
+			COALESCE(NULLIF(sp.name_loc4,''), sp.name, ''),
+			COALESCE(NULLIF(si.icon_name, ''), sp.iconName, '')
+			FROM spell_template sp
+			LEFT JOIN spell_icons si ON sp.spellIconId = si.id
+			WHERE sp.entry IN (` + strings.Join(ph, ",") + ")"
 		if rows, err := a.db.DB().Query(q, args...); err == nil {
 			for rows.Next() {
 				var entry int
-				var name, desc, icon string
-				if rows.Scan(&entry, &name, &desc, &icon) == nil {
-					info[entry] = spellInfo{name: name, desc: desc, icon: strings.ToLower(icon)}
+				var name, icon string
+				if rows.Scan(&entry, &name, &icon) == nil {
+					info[entry] = spellInfo{name: name, icon: strings.ToLower(icon)}
 				}
 			}
 			rows.Close()
+		}
+		if a.itemRepo != nil {
+			for id, si := range info {
+				si.desc = a.itemRepo.ResolveSpellText(id)
+				info[id] = si
+			}
+			for id := range idSet {
+				if _, ok := info[id]; !ok {
+					info[id] = spellInfo{desc: a.itemRepo.ResolveSpellText(id)}
+				}
+			}
 		}
 	}
 
