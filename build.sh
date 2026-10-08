@@ -1,19 +1,18 @@
 #!/usr/bin/env bash
-# build.sh — build InkLab CN release packages for multiple platforms.
+# build.sh — build InkLab CN Windows release packages.
 #
 # Output naming (per g2):
-#   InkLab-Windows-cn-v0.7.42.zip
-#   InkLab-Linux-cn-v0.7.42.tar.gz
-#   InkLab-macOS-cn-v0.7.42.zip
+#   InkLab-Windows-cn-v0.7.43.zip
+#
+# CN builds ship Windows only (Linux/macOS cross-builds are not maintained).
 #
 # Domestic mirrors first; anything without a CN mirror uses the machine proxy
 # (HTTP_PROXY / HTTPS_PROXY / ALL_PROXY) if set.
 #
 # Usage:
-#   ./build.sh                  # all platforms, VERSION from wails.json or default
-#   ./build.sh -v 0.7.42        # set version
-#   ./build.sh -p windows       # only windows/amd64
-#   ./build.sh -p linux,macos
+#   ./build.sh                  # windows/amd64 (default)
+#   ./build.sh -v 0.7.43        # set version
+#   ./build.sh -p windows       # explicit windows/amd64
 #   ./build.sh --skip-deps      # skip node/go/wails install steps
 set -euo pipefail
 
@@ -21,7 +20,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
 VERSION="0.7.43"
-PLATFORMS="windows,linux,macos"
+PLATFORMS="windows"
 SKIP_DEPS=0
 OUT_DIR="${ROOT}/dist"
 
@@ -276,19 +275,12 @@ for p in "${PLAT_ARR[@]}"; do
     windows|win)
       build_one "windows/amd64" "Windows" "zip" ""
       ;;
-    linux)
-      # webkit tag only matters when building natively on linux with webkit2 4.1
-      tags=""
-      if [[ "$(uname -s)" == "Linux" ]]; then
-        tags="-tags webkit2_41"
-      fi
-      build_one "linux/amd64" "Linux" "tar.gz" "$tags"
-      ;;
-    macos|darwin|mac)
-      build_one "darwin/universal" "macOS" "zip" ""
+    linux|macos|darwin|mac)
+      echo "CN builds are Windows-only; refusing platform: $p" >&2
+      exit 1
       ;;
     *)
-      echo "unknown platform: $p (use windows,linux,macos)" >&2
+      echo "unknown platform: $p (use windows)" >&2
       exit 1
       ;;
   esac
